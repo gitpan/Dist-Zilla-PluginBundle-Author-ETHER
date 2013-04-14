@@ -79,6 +79,7 @@ my %WriteMakefileArgs = (
     "Dist::Zilla::Role::MintingProfile::ShareDir" => 0,
     "Dist::Zilla::Role::PluginBundle::Config::Slicer" => 0,
     "Dist::Zilla::Role::PluginBundle::Easy" => 0,
+    "Dist::Zilla::Role::PluginBundle::PluginRemover" => 0,
     "Moose" => 0,
     "strict" => 0,
     "warnings" => 0
@@ -89,7 +90,7 @@ my %WriteMakefileArgs = (
     "Test::CheckDeps" => "0.002",
     "Test::More" => "0.88"
   },
-  "VERSION" => "0.001",
+  "VERSION" => "0.002",
   "test" => {
     "TESTS" => "t/*.t"
   }

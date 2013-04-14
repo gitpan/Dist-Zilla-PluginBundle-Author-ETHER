@@ -17,7 +17,8 @@
       "directory" : [
          "t",
          "xt",
-         "examples"
+         "examples",
+         "profiles"
       ]
    },
    "prereqs" : {
@@ -102,6 +103,7 @@
             "Dist::Zilla::Role::MintingProfile::ShareDir" : "0",
             "Dist::Zilla::Role::PluginBundle::Config::Slicer" : "0",
             "Dist::Zilla::Role::PluginBundle::Easy" : "0",
+            "Dist::Zilla::Role::PluginBundle::PluginRemover" : "0",
             "Moose" : "0",
             "perl" : "5.006",
             "strict" : "0",
@@ -120,11 +122,11 @@
    "provides" : {
       "Dist::Zilla::MintingProfile::Author::ETHER" : {
          "file" : "lib/Dist/Zilla/MintingProfile/Author/ETHER.pm",
-         "version" : "0.001"
+         "version" : "0.002"
       },
       "Dist::Zilla::PluginBundle::Author::ETHER" : {
          "file" : "lib/Dist/Zilla/PluginBundle/Author/ETHER.pm",
-         "version" : "0.001"
+         "version" : "0.002"
       }
    },
    "release_status" : "stable",
@@ -140,7 +142,7 @@
          "web" : "https://github.com/karenetheridge/Dist-Zilla-PluginBundle-Author-ETHER"
       }
    },
-   "version" : "0.001",
+   "version" : "0.002",
    "x_Dist_Zilla" : {
       "perl" : {
          "version" : "5.016003"
@@ -174,7 +176,7 @@
          {
             "class" : "Dist::Zilla::Plugin::MetaProvides::Package",
             "name" : "MetaProvides::Package",
-            "version" : "1.14000001"
+            "version" : "1.14000002"
          },
          {
             "class" : "Dist::Zilla::Plugin::MetaConfig",

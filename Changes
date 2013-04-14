@@ -1,5 +1,10 @@
 Revision history for Dist-Zilla-PluginBundle-Author-ETHER
 
+0.002     2013-04-14 15:40:08 PDT-0700 (Karen Etheridge)
+          - do not index our profiles/, to avoid its contents from showing up
+            under "Documentation" on metacpan
+          - users of [@Author::ETHER] can now -remove plugins
+
 0.001     2013-04-14 13:52:50 PDT-0700 (Karen Etheridge)
           - Initial release.
 

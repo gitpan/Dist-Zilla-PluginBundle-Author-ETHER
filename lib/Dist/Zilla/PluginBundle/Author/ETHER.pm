@@ -2,9 +2,9 @@ use strict;
 use warnings;
 package Dist::Zilla::PluginBundle::Author::ETHER;
 {
-  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.001';
+  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.002';
 }
-# git description: ac04044
+# git description: v0.001-2-g00e467d
 
 BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
@@ -14,9 +14,10 @@ BEGIN {
 use Moose;
 with
     'Dist::Zilla::Role::PluginBundle::Easy',
+    'Dist::Zilla::Role::PluginBundle::PluginRemover',
     'Dist::Zilla::Role::PluginBundle::Config::Slicer';
 
-sub mvp_multivalue_args { qw(stopwords) }
+sub mvp_multivalue_args { shift->plugin_remover_attribute, qw(stopwords) }
 
 has stopwords => (
     is => 'ro', isa => 'ArrayRef',
@@ -129,7 +130,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.001
+version 0.002
 
 =head1 SYNOPSIS
 
@@ -305,6 +306,9 @@ Stopwords for spelling tests can be added with the C<dist.ini> option:
 
     stopwords = foo
     stopwords = bar
+
+This bundle makes use of L<Dist::Zilla::Role::PluginBundle::PluginRemover> and
+L<Dist::Zilla::Role::PluginBundle::Config::Slicer> to allow further customization.
 
 =head1 NAMING SCHEME
 
