@@ -1,5 +1,14 @@
 Revision history for Dist-Zilla-PluginBundle-Author-ETHER
 
+0.003     2013-04-21 10:22:48 PDT-0700 (Karen Etheridge)
+          - now building ourself with ourselves, [@Author::ETHER].
+          - [Test::UnusedVars] added
+          - RT mail link cleaned up
+          - bump prereqs for Dist::Zilla::Role::PluginBundle::PluginRemover,
+            Dist::Zilla::Plugin::Test::CPAN::Changes
+          - document the multiple mechanisms for adding stopwords (and add the
+            [-Stopwords] weaver plugin, which seems to be needed sometimes)
+
 0.002     2013-04-14 15:40:08 PDT-0700 (Karen Etheridge)
           - do not index our profiles/, to avoid its contents from showing up
             under "Documentation" on metacpan

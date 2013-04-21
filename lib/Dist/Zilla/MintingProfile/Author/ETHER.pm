@@ -2,7 +2,7 @@ use strict;
 use warnings;
 package Dist::Zilla::MintingProfile::Author::ETHER;
 {
-  $Dist::Zilla::MintingProfile::Author::ETHER::VERSION = '0.002';
+  $Dist::Zilla::MintingProfile::Author::ETHER::VERSION = '0.003';
 }
 BEGIN {
   $Dist::Zilla::MintingProfile::Author::ETHER::AUTHORITY = 'cpan:ETHER';
@@ -19,13 +19,15 @@ __END__
 
 =pod
 
+=for :stopwords Karen Etheridge
+
 =head1 NAME
 
 Dist::Zilla::MintingProfile::Author::ETHER - Mint distributions like ETHER does
 
 =head1 VERSION
 
-version 0.002
+version 0.003
 
 =head1 SYNOPSIS
 
@@ -64,7 +66,7 @@ module version and other metadata from git.
 =head1 SUPPORT
 
 Bugs may be submitted through L<the RT bug tracker|https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-PluginBundle-Author-ETHER>
-(or L<mailto:bug-Dist-Zilla-PluginBundle-Author-ETHER@rt.cpan.org>).
+(or L<bug-Dist-Zilla-PluginBundle-Author-ETHER@rt.cpan.org|mailto:bug-Dist-Zilla-PluginBundle-Author-ETHER@rt.cpan.org>).
 I am also usually active on irc, as 'ether' at C<irc.perl.org>.
 
 =head1 AUTHOR

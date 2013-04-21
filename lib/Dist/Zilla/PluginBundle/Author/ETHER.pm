@@ -2,9 +2,9 @@ use strict;
 use warnings;
 package Dist::Zilla::PluginBundle::Author::ETHER;
 {
-  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.002';
+  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.003';
 }
-# git description: v0.001-2-g00e467d
+# git description: v0.002-6-ga6063e7
 
 BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
@@ -14,10 +14,10 @@ BEGIN {
 use Moose;
 with
     'Dist::Zilla::Role::PluginBundle::Easy',
-    'Dist::Zilla::Role::PluginBundle::PluginRemover',
+    'Dist::Zilla::Role::PluginBundle::PluginRemover' => { -version => '0.102' },
     'Dist::Zilla::Role::PluginBundle::Config::Slicer';
 
-sub mvp_multivalue_args { shift->plugin_remover_attribute, qw(stopwords) }
+sub mvp_multivalue_args { qw(stopwords) }
 
 has stopwords => (
     is => 'ro', isa => 'ArrayRef',
@@ -124,13 +124,15 @@ __END__
 
 =pod
 
+=for :stopwords Karen Etheridge Stopwords KENTNL's
+
 =head1 NAME
 
 Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions built by ETHER
 
 =head1 VERSION
 
-version 0.002
+version 0.003
 
 =head1 SYNOPSIS
 
@@ -200,6 +202,7 @@ following C<dist.ini> (following the preamble):
     [Test::CPAN::Changes]
     [Test::ChangesHasContent]
     [Test::Version]
+    [Test::UnusedVars]
 
     [Test::MinimumVersion]
     :version = 2.000003
@@ -307,6 +310,10 @@ Stopwords for spelling tests can be added with the C<dist.ini> option:
     stopwords = foo
     stopwords = bar
 
+and/or by adding a directive to pod:
+
+    =for stopwords foo bar baz
+
 This bundle makes use of L<Dist::Zilla::Role::PluginBundle::PluginRemover> and
 L<Dist::Zilla::Role::PluginBundle::Config::Slicer> to allow further customization.
 
@@ -318,7 +325,7 @@ see L<KENTNL's distribution|Dist::Zilla::PluginBundle::Author::KENTNL/NAMING-SCH
 =head1 SUPPORT
 
 Bugs may be submitted through L<the RT bug tracker|https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-PluginBundle-Author-ETHER>
-(or L<mailto:bug-Dist-Zilla-PluginBundle-Author-ETHER@rt.cpan.org>).
+(or L<bug-Dist-Zilla-PluginBundle-Author-ETHER@rt.cpan.org|mailto:bug-Dist-Zilla-PluginBundle-Author-ETHER@rt.cpan.org>).
 I am also usually active on irc, as 'ether' at C<irc.perl.org>.
 
 =head1 AUTHOR
