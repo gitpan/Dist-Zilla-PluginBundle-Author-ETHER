@@ -2,7 +2,7 @@ use strict;
 use warnings;
 package Dist::Zilla::MintingProfile::Author::ETHER;
 {
-  $Dist::Zilla::MintingProfile::Author::ETHER::VERSION = '0.003';
+  $Dist::Zilla::MintingProfile::Author::ETHER::VERSION = '0.004';
 }
 BEGIN {
   $Dist::Zilla::MintingProfile::Author::ETHER::AUTHORITY = 'cpan:ETHER';
@@ -19,7 +19,9 @@ __END__
 
 =pod
 
-=for :stopwords Karen Etheridge
+=encoding utf-8
+
+=for :stopwords Karen Etheridge irc
 
 =head1 NAME
 
@@ -27,7 +29,7 @@ Dist::Zilla::MintingProfile::Author::ETHER - Mint distributions like ETHER does
 
 =head1 VERSION
 
-version 0.003
+version 0.004
 
 =head1 SYNOPSIS
 
@@ -58,7 +60,7 @@ Profiles available are:
 
 C<github>
 
-Creates a distribution hosted on L<http://github>, with hooks to determine the
+Creates a distribution hosted on L<github|http://github.com>, with hooks to determine the
 module version and other metadata from git.
 
 =back

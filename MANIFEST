@@ -12,7 +12,6 @@ lib/Dist/Zilla/PluginBundle/Author/ETHER.pm
 profiles/github/Module.pm
 profiles/github/build_templates/profile.ini
 profiles/github/profile.ini
-profiles/github/skel/.gitignore
 profiles/github/skel/Changes
 profiles/github/skel/dist.ini
 profiles/github/skel/t/01-basic.t

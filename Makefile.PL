@@ -82,6 +82,12 @@ my %WriteMakefileArgs = (
     "Dist::Zilla::Role::PluginBundle::Easy" => 0,
     "Dist::Zilla::Role::PluginBundle::PluginRemover" => "0.102",
     "Moose" => 0,
+    "Pod::Elemental::Transformer::List" => 0,
+    "Pod::Weaver::Plugin::Encoding" => 0,
+    "Pod::Weaver::Plugin::StopWords" => 0,
+    "Pod::Weaver::Plugin::Transformer" => 0,
+    "Pod::Weaver::PluginBundle::Default" => 0,
+    "Text::Tabs" => "2013.0426",
     "strict" => 0,
     "warnings" => 0
   },
@@ -91,7 +97,7 @@ my %WriteMakefileArgs = (
     "Test::CheckDeps" => "0.002",
     "Test::More" => "0.88"
   },
-  "VERSION" => "0.003",
+  "VERSION" => "0.004",
   "test" => {
     "TESTS" => "t/*.t"
   }

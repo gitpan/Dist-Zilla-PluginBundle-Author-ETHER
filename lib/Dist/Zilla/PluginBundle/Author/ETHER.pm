@@ -2,9 +2,9 @@ use strict;
 use warnings;
 package Dist::Zilla::PluginBundle::Author::ETHER;
 {
-  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.003';
+  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.004';
 }
-# git description: v0.002-6-ga6063e7
+# git description: v0.003-10-g8b002cf
 
 BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
@@ -124,7 +124,9 @@ __END__
 
 =pod
 
-=for :stopwords Karen Etheridge Stopwords KENTNL's
+=encoding utf-8
+
+=for :stopwords Karen Etheridge Stopwords KENTNL's irc
 
 =head1 NAME
 
@@ -132,7 +134,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.003
+version 0.004
 
 =head1 SYNOPSIS
 
@@ -293,12 +295,14 @@ following C<dist.ini> (following the preamble):
 
 =for Pod::Coverage configure mvp_multivalue_args
 
-The distribution's code is assumed to be hosted at github; the version and
-other metadata is derived directly from the local git repository.
+The distribution's code is assumed to be hosted at L<github|http://github.com>;
+L<RT|http://rt.cpan.org> is used as the issue tracker.
+The version and other metadata is derived directly from the local git repository.
 
 =head1 OPTIONS / OVERRIDES
 
-Use V=<version> to override the version of the distribution being built; otherwise the version is
+Use C<< V=<version> >> to override the version of the distribution being built;
+otherwise the version is
 incremented from the last git tag.
 
 Subs can be considered "covered" for pod coverage tests by adding a directive to pod:
