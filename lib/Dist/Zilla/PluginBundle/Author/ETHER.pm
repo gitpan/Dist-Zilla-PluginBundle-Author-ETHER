@@ -2,9 +2,9 @@ use strict;
 use warnings;
 package Dist::Zilla::PluginBundle::Author::ETHER;
 {
-  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.004';
+  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.005';
 }
-# git description: v0.003-10-g8b002cf
+# git description: v0.004-3-gfcaa714
 
 BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
@@ -126,7 +126,7 @@ __END__
 
 =encoding utf-8
 
-=for :stopwords Karen Etheridge Stopwords KENTNL's irc
+=for :stopwords Karen Etheridge Stopwords customizations KENTNL's irc
 
 =head1 NAME
 
@@ -134,7 +134,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.004
+version 0.005
 
 =head1 SYNOPSIS
 
@@ -301,13 +301,19 @@ The version and other metadata is derived directly from the local git repository
 
 =head1 OPTIONS / OVERRIDES
 
+=head2 version
+
 Use C<< V=<version> >> to override the version of the distribution being built;
 otherwise the version is
 incremented from the last git tag.
 
+=head2 pod coverage
+
 Subs can be considered "covered" for pod coverage tests by adding a directive to pod:
 
     =for Pod::Coverage foo bar baz
+
+=head2 spelling stopwords
 
 Stopwords for spelling tests can be added with the C<dist.ini> option:
 
@@ -317,6 +323,8 @@ Stopwords for spelling tests can be added with the C<dist.ini> option:
 and/or by adding a directive to pod:
 
     =for stopwords foo bar baz
+
+=head2 other customizations
 
 This bundle makes use of L<Dist::Zilla::Role::PluginBundle::PluginRemover> and
 L<Dist::Zilla::Role::PluginBundle::Config::Slicer> to allow further customization.
