@@ -26,10 +26,10 @@ no_index:
 provides:
   Dist::Zilla::MintingProfile::Author::ETHER:
     file: lib/Dist/Zilla/MintingProfile/Author/ETHER.pm
-    version: 0.005
+    version: 0.006
   Dist::Zilla::PluginBundle::Author::ETHER:
     file: lib/Dist/Zilla/PluginBundle/Author/ETHER.pm
-    version: 0.005
+    version: 0.006
 recommends:
   Pod::Coverage::TrustPod: 0
   Pod::Wordlist::hanekomu: 0
@@ -41,8 +41,8 @@ recommends:
   Test::Pod: 1.41
   Test::Pod::Coverage: 1.08
   Test::Pod::No404s: 0
-  Test::Spelling: 0.18
-  Test::Vars: 0
+  Test::Spelling: 0.19
+  Test::Vars: 0.004
 requires:
   Dist::Zilla::Plugin::Authority: 0
   Dist::Zilla::Plugin::AutoMetaResources: 0
@@ -52,16 +52,21 @@ requires:
   Dist::Zilla::Plugin::CopyFilesFromBuild: 0
   Dist::Zilla::Plugin::EOLTests: 0
   Dist::Zilla::Plugin::ExecDir: 0
+  Dist::Zilla::Plugin::GatherDir::Template: 0
+  Dist::Zilla::Plugin::GenerateFile: 0
   Dist::Zilla::Plugin::Git::Check: 0
   Dist::Zilla::Plugin::Git::CheckFor::CorrectBranch: 0
   Dist::Zilla::Plugin::Git::CheckFor::MergeConflicts: 0
   Dist::Zilla::Plugin::Git::Commit: 0
   Dist::Zilla::Plugin::Git::Describe: 0
   Dist::Zilla::Plugin::Git::GatherDir: 0
+  Dist::Zilla::Plugin::Git::Init: 0
   Dist::Zilla::Plugin::Git::NextVersion: 0
   Dist::Zilla::Plugin::Git::Push: 0
   Dist::Zilla::Plugin::Git::Remote::Check: 0
   Dist::Zilla::Plugin::Git::Tag: 0
+  Dist::Zilla::Plugin::GitHub::Create: 0.34
+  Dist::Zilla::Plugin::GitHub::Update: 0
   Dist::Zilla::Plugin::GithubMeta: 0
   Dist::Zilla::Plugin::InstallGuide: 0
   Dist::Zilla::Plugin::InstallRelease: 0
@@ -85,8 +90,10 @@ requires:
   Dist::Zilla::Plugin::PruneCruft: 0
   Dist::Zilla::Plugin::Readme: 0
   Dist::Zilla::Plugin::ReadmeAnyFromPod: 0
+  Dist::Zilla::Plugin::Run::AfterMint: 0
   Dist::Zilla::Plugin::RunExtraTests: 0
   Dist::Zilla::Plugin::ShareDir: 0
+  Dist::Zilla::Plugin::TemplateModule: 0
   Dist::Zilla::Plugin::Test::CPAN::Changes: 0.008
   Dist::Zilla::Plugin::Test::ChangesHasContent: 0
   Dist::Zilla::Plugin::Test::CheckDeps: 0.006
@@ -108,6 +115,8 @@ requires:
   Pod::Weaver::Plugin::StopWords: 0
   Pod::Weaver::Plugin::Transformer: 0
   Pod::Weaver::PluginBundle::Default: 0
+  Test::Spelling: 0.19
+  Test::Vars: 0.004
   Text::Tabs: 2013.0426
   perl: 5.006
   strict: 0
@@ -116,7 +125,7 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-PluginBundle-Author-ETHER
   homepage: https://github.com/karenetheridge/Dist-Zilla-PluginBundle-Author-ETHER
   repository: https://github.com/karenetheridge/Dist-Zilla-PluginBundle-Author-ETHER.git
-version: 0.005
+version: 0.006
 x_Dist_Zilla:
   perl:
     version: 5.017011
@@ -135,7 +144,23 @@ x_Dist_Zilla:
         Dist::Zilla::Plugin::Prereqs:
           phase: runtime
           type: requires
-      name: RuntimeRequires
+      name: PluginBundle
+      version: 4.300034
+    -
+      class: Dist::Zilla::Plugin::Prereqs
+      config:
+        Dist::Zilla::Plugin::Prereqs:
+          phase: runtime
+          type: requires
+      name: 'PluginBundle (indirect)'
+      version: 4.300034
+    -
+      class: Dist::Zilla::Plugin::Prereqs
+      config:
+        Dist::Zilla::Plugin::Prereqs:
+          phase: runtime
+          type: requires
+      name: MintingProfile
       version: 4.300034
     -
       class: Dist::Zilla::Plugin::Prereqs
@@ -143,7 +168,15 @@ x_Dist_Zilla:
         Dist::Zilla::Plugin::Prereqs:
           phase: runtime
           type: recommends
-      name: RuntimeRecommends
+      name: tests
+      version: 4.300034
+    -
+      class: Dist::Zilla::Plugin::Prereqs
+      config:
+        Dist::Zilla::Plugin::Prereqs:
+          phase: develop
+          type: requires
+      name: missing_test_injections
       version: 4.300034
     -
       class: Dist::Zilla::Plugin::Git::NextVersion

@@ -2,7 +2,7 @@ use strict;
 use warnings;
 package Dist::Zilla::MintingProfile::Author::ETHER;
 {
-  $Dist::Zilla::MintingProfile::Author::ETHER::VERSION = '0.005';
+  $Dist::Zilla::MintingProfile::Author::ETHER::VERSION = '0.006';
 }
 BEGIN {
   $Dist::Zilla::MintingProfile::Author::ETHER::AUTHORITY = 'cpan:ETHER';
@@ -29,7 +29,7 @@ Dist::Zilla::MintingProfile::Author::ETHER - Mint distributions like ETHER does
 
 =head1 VERSION
 
-version 0.005
+version 0.006
 
 =head1 SYNOPSIS
 
@@ -62,6 +62,9 @@ C<github>
 
 Creates a distribution hosted on L<github|http://github.com>, with hooks to determine the
 module version and other metadata from git.
+
+You will be prompted to create a repository on github immediately; if you
+decline, you must create one manually before you do your first C<push>.
 
 =back
 

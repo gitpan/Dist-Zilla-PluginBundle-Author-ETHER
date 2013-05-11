@@ -2,9 +2,9 @@ use strict;
 use warnings;
 package Dist::Zilla::PluginBundle::Author::ETHER;
 {
-  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.005';
+  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.006';
 }
-# git description: v0.004-3-gfcaa714
+# git description: v0.005-15-g68234ef
 
 BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
@@ -16,16 +16,6 @@ with
     'Dist::Zilla::Role::PluginBundle::Easy',
     'Dist::Zilla::Role::PluginBundle::PluginRemover' => { -version => '0.102' },
     'Dist::Zilla::Role::PluginBundle::Config::Slicer';
-
-sub mvp_multivalue_args { qw(stopwords) }
-
-has stopwords => (
-    is => 'ro', isa => 'ArrayRef',
-    lazy => 1,
-    default => sub {
-        exists $_[0]->payload->{stopwords} ? $_[0]->payload->{stopwords} : [];
-    },
-);
 
 sub configure
 {
@@ -62,7 +52,7 @@ sub configure
         [ 'Test::MinimumVersion' => { max_target_perl => '5.008008' } ],
         'PodSyntaxTests',
         'PodCoverageTests',
-        [ 'Test::PodSpelling'   => { stopwords => $self->stopwords } ],
+        'Test::PodSpelling',
         #[Test::Pod::LinkCheck]     many outstanding bugs
         'Test::Pod::No404s',
 
@@ -83,6 +73,11 @@ sub configure
         # (MakeMaker)
         'AutoPrereqs',
         'MinimumPerl',
+        [ 'Prereqs'             => {
+                '-phase' => 'develop', '-relationship' => 'requires',
+                'Dist::Zilla' => Dist::Zilla->VERSION,
+                blessed($self) => $self->VERSION,
+            } ],
 
         # Install Tool
         [ 'ReadmeAnyFromPod'    => { type => 'markdown', filename => 'README.md', location => 'root' } ],
@@ -111,6 +106,7 @@ sub configure
         [ 'Git::Commit'         => { allow_dirty => [ qw(Changes README.md LICENSE) ], commit_msg => '%N-%v%t%n%n%c' } ],
         [ 'Git::Tag'            => { tag_format => 'v%v%t', tag_message => 'v%v%t' } ],
         'Git::Push',
+        [ 'GitHub::Update'      => { metacpan => 1 } ],
         [ 'InstallRelease'      => { install_command => 'cpanm .' } ],
 
         # listed late, to allow all other plugins which do BeforeRelease checks to run first.
@@ -126,7 +122,7 @@ __END__
 
 =encoding utf-8
 
-=for :stopwords Karen Etheridge Stopwords customizations KENTNL's irc
+=for :stopwords Karen Etheridge metacpan Stopwords customizations KENTNL's irc
 
 =head1 NAME
 
@@ -134,7 +130,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.005
+version 0.006
 
 =head1 SYNOPSIS
 
@@ -229,6 +225,9 @@ following C<dist.ini> (following the preamble):
     ;;; Register Prereqs
     [AutoPrereqs]
     [MinimumPerl]
+    [Prereqs / DevelopRequires]
+    Dist::Zilla = <version used to built this bundle>
+    Dist::Zilla::PluginBundle::Author::ETHER = <our own version>
 
 
     ;;; Install Tool
@@ -286,6 +285,9 @@ following C<dist.ini> (following the preamble):
 
     [Git::Push]
 
+    [GitHub::Update]
+    metacpan = 1
+
     [InstallRelease]
     install_command = cpanm .
 
@@ -297,6 +299,9 @@ following C<dist.ini> (following the preamble):
 
 The distribution's code is assumed to be hosted at L<github|http://github.com>;
 L<RT|http://rt.cpan.org> is used as the issue tracker.
+The home page in the metadata points to L<github|http://github.com>,
+while the home page on L<github|http://github.com> is updated on release to
+point to L<metacpan|http://metacpan.org>.
 The version and other metadata is derived directly from the local git repository.
 
 =head1 OPTIONS / OVERRIDES
@@ -315,12 +320,8 @@ Subs can be considered "covered" for pod coverage tests by adding a directive to
 
 =head2 spelling stopwords
 
-Stopwords for spelling tests can be added with the C<dist.ini> option:
-
-    stopwords = foo
-    stopwords = bar
-
-and/or by adding a directive to pod:
+Stopwords for spelling tests can be added by adding a directive to pod (as
+many as you'd like), as described in L<Pod::Spelling/ADDING STOPWORDS>:
 
     =for stopwords foo bar baz
 
