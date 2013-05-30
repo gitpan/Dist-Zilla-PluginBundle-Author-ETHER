@@ -1,5 +1,15 @@
 Revision history for Dist-Zilla-PluginBundle-Author-ETHER
 
+0.007     2013-05-29 18:48:34 PDT-0700 (Karen Etheridge)
+          - minting profile updates:
+            - extra kwalitee tests enabled by default
+            - test now has 'use <main module>;', prefers done_testing,
+              and now fails, rather than not compiling
+            - main module now avoids the list transformer where it breaks pod
+              coverage tests; includes more template pod
+          - config option added for changing the installer backend (still
+            defaults to MakeMaker, for now)
+
 0.006     2013-05-10 17:06:41 PDT-0700 (Karen Etheridge)
           - support dropped for directly passing stopwords via a mvp argument
             -- it's easier to just use a directive right in pod (and they can

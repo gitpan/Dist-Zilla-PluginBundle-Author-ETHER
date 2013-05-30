@@ -2,9 +2,9 @@ use strict;
 use warnings;
 package Dist::Zilla::PluginBundle::Author::ETHER;
 {
-  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.006';
+  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.007';
 }
-# git description: v0.005-15-g68234ef
+# git description: v0.006-11-ge9e6e6e
 
 BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
@@ -16,6 +16,19 @@ with
     'Dist::Zilla::Role::PluginBundle::Easy',
     'Dist::Zilla::Role::PluginBundle::PluginRemover' => { -version => '0.102' },
     'Dist::Zilla::Role::PluginBundle::Config::Slicer';
+
+use Dist::Zilla::Util;
+
+# Note: no support yet for depending on a specific version of the plugin
+has installer => (
+    is => 'ro', isa => 'Str',
+    lazy => 1,
+    default => sub {
+        exists $_[0]->payload->{installer}
+            ? $_[0]->payload->{installer}
+            : 'MakeMaker';
+    },
+);
 
 sub configure
 {
@@ -40,7 +53,7 @@ sub configure
 
         # Gather Files
         [ 'Git::GatherDir'      => { exclude_filename => 'LICENSE' } ],
-        (map { [ $_ ] } qw(MetaYAML MetaJSON License Readme Manifest)),
+        qw(MetaYAML MetaJSON License Readme Manifest),
         [ 'Test::Compile'       => { fail_on_warning => 1, bail_out_on_fail => 1 } ],
         [ 'Test::CheckDeps'     => { fatal => 1 } ],
         'NoTabsTests',
@@ -70,18 +83,21 @@ sub configure
         [ 'NextRelease'         => { format => '%-8V  %{yyyy-MM-dd HH:mm:ss ZZZZ}d (%U)' } ],
 
         # Register Prereqs
-        # (MakeMaker)
+        # (MakeMaker or other installer)
         'AutoPrereqs',
         'MinimumPerl',
         [ 'Prereqs'             => {
                 '-phase' => 'develop', '-relationship' => 'requires',
                 'Dist::Zilla' => Dist::Zilla->VERSION,
                 blessed($self) => $self->VERSION,
+                $self->installer ne 'none'
+                    ? ( Dist::Zilla::Util->expand_config_package_name($self->installer) => 0 )
+                    : (),
             } ],
 
         # Install Tool
         [ 'ReadmeAnyFromPod'    => { type => 'markdown', filename => 'README.md', location => 'root' } ],
-        'MakeMaker',
+        $self->installer ne 'none' ? $self->installer : (),
         'InstallGuide',
 
         # After Build
@@ -130,7 +146,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.006
+version 0.007
 
 =head1 SYNOPSIS
 
@@ -236,7 +252,7 @@ following C<dist.ini> (following the preamble):
     filename = README.md
     location = root
 
-    [MakeMaker]
+    <specified installer> or [MakeMaker]
     [InstallGuide]
 
 
@@ -324,6 +340,21 @@ Stopwords for spelling tests can be added by adding a directive to pod (as
 many as you'd like), as described in L<Pod::Spelling/ADDING STOPWORDS>:
 
     =for stopwords foo bar baz
+
+=head2 installer
+
+The installer back-end selected by default is (currently)
+L<[MakeMaker]|Dist::Zilla::Plugin::MakeMaker>.
+You can select other backends (by plugin name, without the C<[]>), with the
+C<installer> option, or 'none' if you are supplying your own, as a separate
+plugin.
+
+Encouraged choices are:
+
+    installer = MakeMaker
+    installer = ModuleBuildTiny
+    installer = =inc::Foo (if no configs are needed for this plugin)
+    installer = none
 
 =head2 other customizations
 

@@ -50,7 +50,6 @@ my %WriteMakefileArgs = (
     "Dist::Zilla::Plugin::InstallGuide" => 0,
     "Dist::Zilla::Plugin::InstallRelease" => 0,
     "Dist::Zilla::Plugin::License" => 0,
-    "Dist::Zilla::Plugin::MakeMaker" => 0,
     "Dist::Zilla::Plugin::Manifest" => 0,
     "Dist::Zilla::Plugin::ManifestSkip" => 0,
     "Dist::Zilla::Plugin::MetaConfig" => 0,
@@ -88,6 +87,7 @@ my %WriteMakefileArgs = (
     "Dist::Zilla::Role::PluginBundle::Config::Slicer" => 0,
     "Dist::Zilla::Role::PluginBundle::Easy" => 0,
     "Dist::Zilla::Role::PluginBundle::PluginRemover" => "0.102",
+    "Dist::Zilla::Util" => 0,
     "Moose" => 0,
     "Pod::Elemental::Transformer::List" => 0,
     "Pod::Weaver::Plugin::Encoding" => 0,
@@ -106,7 +106,7 @@ my %WriteMakefileArgs = (
     "Test::CheckDeps" => "0.002",
     "Test::More" => "0.94"
   },
-  "VERSION" => "0.006",
+  "VERSION" => "0.007",
   "test" => {
     "TESTS" => "t/*.t"
   }

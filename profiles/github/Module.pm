@@ -12,20 +12,23 @@ __END__
 
 =head1 SYNOPSIS
 
-...
+    use $name;
+
+    ...
 
 =head1 DESCRIPTION
 
+...
 
 =head1 FUNCTIONS/METHODS
 
-=begin :list
+=over 4
 
-* C<foo>
-
-=end :list
+=item * C<foo>
 
 ...
+
+=back
 
 =head1 SUPPORT
 
@@ -41,6 +44,10 @@ I am also usually active on irc, as 'ether' at C<irc.perl.org>.
 
 =head1 SEE ALSO
 
-...
+=begin :list
+
+* L<foo>
+
+=end :list
 
 =cut
