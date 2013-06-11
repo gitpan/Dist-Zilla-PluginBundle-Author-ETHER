@@ -1,5 +1,10 @@
 Revision history for Dist-Zilla-PluginBundle-Author-ETHER
 
+0.008     2013-06-11 15:59:23 PDT-0700 (Karen Etheridge)
+          - fix bad templating in minted module
+          - during minting, push the initial commit to github after creating
+            the remote
+
 0.007     2013-05-29 18:48:34 PDT-0700 (Karen Etheridge)
           - minting profile updates:
             - extra kwalitee tests enabled by default

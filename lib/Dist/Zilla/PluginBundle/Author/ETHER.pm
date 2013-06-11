@@ -2,9 +2,9 @@ use strict;
 use warnings;
 package Dist::Zilla::PluginBundle::Author::ETHER;
 {
-  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.007';
+  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.008';
 }
-# git description: v0.006-11-ge9e6e6e
+# git description: v0.007-4-g5d56bf0
 
 BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
@@ -146,7 +146,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.007
+version 0.008
 
 =head1 SYNOPSIS
 
@@ -197,10 +197,6 @@ following C<dist.ini> (following the preamble):
     [License]
     [Readme]
     [Manifest]
-
-    [GatherDir::Template / profile.ini]
-    root   = profiles/github/build_templates
-    prefix = profiles/github
 
     [Test::Compile]
     fail_on_warning = 1

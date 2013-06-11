@@ -42,6 +42,7 @@ my %WriteMakefileArgs = (
     "Dist::Zilla::Plugin::Git::Init" => 0,
     "Dist::Zilla::Plugin::Git::NextVersion" => 0,
     "Dist::Zilla::Plugin::Git::Push" => 0,
+    "Dist::Zilla::Plugin::Git::PushInitial" => 0,
     "Dist::Zilla::Plugin::Git::Remote::Check" => 0,
     "Dist::Zilla::Plugin::Git::Tag" => 0,
     "Dist::Zilla::Plugin::GitHub::Create" => "0.34",
@@ -106,7 +107,7 @@ my %WriteMakefileArgs = (
     "Test::CheckDeps" => "0.002",
     "Test::More" => "0.94"
   },
-  "VERSION" => "0.007",
+  "VERSION" => "0.008",
   "test" => {
     "TESTS" => "t/*.t"
   }
