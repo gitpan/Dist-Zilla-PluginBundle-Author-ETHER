@@ -2,9 +2,9 @@ use strict;
 use warnings;
 package Dist::Zilla::PluginBundle::Author::ETHER;
 {
-  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.008';
+  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.009';
 }
-# git description: v0.007-4-g5d56bf0
+# git description: v0.008-6-g0bfc26e
 
 BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
@@ -18,6 +18,7 @@ with
     'Dist::Zilla::Role::PluginBundle::Config::Slicer';
 
 use Dist::Zilla::Util;
+use namespace::autoclean;
 
 # Note: no support yet for depending on a specific version of the plugin
 has installer => (
@@ -26,7 +27,7 @@ has installer => (
     default => sub {
         exists $_[0]->payload->{installer}
             ? $_[0]->payload->{installer}
-            : 'MakeMaker';
+            : 'ModuleBuildTiny';
     },
 );
 
@@ -121,8 +122,8 @@ sub configure
         # After Release
         [ 'Git::Commit'         => { allow_dirty => [ qw(Changes README.md LICENSE) ], commit_msg => '%N-%v%t%n%n%c' } ],
         [ 'Git::Tag'            => { tag_format => 'v%v%t', tag_message => 'v%v%t' } ],
-        'Git::Push',
         [ 'GitHub::Update'      => { metacpan => 1 } ],
+        'Git::Push',
         [ 'InstallRelease'      => { install_command => 'cpanm .' } ],
 
         # listed late, to allow all other plugins which do BeforeRelease checks to run first.
@@ -138,7 +139,8 @@ __END__
 
 =encoding utf-8
 
-=for :stopwords Karen Etheridge metacpan Stopwords customizations KENTNL's irc
+=for :stopwords Karen Etheridge metacpan Stopwords ModuleBuildTiny customizations KENTNL's
+irc
 
 =head1 NAME
 
@@ -146,7 +148,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.008
+version 0.009
 
 =head1 SYNOPSIS
 
@@ -248,7 +250,7 @@ following C<dist.ini> (following the preamble):
     filename = README.md
     location = root
 
-    <specified installer> or [MakeMaker]
+    <specified installer> or [ModuleBuildTiny]
     [InstallGuide]
 
 
@@ -295,10 +297,10 @@ following C<dist.ini> (following the preamble):
     tag_format = v%v%t
     tag_message = v%v%t
 
-    [Git::Push]
-
     [GitHub::Update]
     metacpan = 1
+
+    [Git::Push]
 
     [InstallRelease]
     install_command = cpanm .
@@ -340,15 +342,15 @@ many as you'd like), as described in L<Pod::Spelling/ADDING STOPWORDS>:
 =head2 installer
 
 The installer back-end selected by default is (currently)
-L<[MakeMaker]|Dist::Zilla::Plugin::MakeMaker>.
+L<[ModuleBuildTiny]|Dist::Zilla::Plugin::ModuleBuildTiny>.
 You can select other backends (by plugin name, without the C<[]>), with the
 C<installer> option, or 'none' if you are supplying your own, as a separate
 plugin.
 
 Encouraged choices are:
 
-    installer = MakeMaker
     installer = ModuleBuildTiny
+    installer = MakeMaker
     installer = =inc::Foo (if no configs are needed for this plugin)
     installer = none
 

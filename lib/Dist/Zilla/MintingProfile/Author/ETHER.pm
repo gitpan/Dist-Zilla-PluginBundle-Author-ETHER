@@ -2,7 +2,7 @@ use strict;
 use warnings;
 package Dist::Zilla::MintingProfile::Author::ETHER;
 {
-  $Dist::Zilla::MintingProfile::Author::ETHER::VERSION = '0.008';
+  $Dist::Zilla::MintingProfile::Author::ETHER::VERSION = '0.009';
 }
 BEGIN {
   $Dist::Zilla::MintingProfile::Author::ETHER::AUTHORITY = 'cpan:ETHER';
@@ -11,6 +11,7 @@ BEGIN {
 
 use Moose;
 with 'Dist::Zilla::Role::MintingProfile::ShareDir';
+use namespace::autoclean;
 
 __PACKAGE__->meta->make_immutable;
 1;
@@ -29,7 +30,7 @@ Dist::Zilla::MintingProfile::Author::ETHER - Mint distributions like ETHER does
 
 =head1 VERSION
 
-version 0.008
+version 0.009
 
 =head1 SYNOPSIS
 

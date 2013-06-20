@@ -98,6 +98,7 @@ my %WriteMakefileArgs = (
     "Test::Spelling" => "0.19",
     "Test::Vars" => "0.004",
     "Text::Tabs" => "2013.0426",
+    "namespace::autoclean" => 0,
     "strict" => 0,
     "warnings" => 0
   },
@@ -107,7 +108,7 @@ my %WriteMakefileArgs = (
     "Test::CheckDeps" => "0.002",
     "Test::More" => "0.94"
   },
-  "VERSION" => "0.008",
+  "VERSION" => "0.009",
   "test" => {
     "TESTS" => "t/*.t"
   }
