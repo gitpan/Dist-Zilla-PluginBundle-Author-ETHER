@@ -32,7 +32,7 @@
          "requires" : {
             "Dist::Zilla" : "4.300035",
             "Dist::Zilla::Plugin::MakeMaker" : "0",
-            "Dist::Zilla::PluginBundle::Author::ETHER" : "0.008",
+            "Dist::Zilla::PluginBundle::Author::ETHER" : "0.009",
             "Test::CPAN::Changes" : "0.19",
             "Test::CPAN::Meta" : "0",
             "Test::CleanNamespaces" : "0",
@@ -112,7 +112,7 @@
             "Dist::Zilla::Plugin::TemplateModule" : "0",
             "Dist::Zilla::Plugin::Test::CPAN::Changes" : "0.008",
             "Dist::Zilla::Plugin::Test::ChangesHasContent" : "0",
-            "Dist::Zilla::Plugin::Test::CheckDeps" : "0.006",
+            "Dist::Zilla::Plugin::Test::CheckDeps" : "0.007",
             "Dist::Zilla::Plugin::Test::Compile" : "2.002",
             "Dist::Zilla::Plugin::Test::MinimumVersion" : "2.000003",
             "Dist::Zilla::Plugin::Test::Pod::No404s" : "0",
@@ -145,7 +145,7 @@
          "requires" : {
             "File::Find" : "0",
             "File::Temp" : "0",
-            "Test::CheckDeps" : "0.002",
+            "Test::CheckDeps" : "0.006",
             "Test::More" : "0.94"
          }
       }
@@ -153,11 +153,11 @@
    "provides" : {
       "Dist::Zilla::MintingProfile::Author::ETHER" : {
          "file" : "lib/Dist/Zilla/MintingProfile/Author/ETHER.pm",
-         "version" : "0.009"
+         "version" : "0.010"
       },
       "Dist::Zilla::PluginBundle::Author::ETHER" : {
          "file" : "lib/Dist/Zilla/PluginBundle/Author/ETHER.pm",
-         "version" : "0.009"
+         "version" : "0.010"
       }
    },
    "release_status" : "stable",
@@ -173,10 +173,10 @@
          "web" : "https://github.com/karenetheridge/Dist-Zilla-PluginBundle-Author-ETHER"
       }
    },
-   "version" : "0.009",
+   "version" : "0.010",
    "x_Dist_Zilla" : {
       "perl" : {
-         "version" : "5.019000"
+         "version" : "5.019001"
       },
       "plugins" : [
          {
@@ -258,7 +258,7 @@
          {
             "class" : "Dist::Zilla::Plugin::Git::NextVersion",
             "name" : "@Author::ETHER/Git::NextVersion",
-            "version" : "2.013"
+            "version" : "2.014"
          },
          {
             "class" : "Dist::Zilla::Plugin::GithubMeta",
@@ -303,7 +303,7 @@
          {
             "class" : "Dist::Zilla::Plugin::Git::GatherDir",
             "name" : "@Author::ETHER/Git::GatherDir",
-            "version" : "2.013"
+            "version" : "2.014"
          },
          {
             "class" : "Dist::Zilla::Plugin::MetaYAML",
@@ -338,7 +338,7 @@
          {
             "class" : "Dist::Zilla::Plugin::Test::CheckDeps",
             "name" : "@Author::ETHER/Test::CheckDeps",
-            "version" : "0.006"
+            "version" : "0.007"
          },
          {
             "class" : "Dist::Zilla::Plugin::NoTabsTests",
@@ -434,7 +434,7 @@
          {
             "class" : "Dist::Zilla::Plugin::ReadmeAnyFromPod",
             "name" : "@Author::ETHER/ReadmeAnyFromPod",
-            "version" : "0.120120"
+            "version" : "0.131500"
          },
          {
             "class" : "Dist::Zilla::Plugin::MakeMaker",
@@ -459,7 +459,7 @@
          {
             "class" : "Dist::Zilla::Plugin::Git::Check",
             "name" : "@Author::ETHER/Git::Check",
-            "version" : "2.013"
+            "version" : "2.014"
          },
          {
             "class" : "Dist::Zilla::Plugin::Git::CheckFor::MergeConflicts",
@@ -479,7 +479,7 @@
          {
             "class" : "Dist::Zilla::Plugin::CheckPrereqsIndexed",
             "name" : "@Author::ETHER/CheckPrereqsIndexed",
-            "version" : "0.008"
+            "version" : "0.009"
          },
          {
             "class" : "Dist::Zilla::Plugin::TestRelease",
@@ -494,22 +494,22 @@
          {
             "class" : "Dist::Zilla::Plugin::Git::Commit",
             "name" : "@Author::ETHER/Git::Commit",
-            "version" : "2.013"
+            "version" : "2.014"
          },
          {
             "class" : "Dist::Zilla::Plugin::Git::Tag",
             "name" : "@Author::ETHER/Git::Tag",
-            "version" : "2.013"
-         },
-         {
-            "class" : "Dist::Zilla::Plugin::Git::Push",
-            "name" : "@Author::ETHER/Git::Push",
-            "version" : "2.013"
+            "version" : "2.014"
          },
          {
             "class" : "Dist::Zilla::Plugin::GitHub::Update",
             "name" : "@Author::ETHER/GitHub::Update",
             "version" : "0.34"
+         },
+         {
+            "class" : "Dist::Zilla::Plugin::Git::Push",
+            "name" : "@Author::ETHER/Git::Push",
+            "version" : "2.014"
          },
          {
             "class" : "Dist::Zilla::Plugin::InstallRelease",

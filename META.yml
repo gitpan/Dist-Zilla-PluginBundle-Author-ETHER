@@ -5,7 +5,7 @@ author:
 build_requires:
   File::Find: 0
   File::Temp: 0
-  Test::CheckDeps: 0.002
+  Test::CheckDeps: 0.006
   Test::More: 0.94
 configure_requires:
   ExtUtils::MakeMaker: 6.30
@@ -26,10 +26,10 @@ no_index:
 provides:
   Dist::Zilla::MintingProfile::Author::ETHER:
     file: lib/Dist/Zilla/MintingProfile/Author/ETHER.pm
-    version: 0.009
+    version: 0.010
   Dist::Zilla::PluginBundle::Author::ETHER:
     file: lib/Dist/Zilla/PluginBundle/Author/ETHER.pm
-    version: 0.009
+    version: 0.010
 recommends:
   Dist::Zilla::Plugin::MakeMaker: 0
   Dist::Zilla::Plugin::ModuleBuildTiny: 0
@@ -98,7 +98,7 @@ requires:
   Dist::Zilla::Plugin::TemplateModule: 0
   Dist::Zilla::Plugin::Test::CPAN::Changes: 0.008
   Dist::Zilla::Plugin::Test::ChangesHasContent: 0
-  Dist::Zilla::Plugin::Test::CheckDeps: 0.006
+  Dist::Zilla::Plugin::Test::CheckDeps: 0.007
   Dist::Zilla::Plugin::Test::Compile: 2.002
   Dist::Zilla::Plugin::Test::MinimumVersion: 2.000003
   Dist::Zilla::Plugin::Test::Pod::No404s: 0
@@ -129,10 +129,10 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-PluginBundle-Author-ETHER
   homepage: https://github.com/karenetheridge/Dist-Zilla-PluginBundle-Author-ETHER
   repository: https://github.com/karenetheridge/Dist-Zilla-PluginBundle-Author-ETHER.git
-version: 0.009
+version: 0.010
 x_Dist_Zilla:
   perl:
-    version: 5.019000
+    version: 5.019001
   plugins:
     -
       class: Dist::Zilla::Plugin::ModuleShareDirs
@@ -193,7 +193,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::Git::NextVersion
       name: '@Author::ETHER/Git::NextVersion'
-      version: 2.013
+      version: 2.014
     -
       class: Dist::Zilla::Plugin::GithubMeta
       name: '@Author::ETHER/GithubMeta'
@@ -229,7 +229,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::Git::GatherDir
       name: '@Author::ETHER/Git::GatherDir'
-      version: 2.013
+      version: 2.014
     -
       class: Dist::Zilla::Plugin::MetaYAML
       name: '@Author::ETHER/MetaYAML'
@@ -257,7 +257,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::Test::CheckDeps
       name: '@Author::ETHER/Test::CheckDeps'
-      version: 0.006
+      version: 0.007
     -
       class: Dist::Zilla::Plugin::NoTabsTests
       name: '@Author::ETHER/NoTabsTests'
@@ -333,7 +333,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::ReadmeAnyFromPod
       name: '@Author::ETHER/ReadmeAnyFromPod'
-      version: 0.120120
+      version: 0.131500
     -
       class: Dist::Zilla::Plugin::MakeMaker
       name: '@Author::ETHER/MakeMaker'
@@ -353,7 +353,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::Git::Check
       name: '@Author::ETHER/Git::Check'
-      version: 2.013
+      version: 2.014
     -
       class: Dist::Zilla::Plugin::Git::CheckFor::MergeConflicts
       name: '@Author::ETHER/Git::CheckFor::MergeConflicts'
@@ -369,7 +369,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::CheckPrereqsIndexed
       name: '@Author::ETHER/CheckPrereqsIndexed'
-      version: 0.008
+      version: 0.009
     -
       class: Dist::Zilla::Plugin::TestRelease
       name: '@Author::ETHER/TestRelease'
@@ -381,19 +381,19 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::Git::Commit
       name: '@Author::ETHER/Git::Commit'
-      version: 2.013
+      version: 2.014
     -
       class: Dist::Zilla::Plugin::Git::Tag
       name: '@Author::ETHER/Git::Tag'
-      version: 2.013
-    -
-      class: Dist::Zilla::Plugin::Git::Push
-      name: '@Author::ETHER/Git::Push'
-      version: 2.013
+      version: 2.014
     -
       class: Dist::Zilla::Plugin::GitHub::Update
       name: '@Author::ETHER/GitHub::Update'
       version: 0.34
+    -
+      class: Dist::Zilla::Plugin::Git::Push
+      name: '@Author::ETHER/Git::Push'
+      version: 2.014
     -
       class: Dist::Zilla::Plugin::InstallRelease
       name: '@Author::ETHER/InstallRelease'
