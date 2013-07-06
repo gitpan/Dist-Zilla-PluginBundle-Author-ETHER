@@ -76,7 +76,7 @@ my %WriteMakefileArgs = (
     "Dist::Zilla::Plugin::Test::CPAN::Changes" => "0.008",
     "Dist::Zilla::Plugin::Test::ChangesHasContent" => 0,
     "Dist::Zilla::Plugin::Test::CheckDeps" => "0.007",
-    "Dist::Zilla::Plugin::Test::Compile" => "2.002",
+    "Dist::Zilla::Plugin::Test::Compile" => "2.004",
     "Dist::Zilla::Plugin::Test::MinimumVersion" => "2.000003",
     "Dist::Zilla::Plugin::Test::Pod::No404s" => 0,
     "Dist::Zilla::Plugin::Test::PodSpelling" => 0,
@@ -103,12 +103,13 @@ my %WriteMakefileArgs = (
     "warnings" => 0
   },
   "TEST_REQUIRES" => {
+    "Capture::Tiny" => 0,
     "File::Find" => 0,
     "File::Temp" => 0,
     "Test::CheckDeps" => "0.006",
     "Test::More" => "0.94"
   },
-  "VERSION" => "0.010",
+  "VERSION" => "0.011",
   "test" => {
     "TESTS" => "t/*.t"
   }

@@ -3,6 +3,7 @@ abstract: 'A plugin bundle for distributions built by ETHER'
 author:
   - 'Karen Etheridge <ether@cpan.org>'
 build_requires:
+  Capture::Tiny: 0
   File::Find: 0
   File::Temp: 0
   Test::CheckDeps: 0.006
@@ -26,10 +27,10 @@ no_index:
 provides:
   Dist::Zilla::MintingProfile::Author::ETHER:
     file: lib/Dist/Zilla/MintingProfile/Author/ETHER.pm
-    version: 0.010
+    version: 0.011
   Dist::Zilla::PluginBundle::Author::ETHER:
     file: lib/Dist/Zilla/PluginBundle/Author/ETHER.pm
-    version: 0.010
+    version: 0.011
 recommends:
   Dist::Zilla::Plugin::MakeMaker: 0
   Dist::Zilla::Plugin::ModuleBuildTiny: 0
@@ -99,7 +100,7 @@ requires:
   Dist::Zilla::Plugin::Test::CPAN::Changes: 0.008
   Dist::Zilla::Plugin::Test::ChangesHasContent: 0
   Dist::Zilla::Plugin::Test::CheckDeps: 0.007
-  Dist::Zilla::Plugin::Test::Compile: 2.002
+  Dist::Zilla::Plugin::Test::Compile: 2.004
   Dist::Zilla::Plugin::Test::MinimumVersion: 2.000003
   Dist::Zilla::Plugin::Test::Pod::No404s: 0
   Dist::Zilla::Plugin::Test::PodSpelling: 0
@@ -129,7 +130,7 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-PluginBundle-Author-ETHER
   homepage: https://github.com/karenetheridge/Dist-Zilla-PluginBundle-Author-ETHER
   repository: https://github.com/karenetheridge/Dist-Zilla-PluginBundle-Author-ETHER.git
-version: 0.010
+version: 0.011
 x_Dist_Zilla:
   perl:
     version: 5.019001
@@ -253,7 +254,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::Test::Compile
       name: '@Author::ETHER/Test::Compile'
-      version: 2.002
+      version: 2.004
     -
       class: Dist::Zilla::Plugin::Test::CheckDeps
       name: '@Author::ETHER/Test::CheckDeps'
@@ -278,6 +279,10 @@ x_Dist_Zilla:
       class: Dist::Zilla::Plugin::Test::ChangesHasContent
       name: '@Author::ETHER/Test::ChangesHasContent'
       version: 0.006
+    -
+      class: Dist::Zilla::Plugin::Test::UnusedVars
+      name: '@Author::ETHER/Test::UnusedVars'
+      version: 2.000004
     -
       class: Dist::Zilla::Plugin::Test::MinimumVersion
       name: '@Author::ETHER/Test::MinimumVersion'
@@ -328,7 +333,7 @@ x_Dist_Zilla:
         Dist::Zilla::Plugin::Prereqs:
           phase: develop
           type: requires
-      name: '@Author::ETHER/Prereqs'
+      name: '@Author::ETHER/installer_requirements'
       version: 4.300035
     -
       class: Dist::Zilla::Plugin::ReadmeAnyFromPod

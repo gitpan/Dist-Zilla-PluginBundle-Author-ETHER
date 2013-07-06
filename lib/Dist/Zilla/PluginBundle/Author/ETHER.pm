@@ -2,9 +2,9 @@ use strict;
 use warnings;
 package Dist::Zilla::PluginBundle::Author::ETHER;
 {
-  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.010';
+  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.011';
 }
-# git description: v0.009-11-g611096b
+# git description: v0.010-4-ge3942e9
 
 BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
@@ -55,7 +55,8 @@ sub configure
         # Gather Files
         [ 'Git::GatherDir'      => { exclude_filename => 'LICENSE' } ],
         qw(MetaYAML MetaJSON License Readme Manifest),
-        [ 'Test::Compile'       => { ':version' => '2.002', fail_on_warning => 1, bail_out_on_fail => 1 } ],
+        # note that 2.004 is a TRIAL release
+        [ 'Test::Compile'       => { ':version' => '2.004', fail_on_warning => 'author', bail_out_on_fail => 1 } ],
         [ 'Test::CheckDeps'     => { ':version' => '0.007', fatal => 1, level => 'suggests' } ],
 
         'NoTabsTests',
@@ -90,11 +91,11 @@ sub configure
         'AutoPrereqs',
         'MinimumPerl',
         [ 'Prereqs' => installer_requirements => {
-                # this is mostly pointless as by the time this runs, we're
-                # already trying to load the installer plugin
                 '-phase' => 'develop', '-relationship' => 'requires',
                 'Dist::Zilla' => Dist::Zilla->VERSION,
                 blessed($self) => $self->VERSION,
+                # this is mostly pointless as by the time this runs, we're
+                # already trying to load the installer plugin
                 $self->installer ne 'none'
                     ? ( Dist::Zilla::Util->expand_config_package_name($self->installer) => 0 )
                     : (),
@@ -152,7 +153,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.010
+version 0.011
 
 =head1 SYNOPSIS
 
@@ -205,7 +206,8 @@ following C<dist.ini> (following the preamble):
     [Manifest]
 
     [Test::Compile]
-    fail_on_warning = 1
+    :version = 2.004
+    fail_on_warning = author
     bail_out_on_fail = 1
 
     [Test::CheckDeps]

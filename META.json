@@ -32,7 +32,7 @@
          "requires" : {
             "Dist::Zilla" : "4.300035",
             "Dist::Zilla::Plugin::MakeMaker" : "0",
-            "Dist::Zilla::PluginBundle::Author::ETHER" : "0.009",
+            "Dist::Zilla::PluginBundle::Author::ETHER" : "0.010",
             "Test::CPAN::Changes" : "0.19",
             "Test::CPAN::Meta" : "0",
             "Test::CleanNamespaces" : "0",
@@ -113,7 +113,7 @@
             "Dist::Zilla::Plugin::Test::CPAN::Changes" : "0.008",
             "Dist::Zilla::Plugin::Test::ChangesHasContent" : "0",
             "Dist::Zilla::Plugin::Test::CheckDeps" : "0.007",
-            "Dist::Zilla::Plugin::Test::Compile" : "2.002",
+            "Dist::Zilla::Plugin::Test::Compile" : "2.004",
             "Dist::Zilla::Plugin::Test::MinimumVersion" : "2.000003",
             "Dist::Zilla::Plugin::Test::Pod::No404s" : "0",
             "Dist::Zilla::Plugin::Test::PodSpelling" : "0",
@@ -143,6 +143,7 @@
       },
       "test" : {
          "requires" : {
+            "Capture::Tiny" : "0",
             "File::Find" : "0",
             "File::Temp" : "0",
             "Test::CheckDeps" : "0.006",
@@ -153,11 +154,11 @@
    "provides" : {
       "Dist::Zilla::MintingProfile::Author::ETHER" : {
          "file" : "lib/Dist/Zilla/MintingProfile/Author/ETHER.pm",
-         "version" : "0.010"
+         "version" : "0.011"
       },
       "Dist::Zilla::PluginBundle::Author::ETHER" : {
          "file" : "lib/Dist/Zilla/PluginBundle/Author/ETHER.pm",
-         "version" : "0.010"
+         "version" : "0.011"
       }
    },
    "release_status" : "stable",
@@ -173,7 +174,7 @@
          "web" : "https://github.com/karenetheridge/Dist-Zilla-PluginBundle-Author-ETHER"
       }
    },
-   "version" : "0.010",
+   "version" : "0.011",
    "x_Dist_Zilla" : {
       "perl" : {
          "version" : "5.019001"
@@ -333,7 +334,7 @@
          {
             "class" : "Dist::Zilla::Plugin::Test::Compile",
             "name" : "@Author::ETHER/Test::Compile",
-            "version" : "2.002"
+            "version" : "2.004"
          },
          {
             "class" : "Dist::Zilla::Plugin::Test::CheckDeps",
@@ -364,6 +365,11 @@
             "class" : "Dist::Zilla::Plugin::Test::ChangesHasContent",
             "name" : "@Author::ETHER/Test::ChangesHasContent",
             "version" : "0.006"
+         },
+         {
+            "class" : "Dist::Zilla::Plugin::Test::UnusedVars",
+            "name" : "@Author::ETHER/Test::UnusedVars",
+            "version" : "2.000004"
          },
          {
             "class" : "Dist::Zilla::Plugin::Test::MinimumVersion",
@@ -428,7 +434,7 @@
                   "type" : "requires"
                }
             },
-            "name" : "@Author::ETHER/Prereqs",
+            "name" : "@Author::ETHER/installer_requirements",
             "version" : "4.300035"
          },
          {

@@ -9,6 +9,7 @@ use Test::More 0.94;
 
 use File::Find;
 use File::Temp qw{ tempdir };
+use Capture::Tiny qw{ capture };
 
 my @modules;
 find(
@@ -51,15 +52,22 @@ my @scripts;
 do { push @scripts, _find_scripts($_) if -d $_ }
     for qw{ bin script scripts };
 
-my $plan = scalar(@modules) + scalar(@scripts);
-$plan ? (plan tests => $plan) : (plan skip_all => "no tests to run");
-
 {
     # fake home for cpan-testers
     # no fake requested ## local $ENV{HOME} = tempdir( CLEANUP => 1 );
 
-    like( qx{ $^X -Ilib -e "require $_; print '$_ ok'" }, qr/^\s*$_ ok/s, "$_ loaded ok" )
-        for sort @modules;
+    my @warnings;
+    for my $module (sort @modules)
+    {
+        my ($stdout, $stderr, $exit) = capture {
+            system($^X, '-Ilib', '-e', qq{require $module; print "$module ok"});
+        };
+        like($stdout, qr/^\s*$module ok/s, "$module loaded ok" );
+        warn $stderr if $stderr;
+        push @warnings, $stderr if $stderr;
+    }
+
+    if ($ENV{AUTHOR_TESTING}) { is(scalar(@warnings), 0, 'no warnings found'); }
 
     SKIP: {
         eval "use Test::Script 1.05; 1;";
@@ -70,5 +78,7 @@ $plan ? (plan tests => $plan) : (plan skip_all => "no tests to run");
             script_compiles( $file, "$script script compiles" );
         }
     }
-    BAIL_OUT("Compilation failures") if !Test::More->builder->is_passing;
+    BAIL_OUT("Compilation problems") if !Test::More->builder->is_passing;
 }
+
+done_testing;
