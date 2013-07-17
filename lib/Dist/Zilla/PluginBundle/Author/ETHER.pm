@@ -2,9 +2,9 @@ use strict;
 use warnings;
 package Dist::Zilla::PluginBundle::Author::ETHER;
 {
-  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.011';
+  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.012';
 }
-# git description: v0.010-4-ge3942e9
+# git description: v0.011-6-g06bb46b
 
 BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
@@ -55,8 +55,8 @@ sub configure
         # Gather Files
         [ 'Git::GatherDir'      => { exclude_filename => 'LICENSE' } ],
         qw(MetaYAML MetaJSON License Readme Manifest),
-        # note that 2.004 is a TRIAL release
-        [ 'Test::Compile'       => { ':version' => '2.004', fail_on_warning => 'author', bail_out_on_fail => 1 } ],
+        # note that 2.00[345] are TRIAL releases
+        [ 'Test::Compile'       => { ':version' => '2.002', fail_on_warning => 'author', bail_out_on_fail => 1 } ],
         [ 'Test::CheckDeps'     => { ':version' => '0.007', fatal => 1, level => 'suggests' } ],
 
         'NoTabsTests',
@@ -83,7 +83,6 @@ sub configure
         'Git::Describe',
         'PkgVersion',
         'PodWeaver',
-        #[%PodWeaver]
         [ 'NextRelease'         => { ':version' => '4.300018', format => '%-8V  %{yyyy-MM-dd HH:mm:ss ZZZZ}d (%U)' } ],
 
         # Register Prereqs
@@ -116,7 +115,7 @@ sub configure
         [ 'Git::Check'          => { allow_dirty => [ qw(README.md LICENSE) ] } ],
         'Git::CheckFor::MergeConflicts',
         [ 'Git::CheckFor::CorrectBranch' => { release_branch => 'master' } ],
-        [ 'Git::Remote::Check'  => { remote_branch => 'master' } ],
+        [ 'Git::Remote::Check'  => { branch => 'master', remote_branch => 'master' } ],
         'CheckPrereqsIndexed',
         'TestRelease',
         # (ConfirmRelease)
@@ -153,7 +152,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.011
+version 0.012
 
 =head1 SYNOPSIS
 
@@ -206,7 +205,7 @@ following C<dist.ini> (following the preamble):
     [Manifest]
 
     [Test::Compile]
-    :version = 2.004
+    :version = 2.002
     fail_on_warning = author
     bail_out_on_fail = 1
 

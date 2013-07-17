@@ -15,7 +15,7 @@ ether
 lib
 Dist
 Zilla
-MintingProfile
+PluginBundle
 Author
 ETHER
-PluginBundle
+MintingProfile

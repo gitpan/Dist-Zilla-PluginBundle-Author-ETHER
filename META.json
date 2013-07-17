@@ -32,7 +32,7 @@
          "requires" : {
             "Dist::Zilla" : "4.300035",
             "Dist::Zilla::Plugin::MakeMaker" : "0",
-            "Dist::Zilla::PluginBundle::Author::ETHER" : "0.010",
+            "Dist::Zilla::PluginBundle::Author::ETHER" : "0.011",
             "Test::CPAN::Changes" : "0.19",
             "Test::CPAN::Meta" : "0",
             "Test::CleanNamespaces" : "0",
@@ -113,7 +113,7 @@
             "Dist::Zilla::Plugin::Test::CPAN::Changes" : "0.008",
             "Dist::Zilla::Plugin::Test::ChangesHasContent" : "0",
             "Dist::Zilla::Plugin::Test::CheckDeps" : "0.007",
-            "Dist::Zilla::Plugin::Test::Compile" : "2.004",
+            "Dist::Zilla::Plugin::Test::Compile" : "2.002",
             "Dist::Zilla::Plugin::Test::MinimumVersion" : "2.000003",
             "Dist::Zilla::Plugin::Test::Pod::No404s" : "0",
             "Dist::Zilla::Plugin::Test::PodSpelling" : "0",
@@ -154,11 +154,11 @@
    "provides" : {
       "Dist::Zilla::MintingProfile::Author::ETHER" : {
          "file" : "lib/Dist/Zilla/MintingProfile/Author/ETHER.pm",
-         "version" : "0.011"
+         "version" : "0.012"
       },
       "Dist::Zilla::PluginBundle::Author::ETHER" : {
          "file" : "lib/Dist/Zilla/PluginBundle/Author/ETHER.pm",
-         "version" : "0.011"
+         "version" : "0.012"
       }
    },
    "release_status" : "stable",
@@ -174,7 +174,7 @@
          "web" : "https://github.com/karenetheridge/Dist-Zilla-PluginBundle-Author-ETHER"
       }
    },
-   "version" : "0.011",
+   "version" : "0.012",
    "x_Dist_Zilla" : {
       "perl" : {
          "version" : "5.019001"
@@ -284,7 +284,7 @@
          {
             "class" : "Dist::Zilla::Plugin::MetaProvides::Package",
             "name" : "@Author::ETHER/MetaProvides::Package",
-            "version" : "1.14000002"
+            "version" : "1.14000003"
          },
          {
             "class" : "Dist::Zilla::Plugin::MetaConfig",
@@ -334,7 +334,7 @@
          {
             "class" : "Dist::Zilla::Plugin::Test::Compile",
             "name" : "@Author::ETHER/Test::Compile",
-            "version" : "2.004"
+            "version" : "2.005"
          },
          {
             "class" : "Dist::Zilla::Plugin::Test::CheckDeps",
@@ -399,7 +399,7 @@
          {
             "class" : "Dist::Zilla::Plugin::Git::Describe",
             "name" : "@Author::ETHER/Git::Describe",
-            "version" : "0.002"
+            "version" : "0.003"
          },
          {
             "class" : "Dist::Zilla::Plugin::PkgVersion",
