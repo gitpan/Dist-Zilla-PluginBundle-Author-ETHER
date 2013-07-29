@@ -2,9 +2,9 @@ use strict;
 use warnings;
 package Dist::Zilla::PluginBundle::Author::ETHER;
 {
-  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.012';
+  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.013';
 }
-# git description: v0.011-6-g06bb46b
+# git description: v0.012-6-g772e8ca
 
 BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
@@ -31,6 +31,10 @@ has installer => (
     },
 );
 
+my %installer_args = (
+    ModuleBuildTiny => { ':version' => '0.004' },
+);
+
 sub configure
 {
     my $self = shift;
@@ -55,10 +59,8 @@ sub configure
         # Gather Files
         [ 'Git::GatherDir'      => { exclude_filename => 'LICENSE' } ],
         qw(MetaYAML MetaJSON License Readme Manifest),
-        # note that 2.00[345] are TRIAL releases
-        [ 'Test::Compile'       => { ':version' => '2.002', fail_on_warning => 'author', bail_out_on_fail => 1 } ],
+        [ 'Test::Compile'       => { ':version' => '2.010', fail_on_warning => 'author', bail_out_on_fail => 1 } ],
         [ 'Test::CheckDeps'     => { ':version' => '0.007', fatal => 1, level => 'suggests' } ],
-
         'NoTabsTests',
         'EOLTests',
         'MetaTests',
@@ -96,17 +98,22 @@ sub configure
                 # this is mostly pointless as by the time this runs, we're
                 # already trying to load the installer plugin
                 $self->installer ne 'none'
-                    ? ( Dist::Zilla::Util->expand_config_package_name($self->installer) => 0 )
+                    ? ( Dist::Zilla::Util->expand_config_package_name($self->installer) =>
+                        ($installer_args{$self->installer} // {})->{':version'} // 0
+                    )
                     : (),
             } ],
 
         # Install Tool
         [ 'ReadmeAnyFromPod'    => { type => 'markdown', filename => 'README.md', location => 'root' } ],
-        $self->installer ne 'none' ? $self->installer : (),
+        $self->installer ne 'none'
+            ? [ $self->installer => $installer_args{$self->installer} // () ]
+            : (),
         'InstallGuide',
 
         # After Build
         [ 'CopyFilesFromBuild'  => { copy => 'LICENSE' } ],
+        [ 'Run::AfterBuild' => { run => q!grep -- '--ignore-dir=%d' .ackrc || echo '--ignore-dir=%d' >> .ackrc! } ],
 
         # Test Runner
         'RunExtraTests',
@@ -152,7 +159,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.012
+version 0.013
 
 =head1 SYNOPSIS
 
