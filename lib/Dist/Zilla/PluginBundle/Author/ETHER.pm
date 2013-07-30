@@ -2,9 +2,9 @@ use strict;
 use warnings;
 package Dist::Zilla::PluginBundle::Author::ETHER;
 {
-  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.013';
+  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.014';
 }
-# git description: v0.012-6-g772e8ca
+# git description: v0.013-5-g20b3dc3
 
 BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
@@ -53,13 +53,16 @@ sub configure
         #[ContributorsFromGit]
 
         # ExecFiles, ShareDir
-        'ExecDir',
+        [ 'ExecDir'             => { dir => 'script' } ],
         'ShareDir',
+
+        # Finders
+        [ 'FileFinder::ByName' => Examples => { dir => 'examples' } ],
 
         # Gather Files
         [ 'Git::GatherDir'      => { exclude_filename => 'LICENSE' } ],
         qw(MetaYAML MetaJSON License Readme Manifest),
-        [ 'Test::Compile'       => { ':version' => '2.010', fail_on_warning => 'author', bail_out_on_fail => 1 } ],
+        [ 'Test::Compile'       => { ':version' => '2.010', fail_on_warning => 'author', bail_out_on_fail => 1, script_finder => [qw(:ExecFiles @Author::ETHER/Examples)] } ],
         [ 'Test::CheckDeps'     => { ':version' => '0.007', fatal => 1, level => 'suggests' } ],
         'NoTabsTests',
         'EOLTests',
@@ -140,6 +143,9 @@ sub configure
         # listed late, to allow all other plugins which do BeforeRelease checks to run first.
         'ConfirmRelease',
     );
+
+    # check for a bin/ that should probably be renamed to script/
+    warn 'bin/ detected - should this be moved to script/, so its contents can be installed into $PATH?' if -d 'bin';
 }
 
 __PACKAGE__->meta->make_immutable;
@@ -159,7 +165,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.013
+version 0.014
 
 =head1 SYNOPSIS
 
@@ -198,6 +204,8 @@ following C<dist.ini> (following the preamble):
 
     ;;; ExecFiles, ShareDir
     [ExecDir]
+    dir = script
+
     [ShareDir]
 
 
@@ -211,10 +219,15 @@ following C<dist.ini> (following the preamble):
     [Readme]
     [Manifest]
 
+    [FileFinder::ByName / Examples]
+    dir = examples
+
     [Test::Compile]
-    :version = 2.002
+    :version = 2.010
     fail_on_warning = author
     bail_out_on_fail = 1
+    script_finder = :ExecFiles
+    script_finder = Examples
 
     [Test::CheckDeps]
     :version = 0.007

@@ -25,10 +25,10 @@ no_index:
 provides:
   Dist::Zilla::MintingProfile::Author::ETHER:
     file: lib/Dist/Zilla/MintingProfile/Author/ETHER.pm
-    version: 0.013
+    version: 0.014
   Dist::Zilla::PluginBundle::Author::ETHER:
     file: lib/Dist/Zilla/PluginBundle/Author/ETHER.pm
-    version: 0.013
+    version: 0.014
 recommends:
   Dist::Zilla::Plugin::MakeMaker: 0
   Dist::Zilla::Plugin::ModuleBuildTiny: 0
@@ -128,7 +128,7 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-PluginBundle-Author-ETHER
   homepage: https://github.com/karenetheridge/Dist-Zilla-PluginBundle-Author-ETHER
   repository: https://github.com/karenetheridge/Dist-Zilla-PluginBundle-Author-ETHER.git
-version: 0.013
+version: 0.014
 x_Dist_Zilla:
   perl:
     version: 5.019002
@@ -353,6 +353,10 @@ x_Dist_Zilla:
       class: Dist::Zilla::Plugin::CopyFilesFromBuild
       name: '@Author::ETHER/CopyFilesFromBuild'
       version: 0.103510
+    -
+      class: Dist::Zilla::Plugin::Run::AfterBuild
+      name: '@Author::ETHER/Run::AfterBuild'
+      version: 0.020
     -
       class: Dist::Zilla::Plugin::RunExtraTests
       name: '@Author::ETHER/RunExtraTests'
