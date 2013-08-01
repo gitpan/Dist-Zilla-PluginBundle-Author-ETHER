@@ -2,9 +2,9 @@ use strict;
 use warnings;
 package Dist::Zilla::PluginBundle::Author::ETHER;
 {
-  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.014';
+  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.015';
 }
-# git description: v0.013-5-g20b3dc3
+# git description: v0.014-4-g7d84089
 
 BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
@@ -68,7 +68,10 @@ sub configure
         'EOLTests',
         'MetaTests',
         'Test::Version',
-        [ 'Test::CPAN::Changes' => { ':version' => '0.008' } ],
+        # CPAN::Changes 0.21 got way too zealous with timestamp formats
+        ( use_module('CPAN::Changes')->VERSION < 0.21
+            ? [ 'Test::CPAN::Changes' => { ':version' => '0.008' } ]
+            : ()),
         'Test::ChangesHasContent',
         'Test::UnusedVars',
         [ 'Test::MinimumVersion' => { ':version' => '2.0000003', max_target_perl => '5.008008' } ],
@@ -165,7 +168,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.014
+version 0.015
 
 =head1 SYNOPSIS
 
@@ -238,7 +241,8 @@ following C<dist.ini> (following the preamble):
     [EOLTests]
     [MetaTests]
     [Test::Version]
-    [Test::CPAN::Changes]
+    ; (may or may not be included, depending on the version available)
+    ;[Test::CPAN::Changes]
     [Test::ChangesHasContent]
     [Test::UnusedVars]
 

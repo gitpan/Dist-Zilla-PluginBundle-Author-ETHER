@@ -6,6 +6,7 @@ build_requires:
   Capture::Tiny: 0
   Test::CheckDeps: 0.006
   Test::More: 0.94
+  blib: 0
 configure_requires:
   ExtUtils::MakeMaker: 6.30
   File::ShareDir::Install: 0.03
@@ -25,10 +26,10 @@ no_index:
 provides:
   Dist::Zilla::MintingProfile::Author::ETHER:
     file: lib/Dist/Zilla/MintingProfile/Author/ETHER.pm
-    version: 0.014
+    version: 0.015
   Dist::Zilla::PluginBundle::Author::ETHER:
     file: lib/Dist/Zilla/PluginBundle/Author/ETHER.pm
-    version: 0.014
+    version: 0.015
 recommends:
   Dist::Zilla::Plugin::MakeMaker: 0
   Dist::Zilla::Plugin::ModuleBuildTiny: 0
@@ -128,7 +129,7 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-PluginBundle-Author-ETHER
   homepage: https://github.com/karenetheridge/Dist-Zilla-PluginBundle-Author-ETHER
   repository: https://github.com/karenetheridge/Dist-Zilla-PluginBundle-Author-ETHER.git
-version: 0.014
+version: 0.015
 x_Dist_Zilla:
   perl:
     version: 5.019002
@@ -141,6 +142,10 @@ x_Dist_Zilla:
       class: Dist::Zilla::Plugin::GatherDir::Template
       name: profile.ini
       version: 4.300035
+    -
+      class: Dist::Zilla::Plugin::Test::Kwalitee
+      name: Test::Kwalitee
+      version: 2.04
     -
       class: Dist::Zilla::Plugin::Prereqs
       config:
@@ -179,7 +184,7 @@ x_Dist_Zilla:
         Dist::Zilla::Plugin::Prereqs:
           phase: runtime
           type: recommends
-      name: tests
+      name: release_tests
       version: 4.300035
     -
       class: Dist::Zilla::Plugin::Prereqs
@@ -230,6 +235,10 @@ x_Dist_Zilla:
       name: '@Author::ETHER/ShareDir'
       version: 4.300035
     -
+      class: Dist::Zilla::Plugin::FileFinder::ByName
+      name: '@Author::ETHER/Examples'
+      version: 4.300035
+    -
       class: Dist::Zilla::Plugin::Git::GatherDir
       name: '@Author::ETHER/Git::GatherDir'
       version: 2.014
@@ -255,8 +264,15 @@ x_Dist_Zilla:
       version: 4.300035
     -
       class: Dist::Zilla::Plugin::Test::Compile
+      config:
+        Dist::Zilla::Plugin::Test::Compile:
+          module_finder:
+            - ':InstallModules'
+          script_finder:
+            - ':ExecFiles'
+            - '@Author::ETHER/Examples'
       name: '@Author::ETHER/Test::Compile'
-      version: 2.011
+      version: 2.014
     -
       class: Dist::Zilla::Plugin::Test::CheckDeps
       name: '@Author::ETHER/Test::CheckDeps'
@@ -273,10 +289,6 @@ x_Dist_Zilla:
       class: Dist::Zilla::Plugin::MetaTests
       name: '@Author::ETHER/MetaTests'
       version: 4.300035
-    -
-      class: Dist::Zilla::Plugin::Test::CPAN::Changes
-      name: '@Author::ETHER/Test::CPAN::Changes'
-      version: 0.008
     -
       class: Dist::Zilla::Plugin::Test::ChangesHasContent
       name: '@Author::ETHER/Test::ChangesHasContent'

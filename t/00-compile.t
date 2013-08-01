@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-# This test was generated via Dist::Zilla::Plugin::Test::Compile 2.011
+# This test was generated via Dist::Zilla::Plugin::Test::Compile 2.014
 
 use Test::More 0.94;
 
@@ -10,8 +10,8 @@ use Test::More 0.94;
 use Capture::Tiny qw{ capture };
 
 my @module_files = qw(
-lib/Dist/Zilla/MintingProfile/Author/ETHER.pm
-lib/Dist/Zilla/PluginBundle/Author/ETHER.pm
+Dist/Zilla/MintingProfile/Author/ETHER.pm
+Dist/Zilla/PluginBundle/Author/ETHER.pm
 );
 
 my @scripts = qw(

@@ -105,9 +105,10 @@ my %WriteMakefileArgs = (
   "TEST_REQUIRES" => {
     "Capture::Tiny" => "0",
     "Test::CheckDeps" => "0.006",
-    "Test::More" => "0.94"
+    "Test::More" => "0.94",
+    "blib" => "0"
   },
-  "VERSION" => "0.014",
+  "VERSION" => "0.015",
   "test" => {
     "TESTS" => "t/*.t"
   }
