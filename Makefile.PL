@@ -89,6 +89,7 @@ my %WriteMakefileArgs = (
     "Dist::Zilla::Role::PluginBundle::Easy" => "0",
     "Dist::Zilla::Role::PluginBundle::PluginRemover" => "0.102",
     "Dist::Zilla::Util" => "0",
+    "Module::Runtime" => "0",
     "Moose" => "0",
     "Pod::Elemental::Transformer::List" => "0",
     "Pod::Weaver::Plugin::Encoding" => "0",
@@ -104,11 +105,17 @@ my %WriteMakefileArgs = (
   },
   "TEST_REQUIRES" => {
     "Capture::Tiny" => "0",
+    "File::Find" => "0",
+    "File::Spec" => "0",
+    "Path::Class" => "0",
     "Test::CheckDeps" => "0.006",
+    "Test::DZil" => "0",
+    "Test::Deep" => "0",
     "Test::More" => "0.94",
+    "Test::Warnings" => "0",
     "blib" => "0"
   },
-  "VERSION" => "0.015",
+  "VERSION" => "0.016",
   "test" => {
     "TESTS" => "t/*.t"
   }

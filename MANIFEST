@@ -19,8 +19,10 @@ profiles/github/skel/weaver.ini
 profiles/github/skel/xt/release/clean-namespaces.t
 t/00-check-deps.t
 t/00-compile.t
-t/corpus/no_options/dist.ini
-t/corpus/no_options/lib/NoOptions.pm
+t/01-pluginbundle-basic.t
+t/02-minter-github.t
+t/corpus/dist/no_options/lib/NoOptions.pm
+t/corpus/global/config.ini
 weaver.ini
 xt/author/pod-spell.t
 xt/release/changes_has_content.t

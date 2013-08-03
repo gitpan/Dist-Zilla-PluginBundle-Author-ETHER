@@ -4,8 +4,14 @@ author:
   - 'Karen Etheridge <ether@cpan.org>'
 build_requires:
   Capture::Tiny: 0
+  File::Find: 0
+  File::Spec: 0
+  Path::Class: 0
   Test::CheckDeps: 0.006
+  Test::DZil: 0
+  Test::Deep: 0
   Test::More: 0.94
+  Test::Warnings: 0
   blib: 0
 configure_requires:
   ExtUtils::MakeMaker: 6.30
@@ -26,10 +32,10 @@ no_index:
 provides:
   Dist::Zilla::MintingProfile::Author::ETHER:
     file: lib/Dist/Zilla/MintingProfile/Author/ETHER.pm
-    version: 0.015
+    version: 0.016
   Dist::Zilla::PluginBundle::Author::ETHER:
     file: lib/Dist/Zilla/PluginBundle/Author/ETHER.pm
-    version: 0.015
+    version: 0.016
 recommends:
   Dist::Zilla::Plugin::MakeMaker: 0
   Dist::Zilla::Plugin::ModuleBuildTiny: 0
@@ -112,6 +118,7 @@ requires:
   Dist::Zilla::Role::PluginBundle::Easy: 0
   Dist::Zilla::Role::PluginBundle::PluginRemover: 0.102
   Dist::Zilla::Util: 0
+  Module::Runtime: 0
   Moose: 0
   Pod::Elemental::Transformer::List: 0
   Pod::Weaver::Plugin::Encoding: 0
@@ -129,7 +136,7 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-PluginBundle-Author-ETHER
   homepage: https://github.com/karenetheridge/Dist-Zilla-PluginBundle-Author-ETHER
   repository: https://github.com/karenetheridge/Dist-Zilla-PluginBundle-Author-ETHER.git
-version: 0.015
+version: 0.016
 x_Dist_Zilla:
   perl:
     version: 5.019002
@@ -272,7 +279,7 @@ x_Dist_Zilla:
             - ':ExecFiles'
             - '@Author::ETHER/Examples'
       name: '@Author::ETHER/Test::Compile'
-      version: 2.014
+      version: 2.017
     -
       class: Dist::Zilla::Plugin::Test::CheckDeps
       name: '@Author::ETHER/Test::CheckDeps'
@@ -296,7 +303,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::Test::UnusedVars
       name: '@Author::ETHER/Test::UnusedVars'
-      version: 2.000004
+      version: 2.000005
     -
       class: Dist::Zilla::Plugin::Test::MinimumVersion
       name: '@Author::ETHER/Test::MinimumVersion'

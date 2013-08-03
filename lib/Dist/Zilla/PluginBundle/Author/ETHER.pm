@@ -2,9 +2,9 @@ use strict;
 use warnings;
 package Dist::Zilla::PluginBundle::Author::ETHER;
 {
-  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.015';
+  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.016';
 }
-# git description: v0.014-4-g7d84089
+# git description: v0.015-7-g5530a92
 
 BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
@@ -18,6 +18,7 @@ with
     'Dist::Zilla::Role::PluginBundle::Config::Slicer';
 
 use Dist::Zilla::Util;
+use Module::Runtime 'use_module';
 use namespace::autoclean;
 
 # Note: no support yet for depending on a specific version of the plugin
@@ -119,7 +120,7 @@ sub configure
 
         # After Build
         [ 'CopyFilesFromBuild'  => { copy => 'LICENSE' } ],
-        [ 'Run::AfterBuild' => { run => q!grep -- '--ignore-dir=%d' .ackrc || echo '--ignore-dir=%d' >> .ackrc! } ],
+        [ 'Run::AfterBuild' => { run => q!if [[ %d =~ %n && -e .ackrc ]]; then grep -- '--ignore-dir=%d' .ackrc || echo '--ignore-dir=%d' >> .ackrc; fi! } ],
 
         # Test Runner
         'RunExtraTests',
@@ -168,7 +169,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.015
+version 0.016
 
 =head1 SYNOPSIS
 

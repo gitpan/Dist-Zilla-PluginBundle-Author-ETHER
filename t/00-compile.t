@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-# This test was generated via Dist::Zilla::Plugin::Test::Compile 2.014
+# This test was generated via Dist::Zilla::Plugin::Test::Compile 2.017
 
 use Test::More 0.94;
 
@@ -24,7 +24,7 @@ my @warnings;
 for my $lib (@module_files)
 {
     my ($stdout, $stderr, $exit) = capture {
-        system($^X, '-Mblib', '-e', qq{require qq[$lib]});
+        system($^X, '-Mblib', '-e', qq{require q[$lib]});
     };
     is($?, 0, "$lib loaded ok");
     warn $stderr if $stderr;
