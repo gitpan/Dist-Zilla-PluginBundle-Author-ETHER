@@ -2,9 +2,9 @@ use strict;
 use warnings;
 package Dist::Zilla::PluginBundle::Author::ETHER;
 {
-  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.016';
+  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.017';
 }
-# git description: v0.015-7-g5530a92
+# git description: v0.016-3-g4a2f904
 
 BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
@@ -98,6 +98,10 @@ sub configure
         # (MakeMaker or other installer)
         'AutoPrereqs',
         'MinimumPerl',
+        [ 'Prereqs' => 'Test::CheckDeps, indirect' => {
+                '-phase' => 'test', '-relationship' => 'requires',
+                'CPAN::Meta::Check' => '0.007',
+                } ],
         [ 'Prereqs' => installer_requirements => {
                 '-phase' => 'develop', '-relationship' => 'requires',
                 'Dist::Zilla' => Dist::Zilla->VERSION,
@@ -169,7 +173,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.016
+version 0.017
 
 =head1 SYNOPSIS
 

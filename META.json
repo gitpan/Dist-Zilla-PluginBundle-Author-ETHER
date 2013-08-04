@@ -32,7 +32,7 @@
          "requires" : {
             "Dist::Zilla" : "4.300035",
             "Dist::Zilla::Plugin::MakeMaker" : "0",
-            "Dist::Zilla::PluginBundle::Author::ETHER" : "0.015",
+            "Dist::Zilla::PluginBundle::Author::ETHER" : "0.016",
             "Test::CPAN::Meta" : "0",
             "Test::CleanNamespaces" : "0",
             "Test::EOL" : "0",
@@ -137,7 +137,7 @@
             "Test::Vars" : "0.004",
             "Text::Tabs" : "2013.0426",
             "namespace::autoclean" : "0",
-            "perl" : "5.010",
+            "perl" : "5.013002",
             "strict" : "0",
             "warnings" : "0"
          }
@@ -160,11 +160,11 @@
    "provides" : {
       "Dist::Zilla::MintingProfile::Author::ETHER" : {
          "file" : "lib/Dist/Zilla/MintingProfile/Author/ETHER.pm",
-         "version" : "0.016"
+         "version" : "0.017"
       },
       "Dist::Zilla::PluginBundle::Author::ETHER" : {
          "file" : "lib/Dist/Zilla/PluginBundle/Author/ETHER.pm",
-         "version" : "0.016"
+         "version" : "0.017"
       }
    },
    "release_status" : "stable",
@@ -180,7 +180,7 @@
          "web" : "https://github.com/karenetheridge/Dist-Zilla-PluginBundle-Author-ETHER"
       }
    },
-   "version" : "0.016",
+   "version" : "0.017",
    "x_Dist_Zilla" : {
       "perl" : {
          "version" : "5.019002"
@@ -366,7 +366,7 @@
                }
             },
             "name" : "@Author::ETHER/Test::Compile",
-            "version" : "2.017"
+            "version" : "2.018"
          },
          {
             "class" : "Dist::Zilla::Plugin::Test::CheckDeps",
