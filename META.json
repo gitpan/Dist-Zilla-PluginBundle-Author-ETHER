@@ -4,7 +4,7 @@
       "Karen Etheridge <ether@cpan.org>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Dist::Zilla version 4.300035, CPAN::Meta::Converter version 2.131560",
+   "generated_by" : "Dist::Zilla version 4.300035, CPAN::Meta::Converter version 2.132140",
    "license" : [
       "perl_5"
    ],
@@ -32,20 +32,26 @@
          "requires" : {
             "Dist::Zilla" : "4.300035",
             "Dist::Zilla::Plugin::MakeMaker" : "0",
-            "Dist::Zilla::PluginBundle::Author::ETHER" : "0.016",
+            "Dist::Zilla::PluginBundle::Author::ETHER" : "0.017",
+            "Pod::Wordlist::hanekomu" : "0",
+            "Test::CPAN::Changes" : "0.19",
             "Test::CPAN::Meta" : "0",
             "Test::CleanNamespaces" : "0",
             "Test::EOL" : "0",
             "Test::Kwalitee" : "1.09",
+            "Test::MinimumVersion" : "0",
+            "Test::NoTabs" : "0",
             "Test::Pod" : "1.41",
+            "Test::Pod::No404s" : "0",
             "Test::Spelling" : "0.19",
-            "Test::Vars" : "0.004"
+            "Test::Vars" : "0.004",
+            "Test::Version" : "0"
          }
       },
       "runtime" : {
          "recommends" : {
             "Dist::Zilla::Plugin::MakeMaker" : "0",
-            "Dist::Zilla::Plugin::ModuleBuildTiny" : "0",
+            "Dist::Zilla::Plugin::ModuleBuildTiny" : "0.004",
             "Pod::Coverage::TrustPod" : "0",
             "Pod::Wordlist::hanekomu" : "0",
             "Test::CPAN::Changes" : "0",
@@ -60,6 +66,7 @@
             "Test::Vars" : "0.004"
          },
          "requires" : {
+            "CPAN::Changes" : "0.23",
             "Dist::Zilla::Plugin::Authority" : "0",
             "Dist::Zilla::Plugin::AutoMetaResources" : "0",
             "Dist::Zilla::Plugin::AutoPrereqs" : "0",
@@ -68,6 +75,7 @@
             "Dist::Zilla::Plugin::CopyFilesFromBuild" : "0",
             "Dist::Zilla::Plugin::EOLTests" : "0",
             "Dist::Zilla::Plugin::ExecDir" : "0",
+            "Dist::Zilla::Plugin::FileFinder::ByName" : "0",
             "Dist::Zilla::Plugin::GatherDir::Template" : "0",
             "Dist::Zilla::Plugin::GenerateFile" : "0",
             "Dist::Zilla::Plugin::Git::Check" : "0",
@@ -106,6 +114,7 @@
             "Dist::Zilla::Plugin::PruneCruft" : "0",
             "Dist::Zilla::Plugin::Readme" : "0",
             "Dist::Zilla::Plugin::ReadmeAnyFromPod" : "0",
+            "Dist::Zilla::Plugin::Run::AfterBuild" : "0",
             "Dist::Zilla::Plugin::Run::AfterMint" : "0",
             "Dist::Zilla::Plugin::RunExtraTests" : "0",
             "Dist::Zilla::Plugin::ShareDir" : "0",
@@ -144,6 +153,7 @@
       },
       "test" : {
          "requires" : {
+            "CPAN::Meta::Check" : "0.007",
             "Capture::Tiny" : "0",
             "File::Find" : "0",
             "File::Spec" : "0",
@@ -160,11 +170,11 @@
    "provides" : {
       "Dist::Zilla::MintingProfile::Author::ETHER" : {
          "file" : "lib/Dist/Zilla/MintingProfile/Author/ETHER.pm",
-         "version" : "0.017"
+         "version" : "0.018"
       },
       "Dist::Zilla::PluginBundle::Author::ETHER" : {
          "file" : "lib/Dist/Zilla/PluginBundle/Author/ETHER.pm",
-         "version" : "0.017"
+         "version" : "0.018"
       }
    },
    "release_status" : "stable",
@@ -180,7 +190,7 @@
          "web" : "https://github.com/karenetheridge/Dist-Zilla-PluginBundle-Author-ETHER"
       }
    },
-   "version" : "0.017",
+   "version" : "0.018",
    "x_Dist_Zilla" : {
       "perl" : {
          "version" : "5.019002"
@@ -199,7 +209,7 @@
          {
             "class" : "Dist::Zilla::Plugin::Test::Kwalitee",
             "name" : "Test::Kwalitee",
-            "version" : "2.04"
+            "version" : "2.05"
          },
          {
             "class" : "Dist::Zilla::Plugin::Prereqs",
@@ -271,6 +281,11 @@
             "class" : "Dist::Zilla::Plugin::Run::AfterRelease",
             "name" : "Run::AfterRelease",
             "version" : "0.020"
+         },
+         {
+            "class" : "Dist::Zilla::Plugin::Test::CPAN::Changes",
+            "name" : "Test::CPAN::Changes",
+            "version" : "0.008"
          },
          {
             "class" : "Dist::Zilla::Plugin::Git::NextVersion",
@@ -452,6 +467,17 @@
             "class" : "Dist::Zilla::Plugin::MinimumPerl",
             "name" : "@Author::ETHER/MinimumPerl",
             "version" : "1.003"
+         },
+         {
+            "class" : "Dist::Zilla::Plugin::Prereqs",
+            "config" : {
+               "Dist::Zilla::Plugin::Prereqs" : {
+                  "phase" : "test",
+                  "type" : "requires"
+               }
+            },
+            "name" : "@Author::ETHER/Test::CheckDeps, indirect",
+            "version" : "4.300035"
          },
          {
             "class" : "Dist::Zilla::Plugin::Prereqs",

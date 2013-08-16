@@ -2,9 +2,9 @@ use strict;
 use warnings;
 package Dist::Zilla::PluginBundle::Author::ETHER;
 {
-  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.017';
+  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.018';
 }
-# git description: v0.016-3-g4a2f904
+# git description: v0.017-9-g25a539b
 
 BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
@@ -44,6 +44,10 @@ sub configure
         # VersionProvider
         [ 'Git::NextVersion'    => { version_regexp => '^v([\d._]+)(-TRIAL)?$' } ],
 
+        # BeforeBuild
+        [ 'PromptIfStale' => 'build' => { phase => 'build', module => [ blessed($self) ] } ],
+        [ 'PromptIfStale' => 'release' => { phase => 'release', check_all_plugins => 1 } ],
+
         # MetaData
         'GithubMeta',
         [ 'AutoMetaResources'   => { 'bugtracker.rt' => 1 } ],
@@ -69,13 +73,10 @@ sub configure
         'EOLTests',
         'MetaTests',
         'Test::Version',
-        # CPAN::Changes 0.21 got way too zealous with timestamp formats
-        ( use_module('CPAN::Changes')->VERSION < 0.21
-            ? [ 'Test::CPAN::Changes' => { ':version' => '0.008' } ]
-            : ()),
+        [ 'Test::CPAN::Changes' => { ':version' => '0.008' } ],
         'Test::ChangesHasContent',
         'Test::UnusedVars',
-        [ 'Test::MinimumVersion' => { ':version' => '2.0000003', max_target_perl => '5.008008' } ],
+        [ 'Test::MinimumVersion' => { ':version' => '2.000003', max_target_perl => '5.008008' } ],
         'PodSyntaxTests',
         'PodCoverageTests',
         'Test::PodSpelling',
@@ -92,7 +93,7 @@ sub configure
         'Git::Describe',
         'PkgVersion',
         'PodWeaver',
-        [ 'NextRelease'         => { ':version' => '4.300018', format => '%-8V  %{yyyy-MM-dd HH:mm:ss ZZZZ}d (%U)' } ],
+        [ 'NextRelease'         => { ':version' => '4.300018', time_zone => 'UTC', format => '%-8V  %{yyyy-MM-dd HH:mm:ss\'Z\'}d (%U)' } ],
 
         # Register Prereqs
         # (MakeMaker or other installer)
@@ -124,7 +125,7 @@ sub configure
 
         # After Build
         [ 'CopyFilesFromBuild'  => { copy => 'LICENSE' } ],
-        [ 'Run::AfterBuild' => { run => q!if [[ %d =~ %n && -e .ackrc ]]; then grep -- '--ignore-dir=%d' .ackrc || echo '--ignore-dir=%d' >> .ackrc; fi! } ],
+        [ 'Run::AfterBuild' => { run => q!if [[ %d =~ %n ]]; then test -e .ackrc && grep -q -- '--ignore-dir=%d' .ackrc || echo '--ignore-dir=%d' >> .ackrc; fi! } ],
 
         # Test Runner
         'RunExtraTests',
@@ -132,7 +133,7 @@ sub configure
         # Before Release
         [ 'Git::Check'          => { allow_dirty => [ qw(README.md LICENSE) ] } ],
         'Git::CheckFor::MergeConflicts',
-        [ 'Git::CheckFor::CorrectBranch' => { release_branch => 'master' } ],
+        [ 'Git::CheckFor::CorrectBranch' => { ':version' => '0.004', release_branch => 'master' } ],
         [ 'Git::Remote::Check'  => { branch => 'master', remote_branch => 'master' } ],
         'CheckPrereqsIndexed',
         'TestRelease',
@@ -173,7 +174,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.017
+version 0.018
 
 =head1 SYNOPSIS
 
@@ -190,6 +191,13 @@ following C<dist.ini> (following the preamble):
     [Git::NextVersion]
     version_regexp = ^v([\d._]+)(-TRIAL)?$
 
+    ;;; BeforeBuild
+    [PromptIfStale / build]
+    phase = build
+    module = Dist::Zilla::Plugin::Author::ETHER
+    [PromptIfStale / release]
+    phase = release
+    check_all_plugins = 1
 
     ;;; MetaData
     [GithubMeta]
@@ -246,8 +254,7 @@ following C<dist.ini> (following the preamble):
     [EOLTests]
     [MetaTests]
     [Test::Version]
-    ; (may or may not be included, depending on the version available)
-    ;[Test::CPAN::Changes]
+    [Test::CPAN::Changes]
     [Test::ChangesHasContent]
     [Test::UnusedVars]
 
@@ -269,13 +276,22 @@ following C<dist.ini> (following the preamble):
     [PodWeaver]
     [NextRelease]
     :version = 4.300018
-    format = %-8V  %{yyyy-MM-dd HH:mm:ss ZZZZ}d (%U)
+    time_zone = UTC
+    format = %-8V  %{yyyy-MM-dd HH:mm:ss'Z'}d (%U)
 
 
     ;;; Register Prereqs
     [AutoPrereqs]
     [MinimumPerl]
-    [Prereqs / DevelopRequires]
+
+    [Prereqs / Test::CheckDeps, indirect]
+    -phase = test
+    -relationship = requires
+    CPAN::Meta::Check = 0.007
+
+    [Prereqs / installer_requirements]
+    -phase = develop
+    -relationship = requires
     Dist::Zilla = <version used to built this bundle>
     Dist::Zilla::PluginBundle::Author::ETHER = <our own version>
 
@@ -294,6 +310,9 @@ following C<dist.ini> (following the preamble):
     [CopyFilesFromBuild]
     copy = LICENSE
 
+    [Run::AfterBuild]
+    run => if [[ %d =~ %n ]]; then test -e .ackrc && grep -q -- '--ignore-dir=%d' .ackrc || echo '--ignore-dir=%d' >> .ackrc; fi
+
 
     ;;; TestRunner
     [RunExtraTests]
@@ -311,6 +330,7 @@ following C<dist.ini> (following the preamble):
     release_branch = master
 
     [Git::Remote::Check]
+    branch = master
     remote_branch = master
 
     [CheckPrereqsIndexed]

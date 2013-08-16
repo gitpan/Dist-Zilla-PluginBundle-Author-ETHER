@@ -3,6 +3,7 @@ abstract: 'A plugin bundle for distributions built by ETHER'
 author:
   - 'Karen Etheridge <ether@cpan.org>'
 build_requires:
+  CPAN::Meta::Check: 0.007
   Capture::Tiny: 0
   File::Find: 0
   File::Spec: 0
@@ -17,7 +18,7 @@ configure_requires:
   ExtUtils::MakeMaker: 6.30
   File::ShareDir::Install: 0.03
 dynamic_config: 0
-generated_by: 'Dist::Zilla version 4.300035, CPAN::Meta::Converter version 2.131560'
+generated_by: 'Dist::Zilla version 4.300035, CPAN::Meta::Converter version 2.132140'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -32,13 +33,13 @@ no_index:
 provides:
   Dist::Zilla::MintingProfile::Author::ETHER:
     file: lib/Dist/Zilla/MintingProfile/Author/ETHER.pm
-    version: 0.017
+    version: 0.018
   Dist::Zilla::PluginBundle::Author::ETHER:
     file: lib/Dist/Zilla/PluginBundle/Author/ETHER.pm
-    version: 0.017
+    version: 0.018
 recommends:
   Dist::Zilla::Plugin::MakeMaker: 0
-  Dist::Zilla::Plugin::ModuleBuildTiny: 0
+  Dist::Zilla::Plugin::ModuleBuildTiny: 0.004
   Pod::Coverage::TrustPod: 0
   Pod::Wordlist::hanekomu: 0
   Test::CPAN::Changes: 0
@@ -52,6 +53,7 @@ recommends:
   Test::Spelling: 0.19
   Test::Vars: 0.004
 requires:
+  CPAN::Changes: 0.23
   Dist::Zilla::Plugin::Authority: 0
   Dist::Zilla::Plugin::AutoMetaResources: 0
   Dist::Zilla::Plugin::AutoPrereqs: 0
@@ -60,6 +62,7 @@ requires:
   Dist::Zilla::Plugin::CopyFilesFromBuild: 0
   Dist::Zilla::Plugin::EOLTests: 0
   Dist::Zilla::Plugin::ExecDir: 0
+  Dist::Zilla::Plugin::FileFinder::ByName: 0
   Dist::Zilla::Plugin::GatherDir::Template: 0
   Dist::Zilla::Plugin::GenerateFile: 0
   Dist::Zilla::Plugin::Git::Check: 0
@@ -98,6 +101,7 @@ requires:
   Dist::Zilla::Plugin::PruneCruft: 0
   Dist::Zilla::Plugin::Readme: 0
   Dist::Zilla::Plugin::ReadmeAnyFromPod: 0
+  Dist::Zilla::Plugin::Run::AfterBuild: 0
   Dist::Zilla::Plugin::Run::AfterMint: 0
   Dist::Zilla::Plugin::RunExtraTests: 0
   Dist::Zilla::Plugin::ShareDir: 0
@@ -136,7 +140,7 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-PluginBundle-Author-ETHER
   homepage: https://github.com/karenetheridge/Dist-Zilla-PluginBundle-Author-ETHER
   repository: https://github.com/karenetheridge/Dist-Zilla-PluginBundle-Author-ETHER.git
-version: 0.017
+version: 0.018
 x_Dist_Zilla:
   perl:
     version: 5.019002
@@ -152,7 +156,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::Test::Kwalitee
       name: Test::Kwalitee
-      version: 2.04
+      version: 2.05
     -
       class: Dist::Zilla::Plugin::Prereqs
       config:
@@ -205,6 +209,10 @@ x_Dist_Zilla:
       class: Dist::Zilla::Plugin::Run::AfterRelease
       name: Run::AfterRelease
       version: 0.020
+    -
+      class: Dist::Zilla::Plugin::Test::CPAN::Changes
+      name: Test::CPAN::Changes
+      version: 0.008
     -
       class: Dist::Zilla::Plugin::Git::NextVersion
       name: '@Author::ETHER/Git::NextVersion'
@@ -348,6 +356,14 @@ x_Dist_Zilla:
       class: Dist::Zilla::Plugin::MinimumPerl
       name: '@Author::ETHER/MinimumPerl'
       version: 1.003
+    -
+      class: Dist::Zilla::Plugin::Prereqs
+      config:
+        Dist::Zilla::Plugin::Prereqs:
+          phase: test
+          type: requires
+      name: '@Author::ETHER/Test::CheckDeps, indirect'
+      version: 4.300035
     -
       class: Dist::Zilla::Plugin::Prereqs
       config:

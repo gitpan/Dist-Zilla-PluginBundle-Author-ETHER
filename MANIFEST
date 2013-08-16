@@ -27,6 +27,7 @@ weaver.ini
 xt/author/pod-spell.t
 xt/release/changes_has_content.t
 xt/release/clean-namespaces.t
+xt/release/cpan-changes.t
 xt/release/distmeta.t
 xt/release/eol.t
 xt/release/kwalitee.t
