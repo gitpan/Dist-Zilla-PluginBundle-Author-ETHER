@@ -2,6 +2,7 @@ use strict;
 use warnings FATAL => 'all';
 
 use Test::More;
+use JSON;
 
 BEGIN {
     plan skip_all => 'these tests require a git repository'
@@ -29,54 +30,36 @@ my $tzil = Builder->from_config(
                 },
                 'GatherDir',
                 # our files are copied into source, so Git::GatherDir doesn't see them
-                [ '@Author::ETHER' => { '-remove' => [ 'Git::GatherDir', 'PromptIfStale' ] } ],
+                [ '@Author::ETHER' => {
+                    server => 'gitmo',
+                    '-remove' => [ 'Git::GatherDir', 'PromptIfStale' ],
+                  },
+                ],
             ),
         },
     },
 );
 
 $tzil->build;
-my $build_dir = $tzil->tempdir->subdir('build');
 
-my @expected_files = qw(
-    Build.PL
-    dist.ini
-    INSTALL
-    lib/NoOptions.pm
-    LICENSE
-    MANIFEST
-    META.json
-    META.yml
-    README
-    t/00-check-deps.t
-    t/00-compile.t
-    xt/author/pod-spell.t
-    xt/release/changes_has_content.t
-    xt/release/cpan-changes.t
-    xt/release/distmeta.t
-    xt/release/eol.t
-    xt/release/kwalitee.t
-    xt/release/minimum-version.t
-    xt/release/no-tabs.t
-    xt/release/pod-coverage.t
-    xt/release/pod-no404s.t
-    xt/release/pod-syntax.t
-    xt/release/test-version.t
-    xt/release/unused-vars.t
-);
-
-my @found_files;
-find({
-        wanted => sub { push @found_files, File::Spec->abs2rel($_, $build_dir) if -f  },
-        no_chdir => 1,
-     },
-    $build_dir,
-);
+my $json = $tzil->slurp_file('build/META.json');
+my $meta = JSON->new->decode($json);
 
 cmp_deeply(
-    \@found_files,
-    bag(@expected_files),
-    'the right files are created by the pluginbundle',
+    $meta->{resources},
+    {
+        bugtracker => {
+            mailto => 'bug-NoOptions@rt.cpan.org',
+            web => 'https://rt.cpan.org/Public/Dist/Display.html?Name=NoOptions',
+        },
+        # no homepage set
+        repository => {
+            type => 'git',
+            url => 'git://git.moose.perl.org/NoOptions.git',
+            web => 'http://git.shadowcat.co.uk/gitweb/gitweb.cgi?p=gitmo/NoOptions.git;a=summary',
+        },
+    },
+    'all meta resources are correct',
 );
 
 done_testing;

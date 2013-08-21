@@ -2,9 +2,9 @@ use strict;
 use warnings;
 package Dist::Zilla::PluginBundle::Author::ETHER;
 {
-  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.018';
+  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.019';
 }
-# git description: v0.017-9-g25a539b
+# git description: v0.018-10-g063d89e
 
 BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
@@ -19,6 +19,7 @@ with
 
 use Dist::Zilla::Util;
 use Module::Runtime 'use_module';
+use Moose::Util::TypeConstraints;
 use namespace::autoclean;
 
 # Note: no support yet for depending on a specific version of the plugin
@@ -29,6 +30,16 @@ has installer => (
         exists $_[0]->payload->{installer}
             ? $_[0]->payload->{installer}
             : 'ModuleBuildTiny';
+    },
+);
+
+has server => (
+    is => 'ro', isa => enum([qw(github gitmo p5sagit none)]),
+    lazy => 1,
+    default => sub {
+        exists $_[0]->payload->{server}
+            ? $_[0]->payload->{server}
+            : 'github';
     },
 );
 
@@ -48,15 +59,6 @@ sub configure
         [ 'PromptIfStale' => 'build' => { phase => 'build', module => [ blessed($self) ] } ],
         [ 'PromptIfStale' => 'release' => { phase => 'release', check_all_plugins => 1 } ],
 
-        # MetaData
-        'GithubMeta',
-        [ 'AutoMetaResources'   => { 'bugtracker.rt' => 1 } ],
-        [ 'Authority'           => { authority => 'cpan:ETHER' } ],
-        [ 'MetaNoIndex'         => { directory => [ qw(t xt examples) ] } ],
-        [ 'MetaProvides::Package' => { meta_noindex => 1 } ],
-        'MetaConfig',
-        #[ContributorsFromGit]
-
         # ExecFiles, ShareDir
         [ 'ExecDir'             => { dir => 'script' } ],
         'ShareDir',
@@ -72,7 +74,7 @@ sub configure
         'NoTabsTests',
         'EOLTests',
         'MetaTests',
-        'Test::Version',
+        [ 'Test::Version'       => { is_strict => 1 } ],
         [ 'Test::CPAN::Changes' => { ':version' => '0.008' } ],
         'Test::ChangesHasContent',
         'Test::UnusedVars',
@@ -82,6 +84,7 @@ sub configure
         'Test::PodSpelling',
         #[Test::Pod::LinkCheck]     many outstanding bugs
         'Test::Pod::No404s',
+        'Test::Kwalitee',
 
         # Prune Files
         'PruneCruft',
@@ -94,6 +97,19 @@ sub configure
         'PkgVersion',
         'PodWeaver',
         [ 'NextRelease'         => { ':version' => '4.300018', time_zone => 'UTC', format => '%-8V  %{yyyy-MM-dd HH:mm:ss\'Z\'}d (%U)' } ],
+
+        # MetaData
+        $self->server eq 'github' ? ( [ 'GithubMeta' ] ) : (),
+        [ 'AutoMetaResources'   => { 'bugtracker.rt' => 1,
+              $self->server eq 'gitmo' ? ( 'repository.gitmo' => 1 )
+            : $self->server eq 'p5sagit' ? ( 'repository.p5sagit' => 1 )
+            : ()
+        } ],
+        [ 'Authority'           => { authority => 'cpan:ETHER' } ],
+        [ 'MetaNoIndex'         => { directory => [ qw(t xt examples) ] } ],
+        [ 'MetaProvides::Package' => { meta_noindex => 1 } ],
+        'MetaConfig',
+        #[ContributorsFromGit]
 
         # Register Prereqs
         # (MakeMaker or other installer)
@@ -145,7 +161,7 @@ sub configure
         # After Release
         [ 'Git::Commit'         => { allow_dirty => [ qw(Changes README.md LICENSE) ], commit_msg => '%N-%v%t%n%n%c' } ],
         [ 'Git::Tag'            => { tag_format => 'v%v%t', tag_message => 'v%v%t' } ],
-        [ 'GitHub::Update'      => { metacpan => 1 } ],
+        $self->server eq 'github' ? ( [ 'GitHub::Update' => { metacpan => 1 } ] ) : (),
         'Git::Push',
         [ 'InstallRelease'      => { install_command => 'cpanm .' } ],
 
@@ -174,7 +190,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.018
+version 0.019
 
 =head1 SYNOPSIS
 
@@ -198,24 +214,6 @@ following C<dist.ini> (following the preamble):
     [PromptIfStale / release]
     phase = release
     check_all_plugins = 1
-
-    ;;; MetaData
-    [GithubMeta]
-    [AutoMetaResources]
-    bugtracker.rt = 1
-
-    [Authority]
-    authority = cpan:ETHER
-
-    [MetaNoIndex]
-    directory = t
-    directory = xt
-    directory = examples
-
-    [MetaProvides::Package]
-    meta_noindex = 1
-
-    [MetaConfig]
 
 
     ;;; ExecFiles, ShareDir
@@ -267,6 +265,7 @@ following C<dist.ini> (following the preamble):
     [Test::PodSpelling]
     ;[Test::Pod::LinkCheck]     many outstanding bugs
     [Test::Pod::No404s]
+    [Test::Kwalitee]
 
 
     ;;; Munge Files
@@ -278,6 +277,26 @@ following C<dist.ini> (following the preamble):
     :version = 4.300018
     time_zone = UTC
     format = %-8V  %{yyyy-MM-dd HH:mm:ss'Z'}d (%U)
+
+
+    ;;; MetaData
+    [GithubMeta]    ; (if server = 'github' or omitted)
+    [AutoMetaResources]
+    bugtracker.rt = 1
+    ; (plus repository.* = 1 if server = 'gitmo' or 'p5sagit')
+
+    [Authority]
+    authority = cpan:ETHER
+
+    [MetaNoIndex]
+    directory = t
+    directory = xt
+    directory = examples
+
+    [MetaProvides::Package]
+    meta_noindex = 1
+
+    [MetaConfig]
 
 
     ;;; Register Prereqs
@@ -353,7 +372,7 @@ following C<dist.ini> (following the preamble):
     tag_format = v%v%t
     tag_message = v%v%t
 
-    [GitHub::Update]
+    [GitHub::Update]    ; (if server = 'github' or omitted)
     metacpan = 1
 
     [Git::Push]
@@ -409,6 +428,40 @@ Encouraged choices are:
     installer = MakeMaker
     installer = =inc::Foo (if no configs are needed for this plugin)
     installer = none
+
+=head2 server
+
+=over 4
+
+=item *
+
+C<github>
+
+(default)
+metadata and release plugins are tailored to L<github|http://github.com>..
+
+=item *
+
+C<gitmo>
+
+metadata and release plugins are tailored to
+L<http://git.moose.perl.org|gitmo@git.moose.perl.org>.
+
+=item *
+
+C<p5sagit>
+
+metadata and release plugins are tailored to
+L<http://git.shadowcat.co.uk|p5sagit@git.shadowcat.co.uk>.
+
+=item *
+
+C<none>
+
+no special configuration of metadata (relating to repositories etc) is done --
+you'll need to provide this yourself.
+
+=back
 
 =head2 other customizations
 

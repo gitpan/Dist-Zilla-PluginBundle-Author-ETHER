@@ -16,11 +16,11 @@ profiles/github/skel/Changes
 profiles/github/skel/dist.ini
 profiles/github/skel/t/01-basic.t
 profiles/github/skel/weaver.ini
-profiles/github/skel/xt/release/clean-namespaces.t
 t/00-check-deps.t
 t/00-compile.t
 t/01-pluginbundle-basic.t
 t/02-minter-github.t
+t/03-pluginbundle-gitmo.t
 t/corpus/dist/no_options/lib/NoOptions.pm
 t/corpus/global/config.ini
 weaver.ini
