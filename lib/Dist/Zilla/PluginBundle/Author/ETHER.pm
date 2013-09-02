@@ -1,14 +1,14 @@
 use strict;
 use warnings;
 package Dist::Zilla::PluginBundle::Author::ETHER;
-{
-  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.019';
-}
-# git description: v0.018-10-g063d89e
-
 BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
 }
+{
+  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.020';
+}
+# git description: v0.019-5-g9a5577b
+
 # ABSTRACT: A plugin bundle for distributions built by ETHER
 
 use Moose;
@@ -69,7 +69,7 @@ sub configure
         # Gather Files
         [ 'Git::GatherDir'      => { exclude_filename => 'LICENSE' } ],
         qw(MetaYAML MetaJSON License Readme Manifest),
-        [ 'Test::Compile'       => { ':version' => '2.010', fail_on_warning => 'author', bail_out_on_fail => 1, script_finder => [qw(:ExecFiles @Author::ETHER/Examples)] } ],
+        [ 'Test::Compile'       => { ':version' => '2.023', fail_on_warning => 'author', bail_out_on_fail => 1, script_finder => [qw(:ExecFiles @Author::ETHER/Examples)] } ],
         [ 'Test::CheckDeps'     => { ':version' => '0.007', fatal => 1, level => 'suggests' } ],
         'NoTabsTests',
         'EOLTests',
@@ -84,7 +84,7 @@ sub configure
         'Test::PodSpelling',
         #[Test::Pod::LinkCheck]     many outstanding bugs
         'Test::Pod::No404s',
-        'Test::Kwalitee',
+        [ 'Test::Kwalitee'      => { ':version' => '2.06' } ],
 
         # Prune Files
         'PruneCruft',
@@ -94,7 +94,7 @@ sub configure
         # Munge Files
         # (Authority)
         'Git::Describe',
-        'PkgVersion',
+        [ PkgVersion            => { ':version' => '4.300036', die_on_existing_version => 1 } ],
         'PodWeaver',
         [ 'NextRelease'         => { ':version' => '4.300018', time_zone => 'UTC', format => '%-8V  %{yyyy-MM-dd HH:mm:ss\'Z\'}d (%U)' } ],
 
@@ -163,7 +163,7 @@ sub configure
         [ 'Git::Tag'            => { tag_format => 'v%v%t', tag_message => 'v%v%t' } ],
         $self->server eq 'github' ? ( [ 'GitHub::Update' => { metacpan => 1 } ] ) : (),
         'Git::Push',
-        [ 'InstallRelease'      => { install_command => 'cpanm .' } ],
+        [ 'InstallRelease'      => { install_command => 'cpanm . && cpanm-reporter' } ],
 
         # listed late, to allow all other plugins which do BeforeRelease checks to run first.
         'ConfirmRelease',
@@ -190,7 +190,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.019
+version 0.020
 
 =head1 SYNOPSIS
 
@@ -237,7 +237,7 @@ following C<dist.ini> (following the preamble):
     dir = examples
 
     [Test::Compile]
-    :version = 2.010
+    :version = 2.023
     fail_on_warning = author
     bail_out_on_fail = 1
     script_finder = :ExecFiles
@@ -272,6 +272,9 @@ following C<dist.ini> (following the preamble):
     ; (Authority)
     [Git::Describe]
     [PkgVersion]
+    :version = 4.300036
+    die_on_existing_version = 1
+
     [PodWeaver]
     [NextRelease]
     :version = 4.300018
@@ -378,7 +381,7 @@ following C<dist.ini> (following the preamble):
     [Git::Push]
 
     [InstallRelease]
-    install_command = cpanm .
+    install_command = cpanm . && cpanm-reporter
 
 
     ; listed late, to allow all other plugins which do BeforeRelease checks to run first.
