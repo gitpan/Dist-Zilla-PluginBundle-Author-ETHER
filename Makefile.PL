@@ -23,7 +23,6 @@ my %WriteMakefileArgs = (
   "LICENSE" => "perl",
   "NAME" => "Dist::Zilla::PluginBundle::Author::ETHER",
   "PREREQ_PM" => {
-    "App::cpanminus::reporter" => 0,
     "CPAN::Changes" => "0.23",
     "Dist::Zilla::Plugin::Authority" => 0,
     "Dist::Zilla::Plugin::AutoMetaResources" => 0,
@@ -115,6 +114,7 @@ my %WriteMakefileArgs = (
     "IO::Handle" => 0,
     "IPC::Open3" => 0,
     "JSON" => 0,
+    "Moose::Util" => 0,
     "Path::Class" => 0,
     "Test::CheckDeps" => "0.006",
     "Test::DZil" => 0,
@@ -122,7 +122,7 @@ my %WriteMakefileArgs = (
     "Test::More" => "0.94",
     "Test::Warnings" => 0
   },
-  "VERSION" => "0.020",
+  "VERSION" => "0.021",
   "test" => {
     "TESTS" => "t/*.t"
   }

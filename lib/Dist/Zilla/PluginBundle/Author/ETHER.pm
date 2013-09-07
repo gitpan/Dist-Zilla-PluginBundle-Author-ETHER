@@ -5,9 +5,9 @@ BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
 }
 {
-  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.020';
+  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.021';
 }
-# git description: v0.019-5-g9a5577b
+# git description: v0.020-4-g9a76436
 
 # ABSTRACT: A plugin bundle for distributions built by ETHER
 
@@ -85,6 +85,7 @@ sub configure
         #[Test::Pod::LinkCheck]     many outstanding bugs
         'Test::Pod::No404s',
         [ 'Test::Kwalitee'      => { ':version' => '2.06' } ],
+        [ 'MojibakeTests' ],
 
         # Prune Files
         'PruneCruft',
@@ -163,7 +164,7 @@ sub configure
         [ 'Git::Tag'            => { tag_format => 'v%v%t', tag_message => 'v%v%t' } ],
         $self->server eq 'github' ? ( [ 'GitHub::Update' => { metacpan => 1 } ] ) : (),
         'Git::Push',
-        [ 'InstallRelease'      => { install_command => 'cpanm . && cpanm-reporter' } ],
+        [ 'InstallRelease'      => { install_command => 'cpanm .' } ],
 
         # listed late, to allow all other plugins which do BeforeRelease checks to run first.
         'ConfirmRelease',
@@ -190,7 +191,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.020
+version 0.021
 
 =head1 SYNOPSIS
 
@@ -266,6 +267,7 @@ following C<dist.ini> (following the preamble):
     ;[Test::Pod::LinkCheck]     many outstanding bugs
     [Test::Pod::No404s]
     [Test::Kwalitee]
+    [MojibakeTests]
 
 
     ;;; Munge Files
@@ -381,7 +383,7 @@ following C<dist.ini> (following the preamble):
     [Git::Push]
 
     [InstallRelease]
-    install_command = cpanm . && cpanm-reporter
+    install_command = cpanm .
 
 
     ; listed late, to allow all other plugins which do BeforeRelease checks to run first.
