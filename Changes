@@ -1,9 +1,16 @@
 Revision history for Dist-Zilla-PluginBundle-Author-ETHER
 
+0.022     2013-09-10 01:48:53Z (Karen Etheridge)
+          - warnings tests bypassed during installation, to prevent
+            installation issues in the presence of deprecation warnings from
+            upstream dependencies (in this case, via Moose 2.1100) - and
+            similar change made in test generated via minting profile
+          - bumped dependency version for [Test::PodSpelling] and wordlists
+          - bumped dependency on Dist::Zilla, for yaml encoding fixes
+
 0.021     2013-09-07 19:41:06Z (Karen Etheridge)
           - disable invocation of cpanm-reporter (see RT#88367)
           - added [MojibakeTests], for testing file encoding at release time
-          - removed use of deprecated Class::MOP::class_of
 
 0.020     2013-09-02 23:50:35Z (Karen Etheridge)
           - set new die_on_existing_version option in [PkgVersion]

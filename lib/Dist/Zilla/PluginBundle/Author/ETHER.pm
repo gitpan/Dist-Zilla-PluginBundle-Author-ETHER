@@ -5,9 +5,9 @@ BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
 }
 {
-  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.021';
+  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.022';
 }
-# git description: v0.020-4-g9a76436
+# git description: v0.021-5-g1f77b45
 
 # ABSTRACT: A plugin bundle for distributions built by ETHER
 
@@ -182,8 +182,8 @@ __END__
 
 =encoding utf-8
 
-=for :stopwords Karen Etheridge metacpan Stopwords ModuleBuildTiny customizations KENTNL's
-irc
+=for :stopwords Karen Etheridge metacpan Stopwords ModuleBuildTiny github metadata
+customizations KENTNL's irc
 
 =head1 NAME
 
@@ -191,7 +191,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.021
+version 0.022
 
 =head1 SYNOPSIS
 
@@ -443,7 +443,7 @@ Encouraged choices are:
 C<github>
 
 (default)
-metadata and release plugins are tailored to L<github|http://github.com>..
+metadata and release plugins are tailored to L<github|http://github.com>.
 
 =item *
 
