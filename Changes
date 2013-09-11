@@ -1,5 +1,8 @@
 Revision history for Dist-Zilla-PluginBundle-Author-ETHER
 
+0.023     2013-09-11 01:43:22Z (Karen Etheridge)
+          - now checking for stale prereqs at dist release time
+
 0.022     2013-09-10 01:48:53Z (Karen Etheridge)
           - warnings tests bypassed during installation, to prevent
             installation issues in the presence of deprecation warnings from

@@ -36,10 +36,10 @@ no_index:
 provides:
   Dist::Zilla::MintingProfile::Author::ETHER:
     file: lib/Dist/Zilla/MintingProfile/Author/ETHER.pm
-    version: 0.022
+    version: 0.023
   Dist::Zilla::PluginBundle::Author::ETHER:
     file: lib/Dist/Zilla/PluginBundle/Author/ETHER.pm
-    version: 0.022
+    version: 0.023
 recommends:
   Dist::Zilla::Plugin::GitHub::Update: 0
   Dist::Zilla::Plugin::GithubMeta: 0
@@ -148,7 +148,7 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-PluginBundle-Author-ETHER
   homepage: https://github.com/karenetheridge/Dist-Zilla-PluginBundle-Author-ETHER
   repository: https://github.com/karenetheridge/Dist-Zilla-PluginBundle-Author-ETHER.git
-version: 0.022
+version: 0.023
 x_Dist_Zilla:
   perl:
     version: 5.019003
@@ -224,11 +224,11 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::PromptIfStale
       name: '@Author::ETHER/build'
-      version: 0.003
+      version: 0.004
     -
       class: Dist::Zilla::Plugin::PromptIfStale
       name: '@Author::ETHER/release'
-      version: 0.003
+      version: 0.004
     -
       class: Dist::Zilla::Plugin::ExecDir
       name: '@Author::ETHER/ExecDir'

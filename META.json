@@ -32,7 +32,7 @@
          "requires" : {
             "Dist::Zilla" : "4.300038",
             "Dist::Zilla::Plugin::MakeMaker" : "0",
-            "Dist::Zilla::PluginBundle::Author::ETHER" : "0.021",
+            "Dist::Zilla::PluginBundle::Author::ETHER" : "0.022",
             "Pod::Wordlist" : "1.06",
             "Test::CPAN::Changes" : "0.19",
             "Test::CPAN::Meta" : "0",
@@ -179,11 +179,11 @@
    "provides" : {
       "Dist::Zilla::MintingProfile::Author::ETHER" : {
          "file" : "lib/Dist/Zilla/MintingProfile/Author/ETHER.pm",
-         "version" : "0.022"
+         "version" : "0.023"
       },
       "Dist::Zilla::PluginBundle::Author::ETHER" : {
          "file" : "lib/Dist/Zilla/PluginBundle/Author/ETHER.pm",
-         "version" : "0.022"
+         "version" : "0.023"
       }
    },
    "release_status" : "stable",
@@ -199,7 +199,7 @@
          "web" : "https://github.com/karenetheridge/Dist-Zilla-PluginBundle-Author-ETHER"
       }
    },
-   "version" : "0.022",
+   "version" : "0.023",
    "x_Dist_Zilla" : {
       "perl" : {
          "version" : "5.019003"
@@ -300,12 +300,12 @@
          {
             "class" : "Dist::Zilla::Plugin::PromptIfStale",
             "name" : "@Author::ETHER/build",
-            "version" : "0.003"
+            "version" : "0.004"
          },
          {
             "class" : "Dist::Zilla::Plugin::PromptIfStale",
             "name" : "@Author::ETHER/release",
-            "version" : "0.003"
+            "version" : "0.004"
          },
          {
             "class" : "Dist::Zilla::Plugin::ExecDir",

@@ -5,7 +5,7 @@ BEGIN {
   $Dist::Zilla::MintingProfile::Author::ETHER::AUTHORITY = 'cpan:ETHER';
 }
 {
-  $Dist::Zilla::MintingProfile::Author::ETHER::VERSION = '0.022';
+  $Dist::Zilla::MintingProfile::Author::ETHER::VERSION = '0.023';
 }
 # ABSTRACT: Mint distributions like ETHER does
 
@@ -22,7 +22,7 @@ __END__
 
 =encoding utf-8
 
-=for :stopwords Karen Etheridge github metadata irc
+=for :stopwords Karen Etheridge irc
 
 =head1 NAME
 
@@ -30,7 +30,7 @@ Dist::Zilla::MintingProfile::Author::ETHER - Mint distributions like ETHER does
 
 =head1 VERSION
 
-version 0.022
+version 0.023
 
 =head1 SYNOPSIS
 

@@ -5,9 +5,9 @@ BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
 }
 {
-  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.022';
+  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.023';
 }
-# git description: v0.021-5-g1f77b45
+# git description: v0.022-3-gbc3d27b
 
 # ABSTRACT: A plugin bundle for distributions built by ETHER
 
@@ -57,7 +57,7 @@ sub configure
 
         # BeforeBuild
         [ 'PromptIfStale' => 'build' => { phase => 'build', module => [ blessed($self) ] } ],
-        [ 'PromptIfStale' => 'release' => { phase => 'release', check_all_plugins => 1 } ],
+        [ 'PromptIfStale' => 'release' => { phase => 'release', check_all_plugins => 1, ':version' => '0.004', check_all_prereqs => 1 } ],
 
         # ExecFiles, ShareDir
         [ 'ExecDir'             => { dir => 'script' } ],
@@ -182,8 +182,8 @@ __END__
 
 =encoding utf-8
 
-=for :stopwords Karen Etheridge metacpan Stopwords ModuleBuildTiny github metadata
-customizations KENTNL's irc
+=for :stopwords Karen Etheridge metacpan Stopwords ModuleBuildTiny customizations KENTNL's
+irc
 
 =head1 NAME
 
@@ -191,7 +191,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.022
+version 0.023
 
 =head1 SYNOPSIS
 
@@ -215,6 +215,8 @@ following C<dist.ini> (following the preamble):
     [PromptIfStale / release]
     phase = release
     check_all_plugins = 1
+    :version = 0.004
+    check_all_prereqs = 1
 
 
     ;;; ExecFiles, ShareDir
