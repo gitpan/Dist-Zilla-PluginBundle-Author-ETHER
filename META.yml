@@ -11,7 +11,7 @@ build_requires:
   JSON: 0
   Moose::Util: 0
   Path::Class: 0
-  Test::CheckDeps: 0.006
+  Test::CheckDeps: 0.007
   Test::DZil: 0
   Test::Deep: 0
   Test::More: 0.94
@@ -36,10 +36,10 @@ no_index:
 provides:
   Dist::Zilla::MintingProfile::Author::ETHER:
     file: lib/Dist/Zilla/MintingProfile/Author/ETHER.pm
-    version: 0.023
+    version: 0.024
   Dist::Zilla::PluginBundle::Author::ETHER:
     file: lib/Dist/Zilla/PluginBundle/Author/ETHER.pm
-    version: 0.023
+    version: 0.024
 recommends:
   Dist::Zilla::Plugin::GitHub::Update: 0
   Dist::Zilla::Plugin::GithubMeta: 0
@@ -114,7 +114,7 @@ requires:
   Dist::Zilla::Plugin::TemplateModule: 0
   Dist::Zilla::Plugin::Test::CPAN::Changes: 0.008
   Dist::Zilla::Plugin::Test::ChangesHasContent: 0
-  Dist::Zilla::Plugin::Test::CheckDeps: 0.007
+  Dist::Zilla::Plugin::Test::CheckDeps: 0.008
   Dist::Zilla::Plugin::Test::Compile: 2.023
   Dist::Zilla::Plugin::Test::Kwalitee: 2.06
   Dist::Zilla::Plugin::Test::MinimumVersion: 2.000003
@@ -148,7 +148,7 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-PluginBundle-Author-ETHER
   homepage: https://github.com/karenetheridge/Dist-Zilla-PluginBundle-Author-ETHER
   repository: https://github.com/karenetheridge/Dist-Zilla-PluginBundle-Author-ETHER.git
-version: 0.023
+version: 0.024
 x_Dist_Zilla:
   perl:
     version: 5.019003
@@ -224,11 +224,11 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::PromptIfStale
       name: '@Author::ETHER/build'
-      version: 0.004
+      version: 0.005
     -
       class: Dist::Zilla::Plugin::PromptIfStale
       name: '@Author::ETHER/release'
-      version: 0.004
+      version: 0.005
     -
       class: Dist::Zilla::Plugin::ExecDir
       name: '@Author::ETHER/ExecDir'
@@ -275,15 +275,21 @@ x_Dist_Zilla:
             - ':ExecFiles'
             - '@Author::ETHER/Examples'
       name: '@Author::ETHER/Test::Compile'
-      version: 2.029
+      version: 2.030
     -
       class: Dist::Zilla::Plugin::Test::CheckDeps
       name: '@Author::ETHER/Test::CheckDeps'
-      version: 0.007
+      version: 0.008
     -
       class: Dist::Zilla::Plugin::NoTabsTests
+      config:
+        Dist::Zilla::Plugin::Test::NoTabs:
+          module_finder:
+            - ':InstallModules'
+          script_finder:
+            - ':ExecFiles'
       name: '@Author::ETHER/NoTabsTests'
-      version: 0.01
+      version: 0.02
     -
       class: Dist::Zilla::Plugin::EOLTests
       name: '@Author::ETHER/EOLTests'

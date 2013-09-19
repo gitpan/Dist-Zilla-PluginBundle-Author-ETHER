@@ -78,7 +78,7 @@ my %WriteMakefileArgs = (
     "Dist::Zilla::Plugin::TemplateModule" => 0,
     "Dist::Zilla::Plugin::Test::CPAN::Changes" => "0.008",
     "Dist::Zilla::Plugin::Test::ChangesHasContent" => 0,
-    "Dist::Zilla::Plugin::Test::CheckDeps" => "0.007",
+    "Dist::Zilla::Plugin::Test::CheckDeps" => "0.008",
     "Dist::Zilla::Plugin::Test::Compile" => "2.023",
     "Dist::Zilla::Plugin::Test::Kwalitee" => "2.06",
     "Dist::Zilla::Plugin::Test::MinimumVersion" => "2.000003",
@@ -117,14 +117,14 @@ my %WriteMakefileArgs = (
     "JSON" => 0,
     "Moose::Util" => 0,
     "Path::Class" => 0,
-    "Test::CheckDeps" => "0.006",
+    "Test::CheckDeps" => "0.007",
     "Test::DZil" => 0,
     "Test::Deep" => 0,
     "Test::More" => "0.94",
     "Test::Warnings" => 0,
     "if" => 0
   },
-  "VERSION" => "0.023",
+  "VERSION" => "0.024",
   "test" => {
     "TESTS" => "t/*.t"
   }

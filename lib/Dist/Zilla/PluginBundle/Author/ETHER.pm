@@ -5,9 +5,9 @@ BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
 }
 {
-  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.023';
+  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.024';
 }
-# git description: v0.022-3-gbc3d27b
+# git description: v0.023-17-g41e262b
 
 # ABSTRACT: A plugin bundle for distributions built by ETHER
 
@@ -29,17 +29,27 @@ has installer => (
     default => sub {
         exists $_[0]->payload->{installer}
             ? $_[0]->payload->{installer}
-            : 'ModuleBuildTiny';
+            : 'none';
     },
 );
 
 has server => (
-    is => 'ro', isa => enum([qw(github gitmo p5sagit none)]),
+    is => 'ro', isa => enum([qw(github gitmo p5sagit catagits none)]),
     lazy => 1,
     default => sub {
         exists $_[0]->payload->{server}
             ? $_[0]->payload->{server}
             : 'github';
+    },
+);
+
+has _requested_version => (
+    is => 'ro', isa => 'Str',
+    lazy => 1,
+    default => sub {
+        exists $_[0]->payload->{':version'}
+            ? $_[0]->payload->{':version'}
+            : '0';
     },
 );
 
@@ -57,7 +67,7 @@ sub configure
 
         # BeforeBuild
         [ 'PromptIfStale' => 'build' => { phase => 'build', module => [ blessed($self) ] } ],
-        [ 'PromptIfStale' => 'release' => { phase => 'release', check_all_plugins => 1, ':version' => '0.004', check_all_prereqs => 1 } ],
+        [ 'PromptIfStale' => 'release' => { phase => 'release', check_all_plugins => 1, check_all_prereqs => 1 } ],
 
         # ExecFiles, ShareDir
         [ 'ExecDir'             => { dir => 'script' } ],
@@ -70,8 +80,8 @@ sub configure
         [ 'Git::GatherDir'      => { exclude_filename => 'LICENSE' } ],
         qw(MetaYAML MetaJSON License Readme Manifest),
         [ 'Test::Compile'       => { ':version' => '2.023', fail_on_warning => 'author', bail_out_on_fail => 1, script_finder => [qw(:ExecFiles @Author::ETHER/Examples)] } ],
-        [ 'Test::CheckDeps'     => { ':version' => '0.007', fatal => 1, level => 'suggests' } ],
-        'NoTabsTests',
+        [ 'Test::CheckDeps'     => { fatal => 1, level => 'suggests' } ],
+        [ 'Test::NoTabs'        => { script_finder => [qw(:ExecFiles @Author::ETHER/Examples)] } ],
         'EOLTests',
         'MetaTests',
         [ 'Test::Version'       => { is_strict => 1 } ],
@@ -84,7 +94,7 @@ sub configure
         'Test::PodSpelling',
         #[Test::Pod::LinkCheck]     many outstanding bugs
         'Test::Pod::No404s',
-        [ 'Test::Kwalitee'      => { ':version' => '2.06' } ],
+        'Test::Kwalitee',
         [ 'MojibakeTests' ],
 
         # Prune Files
@@ -104,6 +114,7 @@ sub configure
         [ 'AutoMetaResources'   => { 'bugtracker.rt' => 1,
               $self->server eq 'gitmo' ? ( 'repository.gitmo' => 1 )
             : $self->server eq 'p5sagit' ? ( 'repository.p5sagit' => 1 )
+            : $self->server eq 'catagits' ? ( 'repository.catagits' => 1 )
             : ()
         } ],
         [ 'Authority'           => { authority => 'cpan:ETHER' } ],
@@ -116,14 +127,10 @@ sub configure
         # (MakeMaker or other installer)
         'AutoPrereqs',
         'MinimumPerl',
-        [ 'Prereqs' => 'Test::CheckDeps, indirect' => {
-                '-phase' => 'test', '-relationship' => 'requires',
-                'CPAN::Meta::Check' => '0.007',
-                } ],
         [ 'Prereqs' => installer_requirements => {
                 '-phase' => 'develop', '-relationship' => 'requires',
                 'Dist::Zilla' => Dist::Zilla->VERSION,
-                blessed($self) => $self->VERSION,
+                blessed($self) => $self->_requested_version,
                 # this is mostly pointless as by the time this runs, we're
                 # already trying to load the installer plugin
                 $self->installer ne 'none'
@@ -171,7 +178,8 @@ sub configure
     );
 
     # check for a bin/ that should probably be renamed to script/
-    warn 'bin/ detected - should this be moved to script/, so its contents can be installed into $PATH?' if -d 'bin';
+    warn 'bin/ detected - should this be moved to script/, so its contents can be installed into $PATH?'
+        if -d 'bin' and $self->installer eq 'ModuleBuildTiny';
 }
 
 __PACKAGE__->meta->make_immutable;
@@ -182,7 +190,7 @@ __END__
 
 =encoding utf-8
 
-=for :stopwords Karen Etheridge metacpan Stopwords ModuleBuildTiny customizations KENTNL's
+=for :stopwords Karen Etheridge metacpan Stopwords ModuleBuildTiny customizations KENTNL
 irc
 
 =head1 NAME
@@ -191,7 +199,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.023
+version 0.024
 
 =head1 SYNOPSIS
 
@@ -215,7 +223,7 @@ following C<dist.ini> (following the preamble):
     [PromptIfStale / release]
     phase = release
     check_all_plugins = 1
-    :version = 0.004
+    ; requires :version = 0.004, but we will be checking ourselves)
     check_all_prereqs = 1
 
 
@@ -247,11 +255,13 @@ following C<dist.ini> (following the preamble):
     script_finder = Examples
 
     [Test::CheckDeps]
-    :version = 0.007
     fatal = 1
     level = suggests
 
-    [NoTabsTests]
+    [Test::NoTabs]
+    script_finder = :ExecFiles
+    script_finder = Examples
+
     [EOLTests]
     [MetaTests]
     [Test::Version]
@@ -310,16 +320,11 @@ following C<dist.ini> (following the preamble):
     [AutoPrereqs]
     [MinimumPerl]
 
-    [Prereqs / Test::CheckDeps, indirect]
-    -phase = test
-    -relationship = requires
-    CPAN::Meta::Check = 0.007
-
     [Prereqs / installer_requirements]
     -phase = develop
     -relationship = requires
     Dist::Zilla = <version used to built this bundle>
-    Dist::Zilla::PluginBundle::Author::ETHER = <our own version>
+    Dist::Zilla::PluginBundle::Author::ETHER = <version specified in dist.ini>
 
 
     ;;; Install Tool
@@ -328,7 +333,7 @@ following C<dist.ini> (following the preamble):
     filename = README.md
     location = root
 
-    <specified installer> or [ModuleBuildTiny]
+    <specified installer>
     [InstallGuide]
 
 
@@ -423,8 +428,8 @@ many as you'd like), as described in L<Pod::Spelling/ADDING STOPWORDS>:
 
 =head2 installer
 
-The installer back-end selected by default is (currently)
-L<[ModuleBuildTiny]|Dist::Zilla::Plugin::ModuleBuildTiny>.
+The installer back-end to use; defaults to C<none> (forcing users to
+consciously choose which is desired).
 You can select other backends (by plugin name, without the C<[]>), with the
 C<installer> option, or 'none' if you are supplying your own, as a separate
 plugin.
@@ -434,7 +439,7 @@ Encouraged choices are:
     installer = ModuleBuildTiny
     installer = MakeMaker
     installer = =inc::Foo (if no configs are needed for this plugin)
-    installer = none
+    installer = none (if you are including your own later on, with configs)
 
 =head2 server
 
@@ -460,6 +465,13 @@ C<p5sagit>
 
 metadata and release plugins are tailored to
 L<http://git.shadowcat.co.uk|p5sagit@git.shadowcat.co.uk>.
+
+=item *
+
+C<catagits>
+
+metadata and release plugins are tailored to
+L<http://git.shadowcat.co.uk|catagits@git.shadowcat.co.uk>.
 
 =item *
 
