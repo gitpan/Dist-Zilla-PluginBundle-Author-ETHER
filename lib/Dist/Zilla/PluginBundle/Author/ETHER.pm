@@ -5,9 +5,9 @@ BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
 }
 {
-  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.024';
+  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.025';
 }
-# git description: v0.023-17-g41e262b
+# git description: v0.024-15-g91baef4
 
 # ABSTRACT: A plugin bundle for distributions built by ETHER
 
@@ -18,19 +18,23 @@ with
     'Dist::Zilla::Role::PluginBundle::Config::Slicer';
 
 use Dist::Zilla::Util;
-use Module::Runtime 'use_module';
 use Moose::Util::TypeConstraints;
+use List::MoreUtils 'any';
 use namespace::autoclean;
+
+sub mvp_multivalue_args { qw(installer) }
 
 # Note: no support yet for depending on a specific version of the plugin
 has installer => (
-    is => 'ro', isa => 'Str',
+    isa => 'ArrayRef[Str]',
     lazy => 1,
     default => sub {
         exists $_[0]->payload->{installer}
             ? $_[0]->payload->{installer}
-            : 'none';
+            : [ 'MakeMaker::Fallback', 'ModuleBuildTiny' ];
     },
+    traits => ['Array'],
+    handles => { installer => 'elements' },
 );
 
 has server => (
@@ -56,6 +60,18 @@ has _requested_version => (
 my %installer_args = (
     ModuleBuildTiny => { ':version' => '0.004' },
 );
+
+around BUILDARGS => sub
+{
+    my $orig = shift;
+    my $self = shift;
+    my $args = $self->$orig(@_);
+
+    # remove 'none' from installer list
+    return $args if not exists $args->{payload}{installer};
+    @{$args->{payload}{installer}} = grep { $_ ne 'none' } @{$args->{payload}{installer}};
+    return $args;
+};
 
 sub configure
 {
@@ -95,7 +111,8 @@ sub configure
         #[Test::Pod::LinkCheck]     many outstanding bugs
         'Test::Pod::No404s',
         'Test::Kwalitee',
-        [ 'MojibakeTests' ],
+        'MojibakeTests',
+        'Test::ReportPrereqs',
 
         # Prune Files
         'PruneCruft',
@@ -131,20 +148,18 @@ sub configure
                 '-phase' => 'develop', '-relationship' => 'requires',
                 'Dist::Zilla' => Dist::Zilla->VERSION,
                 blessed($self) => $self->_requested_version,
+
                 # this is mostly pointless as by the time this runs, we're
                 # already trying to load the installer plugin
-                $self->installer ne 'none'
-                    ? ( Dist::Zilla::Util->expand_config_package_name($self->installer) =>
-                        ($installer_args{$self->installer} // {})->{':version'} // 0
-                    )
-                    : (),
+                ( map {
+                    Dist::Zilla::Util->expand_config_package_name($_) =>
+                        ($installer_args{$_} // {})->{':version'} // 0
+                } $self->installer ),
             } ],
 
         # Install Tool
         [ 'ReadmeAnyFromPod'    => { type => 'markdown', filename => 'README.md', location => 'root' } ],
-        $self->installer ne 'none'
-            ? [ $self->installer => $installer_args{$self->installer} // () ]
-            : (),
+        ( map { [ $_ => $installer_args{$_} // () ] } $self->installer ),
         'InstallGuide',
 
         # After Build
@@ -179,7 +194,7 @@ sub configure
 
     # check for a bin/ that should probably be renamed to script/
     warn 'bin/ detected - should this be moved to script/, so its contents can be installed into $PATH?'
-        if -d 'bin' and $self->installer eq 'ModuleBuildTiny';
+        if -d 'bin' and any { $_ eq 'ModuleBuildTiny' } $self->installer;
 }
 
 __PACKAGE__->meta->make_immutable;
@@ -190,7 +205,7 @@ __END__
 
 =encoding utf-8
 
-=for :stopwords Karen Etheridge metacpan Stopwords ModuleBuildTiny customizations KENTNL
+=for :stopwords Karen Etheridge metacpan Stopwords ModuleBuildTiny customizations KENTNL's
 irc
 
 =head1 NAME
@@ -199,7 +214,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.024
+version 0.025
 
 =head1 SYNOPSIS
 
@@ -333,7 +348,7 @@ following C<dist.ini> (following the preamble):
     filename = README.md
     location = root
 
-    <specified installer>
+    <specified installer(s)>
     [InstallGuide]
 
 
@@ -422,14 +437,17 @@ Subs can be considered "covered" for pod coverage tests by adding a directive to
 =head2 spelling stopwords
 
 Stopwords for spelling tests can be added by adding a directive to pod (as
-many as you'd like), as described in L<Pod::Spelling/ADDING STOPWORDS>:
+many as you'd like), as described in L<Pod::Spell/ADDING STOPWORDS>:
 
     =for stopwords foo bar baz
 
 =head2 installer
 
-The installer back-end to use; defaults to C<none> (forcing users to
-consciously choose which is desired).
+The installer back-end(s) to use (can be specified more than once); defaults
+to C<MakeMaker::Fallback>
+and C<ModuleBuildTiny> (which generates a F<Build.PL> for normal use, and
+F<Makefile.PL> as a fallback, containing an upgrade warning).
+
 You can select other backends (by plugin name, without the C<[]>), with the
 C<installer> option, or 'none' if you are supplying your own, as a separate
 plugin.
@@ -486,6 +504,9 @@ you'll need to provide this yourself.
 
 This bundle makes use of L<Dist::Zilla::Role::PluginBundle::PluginRemover> and
 L<Dist::Zilla::Role::PluginBundle::Config::Slicer> to allow further customization.
+Plugins are not loaded until they are actually needed, so it is possible to
+C<--force>-install this plugin bundle and C<-remove> some plugins that do not
+install or are otherwise problematic.
 
 =head1 NAMING SCHEME
 

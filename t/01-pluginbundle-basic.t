@@ -7,9 +7,12 @@ use Test::Deep;
 use Test::DZil;
 use File::Find;
 use File::Spec;
+use Path::Tiny;
+
+use Test::Requires 'Dist::Zilla::Plugin::MakeMaker::Fallback';
 
 my $tzil = Builder->from_config(
-    { dist_root => 't/corpus/dist/no_options' },
+    { dist_root => 't/does_not_exist' },
     {
         add_files => {
             'source/dist.ini' => dist_ini(
@@ -25,17 +28,43 @@ my $tzil = Builder->from_config(
                 # our files are copied into source, so Git::GatherDir doesn't see them
                 # and besides, we would like to run these tests at install time too!
                 [ '@Author::ETHER' => {
-                    '-remove' => [ 'Git::GatherDir', 'Git::NextVersion', 'PromptIfStale' ],
+                    '-remove' => [ 'Git::GatherDir', 'Git::NextVersion', 'Git::Describe', 'PromptIfStale' ],
                 } ],
             ),
+            path(qw(source lib NoOptions.pm)) => <<'MODULE',
+use strict;
+use warnings;
+package NoOptions;
+# ABSTRACT: Sample abstract
+
+1;
+MODULE
         },
     },
 );
+
+my @git_plugins =
+    grep { /Git/ }
+    map { blessed $_ }
+    grep {
+            $_->does('Dist::Zilla::Role::BeforeBuild')
+         or $_->does('Dist::Zilla::Role::FileGatherer')
+         or $_->does('Dist::Zilla::Role::FilePruner')
+         or $_->does('Dist::Zilla::Role::FileMunger')
+         or $_->does('Dist::Zilla::Role::PrereqSource')
+         or $_->does('Dist::Zilla::Role::InstallTool')
+         or $_->does('Dist::Zilla::Role::AfterBuild')
+    } @{$tzil->plugins};
+
+cmp_deeply(\@git_plugins, [], 'no git-based plugins are running here');
+
 
 $tzil->build;
 my $build_dir = $tzil->tempdir->subdir('build');
 
 my @expected_files = qw(
+    Build.PL
+    Makefile.PL
     dist.ini
     INSTALL
     lib/NoOptions.pm
@@ -46,6 +75,7 @@ my @expected_files = qw(
     README
     t/00-check-deps.t
     t/00-compile.t
+    t/00-report-prereqs.t
     xt/author/pod-spell.t
     xt/release/changes_has_content.t
     xt/release/cpan-changes.t
