@@ -5,9 +5,9 @@ BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
 }
 {
-  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.025';
+  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.026';
 }
-# git description: v0.024-15-g91baef4
+# git description: v0.025-3-g25d9db7
 
 # ABSTRACT: A plugin bundle for distributions built by ETHER
 
@@ -214,7 +214,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.025
+version 0.026
 
 =head1 SYNOPSIS
 

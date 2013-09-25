@@ -2,11 +2,17 @@ use strict;
 use warnings FATAL => 'all';
 
 use Test::More;
-use if $ENV{AUTHOR_TESTING} || $ENV{AUTOMATED_TESTING}, 'Test::Warnings';
+use if $ENV{AUTHOR_TESTING}, 'Test::Warnings';
 use Test::Deep;
 use Test::Deep::JSON;
 use Test::DZil;
 use Path::Tiny;
+
+use Test::Requires qw(
+    Dist::Zilla::Plugin::MakeMaker::Fallback
+    Dist::Zilla::Plugin::GitHub::Update
+    Dist::Zilla::Plugin::AutoMetaResources
+);
 
 # this data should be constant across all server types
 my %bugtracker = (

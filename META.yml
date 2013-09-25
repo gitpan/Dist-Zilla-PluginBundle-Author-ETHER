@@ -3,10 +3,13 @@ abstract: 'A plugin bundle for distributions built by ETHER'
 author:
   - 'Karen Etheridge <ether@cpan.org>'
 build_requires:
+  ExtUtils::MakeMaker: 0
   File::Find: 0
   File::Spec: 0
+  File::Spec::Functions: 0
   IO::Handle: 0
   IPC::Open3: 0
+  List::Util: 0
   Module::Runtime: 0
   Moose::Util: 0
   Path::Class: 0
@@ -38,11 +41,12 @@ no_index:
 provides:
   Dist::Zilla::MintingProfile::Author::ETHER:
     file: lib/Dist/Zilla/MintingProfile/Author/ETHER.pm
-    version: 0.025
+    version: 0.026
   Dist::Zilla::PluginBundle::Author::ETHER:
     file: lib/Dist/Zilla/PluginBundle/Author/ETHER.pm
-    version: 0.025
+    version: 0.026
 recommends:
+  Dist::Zilla::Plugin::AutoMetaResources: 0
   Dist::Zilla::Plugin::GitHub::Update: 0
   Dist::Zilla::Plugin::GithubMeta: 0
   Dist::Zilla::Plugin::MakeMaker: 0
@@ -65,7 +69,6 @@ requires:
   CPAN::Changes: 0.23
   Dist::Zilla: 4.300038
   Dist::Zilla::Plugin::Authority: 0
-  Dist::Zilla::Plugin::AutoMetaResources: 0
   Dist::Zilla::Plugin::AutoPrereqs: 0
   Dist::Zilla::Plugin::CheckPrereqsIndexed: 0
   Dist::Zilla::Plugin::ConfirmRelease: 0
@@ -88,7 +91,6 @@ requires:
   Dist::Zilla::Plugin::Git::Remote::Check: 0
   Dist::Zilla::Plugin::Git::Tag: 0
   Dist::Zilla::Plugin::GitHub::Create: 0.35
-  Dist::Zilla::Plugin::GithubMeta: 0
   Dist::Zilla::Plugin::InstallGuide: 0
   Dist::Zilla::Plugin::InstallRelease: 0
   Dist::Zilla::Plugin::License: 0
@@ -155,10 +157,10 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-PluginBundle-Author-ETHER
   homepage: https://github.com/karenetheridge/Dist-Zilla-PluginBundle-Author-ETHER
   repository: https://github.com/karenetheridge/Dist-Zilla-PluginBundle-Author-ETHER.git
-version: 0.025
+version: 0.026
 x_Dist_Zilla:
   perl:
-    version: 5.019003
+    version: 5.019004
   plugins:
     -
       class: Dist::Zilla::Plugin::ModuleShareDirs
@@ -225,6 +227,14 @@ x_Dist_Zilla:
       name: missing_test_injections
       version: 4.300039
     -
+      class: Dist::Zilla::Plugin::Prereqs
+      config:
+        Dist::Zilla::Plugin::Prereqs:
+          phase: develop
+          type: requires
+      name: author_tests
+      version: 4.300039
+    -
       class: Dist::Zilla::Plugin::MetaResources
       name: MetaResources
       version: 4.300039
@@ -235,11 +245,11 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::PromptIfStale
       name: '@Author::ETHER/build'
-      version: 0.005
+      version: 0.006
     -
       class: Dist::Zilla::Plugin::PromptIfStale
       name: '@Author::ETHER/release'
-      version: 0.005
+      version: 0.006
     -
       class: Dist::Zilla::Plugin::ExecDir
       name: '@Author::ETHER/ExecDir'
@@ -342,6 +352,10 @@ x_Dist_Zilla:
       class: Dist::Zilla::Plugin::MojibakeTests
       name: '@Author::ETHER/MojibakeTests'
       version: 0.5
+    -
+      class: Dist::Zilla::Plugin::Test::ReportPrereqs
+      name: '@Author::ETHER/Test::ReportPrereqs'
+      version: 0.006
     -
       class: Dist::Zilla::Plugin::PruneCruft
       name: '@Author::ETHER/PruneCruft'

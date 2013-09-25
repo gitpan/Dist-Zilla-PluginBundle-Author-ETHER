@@ -18,6 +18,7 @@ profiles/github/skel/t/01-basic.t
 profiles/github/skel/weaver.ini
 t/00-check-deps.t
 t/00-compile.t
+t/00-report-prereqs.t
 t/01-pluginbundle-basic.t
 t/02-minter-github.t
 t/03-pluginbundle-server.t

@@ -2,7 +2,7 @@ use strict;
 use warnings FATAL => 'all';
 
 use Test::More;
-use if $ENV{AUTHOR_TESTING} || $ENV{AUTOMATED_TESTING}, 'Test::Warnings';
+use if $ENV{AUTHOR_TESTING}, 'Test::Warnings';
 use Test::Deep;
 use Test::DZil;
 use File::Find;
@@ -29,6 +29,7 @@ my $tzil = Builder->from_config(
                 # and besides, we would like to run these tests at install time too!
                 [ '@Author::ETHER' => {
                     '-remove' => [ 'Git::GatherDir', 'Git::NextVersion', 'Git::Describe', 'PromptIfStale' ],
+                    server => 'none',
                 } ],
             ),
             path(qw(source lib NoOptions.pm)) => <<'MODULE',
