@@ -5,7 +5,7 @@ BEGIN {
   $Dist::Zilla::MintingProfile::Author::ETHER::AUTHORITY = 'cpan:ETHER';
 }
 {
-  $Dist::Zilla::MintingProfile::Author::ETHER::VERSION = '0.026';
+  $Dist::Zilla::MintingProfile::Author::ETHER::VERSION = '0.027';
 }
 # ABSTRACT: Mint distributions like ETHER does
 
@@ -14,7 +14,6 @@ with 'Dist::Zilla::Role::MintingProfile::ShareDir';
 use namespace::autoclean;
 
 __PACKAGE__->meta->make_immutable;
-1;
 
 __END__
 
@@ -30,7 +29,7 @@ Dist::Zilla::MintingProfile::Author::ETHER - Mint distributions like ETHER does
 
 =head1 VERSION
 
-version 0.026
+version 0.027
 
 =head1 SYNOPSIS
 

@@ -5,9 +5,9 @@ BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
 }
 {
-  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.026';
+  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.027';
 }
-# git description: v0.025-3-g25d9db7
+# git description: v0.026-9-gde42f57
 
 # ABSTRACT: A plugin bundle for distributions built by ETHER
 
@@ -205,7 +205,7 @@ __END__
 
 =encoding utf-8
 
-=for :stopwords Karen Etheridge metacpan Stopwords ModuleBuildTiny customizations KENTNL's
+=for :stopwords Karen Etheridge metacpan Stopwords ModuleBuildTiny customizations KENTNL
 irc
 
 =head1 NAME
@@ -214,18 +214,18 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.026
+version 0.027
 
 =head1 SYNOPSIS
 
-In C<dist.ini>:
+In your F<dist.ini>:
 
     [@Author::ETHER]
 
 =head1 DESCRIPTION
 
 This is a L<Dist::Zilla> plugin bundle. It is approximately equivalent to the
-following C<dist.ini> (following the preamble):
+following F<dist.ini> (following the preamble):
 
     ;;; VersionProvider
     [Git::NextVersion]

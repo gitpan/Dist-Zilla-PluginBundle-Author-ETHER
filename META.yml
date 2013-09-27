@@ -3,25 +3,29 @@ abstract: 'A plugin bundle for distributions built by ETHER'
 author:
   - 'Karen Etheridge <ether@cpan.org>'
 build_requires:
+  Exporter: 0
   ExtUtils::MakeMaker: 0
   File::Find: 0
   File::Spec: 0
   File::Spec::Functions: 0
   IO::Handle: 0
   IPC::Open3: 0
+  JSON: 0
   List::Util: 0
   Module::Runtime: 0
   Moose::Util: 0
   Path::Class: 0
   Path::Tiny: 0
+  Scalar::Util: 0
   Test::CheckDeps: 0.007
   Test::DZil: 0
   Test::Deep: 0
   Test::Deep::JSON: 0
   Test::More: 0.94
   Test::Requires: 0
-  Test::Warnings: 0
   if: 0
+  lib: 0
+  parent: 0
 configure_requires:
   ExtUtils::MakeMaker: 6.30
   File::ShareDir::Install: 0.03
@@ -41,19 +45,18 @@ no_index:
 provides:
   Dist::Zilla::MintingProfile::Author::ETHER:
     file: lib/Dist/Zilla/MintingProfile/Author/ETHER.pm
-    version: 0.026
+    version: 0.027
   Dist::Zilla::PluginBundle::Author::ETHER:
     file: lib/Dist/Zilla/PluginBundle/Author/ETHER.pm
-    version: 0.026
+    version: 0.027
 recommends:
-  Dist::Zilla::Plugin::AutoMetaResources: 0
   Dist::Zilla::Plugin::GitHub::Update: 0
   Dist::Zilla::Plugin::GithubMeta: 0
   Dist::Zilla::Plugin::MakeMaker: 0
   Dist::Zilla::Plugin::MakeMaker::Fallback: 0
   Dist::Zilla::Plugin::ModuleBuildTiny: 0.004
   Pod::Coverage::TrustPod: 0
-  Pod::Wordlist: 1.06
+  Pod::Wordlist: 1.09
   Test::CPAN::Changes: 0
   Test::CPAN::Meta: 0
   Test::EOL: 0
@@ -69,6 +72,7 @@ requires:
   CPAN::Changes: 0.23
   Dist::Zilla: 4.300038
   Dist::Zilla::Plugin::Authority: 0
+  Dist::Zilla::Plugin::AutoMetaResources: 0
   Dist::Zilla::Plugin::AutoPrereqs: 0
   Dist::Zilla::Plugin::CheckPrereqsIndexed: 0
   Dist::Zilla::Plugin::ConfirmRelease: 0
@@ -109,6 +113,7 @@ requires:
   Dist::Zilla::Plugin::PodCoverageTests: 0
   Dist::Zilla::Plugin::PodSyntaxTests: 0
   Dist::Zilla::Plugin::PodWeaver: 0
+  Dist::Zilla::Plugin::Prereqs: 0
   Dist::Zilla::Plugin::PromptIfStale: 0
   Dist::Zilla::Plugin::PruneCruft: 0
   Dist::Zilla::Plugin::Readme: 0
@@ -157,7 +162,7 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-PluginBundle-Author-ETHER
   homepage: https://github.com/karenetheridge/Dist-Zilla-PluginBundle-Author-ETHER
   repository: https://github.com/karenetheridge/Dist-Zilla-PluginBundle-Author-ETHER.git
-version: 0.026
+version: 0.027
 x_Dist_Zilla:
   perl:
     version: 5.019004
@@ -193,14 +198,6 @@ x_Dist_Zilla:
           phase: runtime
           type: recommends
       name: 'PluginBundle (direct, optional)'
-      version: 4.300039
-    -
-      class: Dist::Zilla::Plugin::Prereqs
-      config:
-        Dist::Zilla::Plugin::Prereqs:
-          phase: test
-          type: requires
-      name: 'PluginBundle (direct, testing)'
       version: 4.300039
     -
       class: Dist::Zilla::Plugin::Prereqs
@@ -300,7 +297,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::Test::CheckDeps
       name: '@Author::ETHER/Test::CheckDeps'
-      version: 0.008
+      version: 0.009
     -
       class: Dist::Zilla::Plugin::Test::NoTabs
       config:
@@ -311,7 +308,7 @@ x_Dist_Zilla:
             - ':ExecFiles'
             - '@Author::ETHER/Examples'
       name: '@Author::ETHER/Test::NoTabs'
-      version: 0.02
+      version: 0.04
     -
       class: Dist::Zilla::Plugin::EOLTests
       name: '@Author::ETHER/EOLTests'
@@ -374,8 +371,13 @@ x_Dist_Zilla:
       version: 4.300039
     -
       class: Dist::Zilla::Plugin::PodWeaver
+      config:
+        Dist::Zilla::Plugin::PodWeaver:
+          finder:
+            - ':InstallModules'
+            - ':ExecFiles'
       name: '@Author::ETHER/PodWeaver'
-      version: 3.101642
+      version: 3.102000
     -
       class: Dist::Zilla::Plugin::NextRelease
       name: '@Author::ETHER/NextRelease'

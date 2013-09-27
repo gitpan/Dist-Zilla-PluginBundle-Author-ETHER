@@ -59,6 +59,7 @@ my @modules = qw(
   Dist::Zilla::Plugin::PodCoverageTests
   Dist::Zilla::Plugin::PodSyntaxTests
   Dist::Zilla::Plugin::PodWeaver
+  Dist::Zilla::Plugin::Prereqs
   Dist::Zilla::Plugin::PromptIfStale
   Dist::Zilla::Plugin::PruneCruft
   Dist::Zilla::Plugin::Readme
@@ -87,6 +88,7 @@ my @modules = qw(
   Dist::Zilla::Role::PluginBundle::Easy
   Dist::Zilla::Role::PluginBundle::PluginRemover
   Dist::Zilla::Util
+  Exporter
   ExtUtils::MakeMaker
   File::Find
   File::ShareDir::Install
@@ -94,6 +96,7 @@ my @modules = qw(
   File::Spec::Functions
   IO::Handle
   IPC::Open3
+  JSON
   List::MoreUtils
   List::Util
   Module::Runtime
@@ -109,6 +112,7 @@ my @modules = qw(
   Pod::Weaver::Plugin::Transformer
   Pod::Weaver::PluginBundle::Default
   Pod::Wordlist
+  Scalar::Util
   Test::CPAN::Changes
   Test::CPAN::Meta
   Test::CheckDeps
@@ -126,10 +130,11 @@ my @modules = qw(
   Test::Requires
   Test::Spelling
   Test::Vars
-  Test::Warnings
   Text::Tabs
   if
+  lib
   namespace::autoclean
+  parent
   perl
   strict
   warnings

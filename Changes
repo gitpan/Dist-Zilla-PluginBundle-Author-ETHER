@@ -1,5 +1,12 @@
 Revision history for Dist-Zilla-PluginBundle-Author-ETHER
 
+0.027     2013-09-27 03:50:26Z (Karen Etheridge)
+          - minted dists once again use the default 'installer' value (now
+            [MakeMaker::Fallback] and [ModuleBuildTiny], since 0.025)
+          - added missing required prereqs, and now properly skipping relevant
+            tests when optional dependencies are not installed (with guard
+            tests to verify that all prereqs are properly declared) (RT#88977)
+
 0.026     2013-09-25 02:00:04Z (Karen Etheridge)
           - skip relevant tests when optional dependencies are not installed
 
