@@ -5,9 +5,9 @@ BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
 }
 {
-  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.027';
+  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.028';
 }
-# git description: v0.026-9-gde42f57
+# git description: v0.027-6-g534ba59
 
 # ABSTRACT: A plugin bundle for distributions built by ETHER
 
@@ -24,7 +24,8 @@ use namespace::autoclean;
 
 sub mvp_multivalue_args { qw(installer) }
 
-# Note: no support yet for depending on a specific version of the plugin
+# Note: no support yet for depending on a specific version of the plugin --
+# but [PromptIfStale] generally makes that unnecessary
 has installer => (
     isa => 'ArrayRef[Str]',
     lazy => 1,
@@ -96,7 +97,7 @@ sub configure
         [ 'Git::GatherDir'      => { exclude_filename => 'LICENSE' } ],
         qw(MetaYAML MetaJSON License Readme Manifest),
         [ 'Test::Compile'       => { ':version' => '2.023', fail_on_warning => 'author', bail_out_on_fail => 1, script_finder => [qw(:ExecFiles @Author::ETHER/Examples)] } ],
-        [ 'Test::CheckDeps'     => { fatal => 1, level => 'suggests' } ],
+        [ 'Test::CheckDeps'     => { fatal => 0, level => 'suggests' } ],
         [ 'Test::NoTabs'        => { script_finder => [qw(:ExecFiles @Author::ETHER/Examples)] } ],
         'EOLTests',
         'MetaTests',
@@ -164,7 +165,7 @@ sub configure
 
         # After Build
         [ 'CopyFilesFromBuild'  => { copy => 'LICENSE' } ],
-        [ 'Run::AfterBuild' => { run => q!if [[ %d =~ %n ]]; then test -e .ackrc && grep -q -- '--ignore-dir=%d' .ackrc || echo '--ignore-dir=%d' >> .ackrc; fi! } ],
+        [ 'Run::AfterBuild' => { run => q!if [ -d %d ]; then test -e .ackrc && grep -q -- '--ignore-dir=%d' .ackrc || echo '--ignore-dir=%d' >> .ackrc; fi! } ],
 
         # Test Runner
         'RunExtraTests',
@@ -214,7 +215,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.027
+version 0.028
 
 =head1 SYNOPSIS
 
@@ -270,7 +271,7 @@ following F<dist.ini> (following the preamble):
     script_finder = Examples
 
     [Test::CheckDeps]
-    fatal = 1
+    fatal = 0
     level = suggests
 
     [Test::NoTabs]
@@ -357,7 +358,7 @@ following F<dist.ini> (following the preamble):
     copy = LICENSE
 
     [Run::AfterBuild]
-    run => if [[ %d =~ %n ]]; then test -e .ackrc && grep -q -- '--ignore-dir=%d' .ackrc || echo '--ignore-dir=%d' >> .ackrc; fi
+    run => if [ -d %d ]; then test -e .ackrc && grep -q -- '--ignore-dir=%d' .ackrc || echo '--ignore-dir=%d' >> .ackrc; fi
 
 
     ;;; TestRunner

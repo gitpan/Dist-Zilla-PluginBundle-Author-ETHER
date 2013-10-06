@@ -45,10 +45,10 @@ no_index:
 provides:
   Dist::Zilla::MintingProfile::Author::ETHER:
     file: lib/Dist/Zilla/MintingProfile/Author/ETHER.pm
-    version: 0.027
+    version: 0.028
   Dist::Zilla::PluginBundle::Author::ETHER:
     file: lib/Dist/Zilla/PluginBundle/Author/ETHER.pm
-    version: 0.027
+    version: 0.028
 recommends:
   Dist::Zilla::Plugin::GitHub::Update: 0
   Dist::Zilla::Plugin::GithubMeta: 0
@@ -162,7 +162,7 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-PluginBundle-Author-ETHER
   homepage: https://github.com/karenetheridge/Dist-Zilla-PluginBundle-Author-ETHER
   repository: https://github.com/karenetheridge/Dist-Zilla-PluginBundle-Author-ETHER.git
-version: 0.027
+version: 0.028
 x_Dist_Zilla:
   perl:
     version: 5.019004
@@ -242,11 +242,11 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::PromptIfStale
       name: '@Author::ETHER/build'
-      version: 0.006
+      version: 0.007
     -
       class: Dist::Zilla::Plugin::PromptIfStale
       name: '@Author::ETHER/release'
-      version: 0.006
+      version: 0.007
     -
       class: Dist::Zilla::Plugin::ExecDir
       name: '@Author::ETHER/ExecDir'
@@ -385,7 +385,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::GithubMeta
       name: '@Author::ETHER/GithubMeta'
-      version: 0.38
+      version: 0.42
     -
       class: Dist::Zilla::Plugin::AutoMetaResources
       name: '@Author::ETHER/AutoMetaResources'
@@ -443,7 +443,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::InstallGuide
       name: '@Author::ETHER/InstallGuide'
-      version: 1.200000
+      version: 1.200001
     -
       class: Dist::Zilla::Plugin::CopyFilesFromBuild
       name: '@Author::ETHER/CopyFilesFromBuild'
@@ -463,11 +463,11 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::Git::CheckFor::MergeConflicts
       name: '@Author::ETHER/Git::CheckFor::MergeConflicts'
-      version: 0.006
+      version: 0.007
     -
       class: Dist::Zilla::Plugin::Git::CheckFor::CorrectBranch
       name: '@Author::ETHER/Git::CheckFor::CorrectBranch'
-      version: 0.006
+      version: 0.007
     -
       class: Dist::Zilla::Plugin::Git::Remote::Check
       name: '@Author::ETHER/Git::Remote::Check'
