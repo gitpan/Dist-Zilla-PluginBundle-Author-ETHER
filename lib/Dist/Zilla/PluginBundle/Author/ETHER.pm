@@ -5,9 +5,9 @@ BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
 }
 {
-  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.028';
+  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.029';
 }
-# git description: v0.027-6-g534ba59
+# git description: v0.028-9-g506d30a
 
 # ABSTRACT: A plugin bundle for distributions built by ETHER
 
@@ -94,10 +94,18 @@ sub configure
         [ 'FileFinder::ByName' => Examples => { dir => 'examples' } ],
 
         # Gather Files
-        [ 'Git::GatherDir'      => { exclude_filename => 'LICENSE' } ],
+        [ 'Git::GatherDir'      => { exclude_filename => [ qw(LICENSE CONTRIBUTING) ] } ],
         qw(MetaYAML MetaJSON License Readme Manifest),
-        [ 'Test::Compile'       => { ':version' => '2.023', fail_on_warning => 'author', bail_out_on_fail => 1, script_finder => [qw(:ExecFiles @Author::ETHER/Examples)] } ],
-        [ 'Test::CheckDeps'     => { fatal => 0, level => 'suggests' } ],
+        [ 'GenerateFile::ShareDir' => { -dist => 'Dist-Zilla-PluginBundle-Author-ETHER', -filename => 'CONTRIBUTING' } ],
+
+        [ 'Test::Compile'       => {
+            ':version' => '2.035',
+            fail_on_warning => 'author',
+            bail_out_on_fail => 1,
+            filename => 'xt/author/00-compile.t',
+            phase => 'develop',
+            script_finder => [qw(:ExecFiles @Author::ETHER/Examples)],
+          } ],
         [ 'Test::NoTabs'        => { script_finder => [qw(:ExecFiles @Author::ETHER/Examples)] } ],
         'EOLTests',
         'MetaTests',
@@ -113,7 +121,7 @@ sub configure
         'Test::Pod::No404s',
         'Test::Kwalitee',
         'MojibakeTests',
-        'Test::ReportPrereqs',
+        [ 'Test::ReportPrereqs' => { verify_prereqs => 1 } ],
 
         # Prune Files
         'PruneCruft',
@@ -157,6 +165,13 @@ sub configure
                         ($installer_args{$_} // {})->{':version'} // 0
                 } $self->installer ),
             } ],
+        [ 'Prereqs' => pluginbundle_version => {
+                '-phase' => 'develop', '-relationship' => 'recommends',
+                blessed($self) => $self->VERSION,
+            } ],
+
+        # Test Runner
+        'RunExtraTests',
 
         # Install Tool
         [ 'ReadmeAnyFromPod'    => { type => 'markdown', filename => 'README.md', location => 'root' } ],
@@ -164,14 +179,11 @@ sub configure
         'InstallGuide',
 
         # After Build
-        [ 'CopyFilesFromBuild'  => { copy => 'LICENSE' } ],
+        [ 'CopyFilesFromBuild'  => { copy => [ qw(LICENSE CONTRIBUTING) ] } ],
         [ 'Run::AfterBuild' => { run => q!if [ -d %d ]; then test -e .ackrc && grep -q -- '--ignore-dir=%d' .ackrc || echo '--ignore-dir=%d' >> .ackrc; fi! } ],
 
-        # Test Runner
-        'RunExtraTests',
-
         # Before Release
-        [ 'Git::Check'          => { allow_dirty => [ qw(README.md LICENSE) ] } ],
+        [ 'Git::Check'          => { allow_dirty => [ qw(README.md LICENSE CONTRIBUTING) ] } ],
         'Git::CheckFor::MergeConflicts',
         [ 'Git::CheckFor::CorrectBranch' => { ':version' => '0.004', release_branch => 'master' } ],
         [ 'Git::Remote::Check'  => { branch => 'master', remote_branch => 'master' } ],
@@ -183,7 +195,7 @@ sub configure
         'UploadToCPAN',
 
         # After Release
-        [ 'Git::Commit'         => { allow_dirty => [ qw(Changes README.md LICENSE) ], commit_msg => '%N-%v%t%n%n%c' } ],
+        [ 'Git::Commit'         => { allow_dirty => [ qw(Changes README.md LICENSE CONTRIBUTING) ], commit_msg => '%N-%v%t%n%n%c' } ],
         [ 'Git::Tag'            => { tag_format => 'v%v%t', tag_message => 'v%v%t' } ],
         $self->server eq 'github' ? ( [ 'GitHub::Update' => { metacpan => 1 } ] ) : (),
         'Git::Push',
@@ -215,7 +227,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.028
+version 0.029
 
 =head1 SYNOPSIS
 
@@ -253,26 +265,28 @@ following F<dist.ini> (following the preamble):
     ;;; Gather Files
     [Git::GatherDir]
     exclude_filename = LICENSE
+    exclude_filename = CONTRIBUTING
 
     [MetaYAML]
     [MetaJSON]
     [License]
     [Readme]
     [Manifest]
+    [GenerateFile::ShareDir]
+    -dist = Dist-Zilla-PluginBundle-Author-ETHER
+    -filename = CONTRIBUTING
 
     [FileFinder::ByName / Examples]
     dir = examples
 
     [Test::Compile]
-    :version = 2.023
+    :version = 2.035
     fail_on_warning = author
     bail_out_on_fail = 1
+    filename = xt/author/00-compile.t
+    phase = develop
     script_finder = :ExecFiles
     script_finder = Examples
-
-    [Test::CheckDeps]
-    fatal = 0
-    level = suggests
 
     [Test::NoTabs]
     script_finder = :ExecFiles
@@ -296,6 +310,8 @@ following F<dist.ini> (following the preamble):
     [Test::Pod::No404s]
     [Test::Kwalitee]
     [MojibakeTests]
+    [Test::ReportPrereqs]
+    verify_prereqs = 1
 
 
     ;;; Munge Files
@@ -339,8 +355,17 @@ following F<dist.ini> (following the preamble):
     [Prereqs / installer_requirements]
     -phase = develop
     -relationship = requires
-    Dist::Zilla = <version used to built this bundle>
+    Dist::Zilla = <version used to built the pluginbundle>
     Dist::Zilla::PluginBundle::Author::ETHER = <version specified in dist.ini>
+
+    [Prereqs / pluginbundle_version]
+    -phase = develop
+    -relationship = recommends
+    Dist::Zilla::PluginBundle::Author::ETHER = <current installed version>
+
+    ;;; Test Runner
+    [RunExtraTests]
+    # <specified installer(s)>
 
 
     ;;; Install Tool
@@ -356,19 +381,17 @@ following F<dist.ini> (following the preamble):
     ;;; After Build
     [CopyFilesFromBuild]
     copy = LICENSE
+    copy = CONTRIBUTING
 
     [Run::AfterBuild]
     run => if [ -d %d ]; then test -e .ackrc && grep -q -- '--ignore-dir=%d' .ackrc || echo '--ignore-dir=%d' >> .ackrc; fi
-
-
-    ;;; TestRunner
-    [RunExtraTests]
 
 
     ;;; Before Release
     [Git::Check]
     allow_dirty = README.md
     allow_dirty = LICENSE
+    allow_dirty = CONTRIBUTING
 
     [Git::CheckFor::MergeConflicts]
 
@@ -394,6 +417,7 @@ following F<dist.ini> (following the preamble):
     allow_dirty = Changes
     allow_dirty = README.md
     allow_dirty = LICENSE
+    allow_dirty = CONTRIBUTING
     commit_msg = %N-%v%t%n%n%c
 
     [Git::Tag]

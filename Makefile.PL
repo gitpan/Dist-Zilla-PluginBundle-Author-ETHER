@@ -7,6 +7,7 @@ use 5.013002;
 use ExtUtils::MakeMaker 6.30;
 
 use File::ShareDir::Install;
+install_share dist => "share";
 install_share module => "Dist::Zilla::MintingProfile::Author::ETHER", "profiles";
 
 
@@ -36,6 +37,7 @@ my %WriteMakefileArgs = (
     "Dist::Zilla::Plugin::FileFinder::ByName" => 0,
     "Dist::Zilla::Plugin::GatherDir::Template" => 0,
     "Dist::Zilla::Plugin::GenerateFile" => 0,
+    "Dist::Zilla::Plugin::GenerateFile::ShareDir" => 0,
     "Dist::Zilla::Plugin::Git::Check" => 0,
     "Dist::Zilla::Plugin::Git::CheckFor::CorrectBranch" => 0,
     "Dist::Zilla::Plugin::Git::CheckFor::MergeConflicts" => 0,
@@ -79,7 +81,6 @@ my %WriteMakefileArgs = (
     "Dist::Zilla::Plugin::TemplateModule" => 0,
     "Dist::Zilla::Plugin::Test::CPAN::Changes" => "0.008",
     "Dist::Zilla::Plugin::Test::ChangesHasContent" => 0,
-    "Dist::Zilla::Plugin::Test::CheckDeps" => "0.008",
     "Dist::Zilla::Plugin::Test::Compile" => "2.023",
     "Dist::Zilla::Plugin::Test::Kwalitee" => "2.06",
     "Dist::Zilla::Plugin::Test::MinimumVersion" => "2.000003",
@@ -130,13 +131,14 @@ my %WriteMakefileArgs = (
     "Test::DZil" => 0,
     "Test::Deep" => 0,
     "Test::Deep::JSON" => 0,
+    "Test::File::ShareDir" => 0,
     "Test::More" => "0.94",
     "Test::Requires" => 0,
     "if" => 0,
     "lib" => 0,
     "parent" => 0
   },
-  "VERSION" => "0.028",
+  "VERSION" => "0.029",
   "test" => {
     "TESTS" => "t/*.t"
   }

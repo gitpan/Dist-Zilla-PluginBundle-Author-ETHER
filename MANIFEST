@@ -15,6 +15,7 @@ profiles/github/profile.ini
 profiles/github/skel/dist.ini
 profiles/github/skel/t/01-basic.t
 profiles/github/skel/weaver.ini
+share/CONTRIBUTING
 t/00-check-deps.t
 t/00-compile.t
 t/00-report-prereqs.t

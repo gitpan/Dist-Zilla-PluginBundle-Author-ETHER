@@ -21,6 +21,7 @@ build_requires:
   Test::DZil: 0
   Test::Deep: 0
   Test::Deep::JSON: 0
+  Test::File::ShareDir: 0
   Test::More: 0.94
   Test::Requires: 0
   if: 0
@@ -30,7 +31,7 @@ configure_requires:
   ExtUtils::MakeMaker: 6.30
   File::ShareDir::Install: 0.03
 dynamic_config: 0
-generated_by: 'Dist::Zilla version 4.300039, CPAN::Meta::Converter version 2.132620'
+generated_by: 'Dist::Zilla version 4.300039, CPAN::Meta::Converter version 2.132830'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -45,10 +46,10 @@ no_index:
 provides:
   Dist::Zilla::MintingProfile::Author::ETHER:
     file: lib/Dist/Zilla/MintingProfile/Author/ETHER.pm
-    version: 0.028
+    version: 0.029
   Dist::Zilla::PluginBundle::Author::ETHER:
     file: lib/Dist/Zilla/PluginBundle/Author/ETHER.pm
-    version: 0.028
+    version: 0.029
 recommends:
   Dist::Zilla::Plugin::GitHub::Update: 0
   Dist::Zilla::Plugin::GithubMeta: 0
@@ -82,6 +83,7 @@ requires:
   Dist::Zilla::Plugin::FileFinder::ByName: 0
   Dist::Zilla::Plugin::GatherDir::Template: 0
   Dist::Zilla::Plugin::GenerateFile: 0
+  Dist::Zilla::Plugin::GenerateFile::ShareDir: 0
   Dist::Zilla::Plugin::Git::Check: 0
   Dist::Zilla::Plugin::Git::CheckFor::CorrectBranch: 0
   Dist::Zilla::Plugin::Git::CheckFor::MergeConflicts: 0
@@ -125,7 +127,6 @@ requires:
   Dist::Zilla::Plugin::TemplateModule: 0
   Dist::Zilla::Plugin::Test::CPAN::Changes: 0.008
   Dist::Zilla::Plugin::Test::ChangesHasContent: 0
-  Dist::Zilla::Plugin::Test::CheckDeps: 0.008
   Dist::Zilla::Plugin::Test::Compile: 2.023
   Dist::Zilla::Plugin::Test::Kwalitee: 2.06
   Dist::Zilla::Plugin::Test::MinimumVersion: 2.000003
@@ -162,7 +163,7 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-PluginBundle-Author-ETHER
   homepage: https://github.com/karenetheridge/Dist-Zilla-PluginBundle-Author-ETHER
   repository: https://github.com/karenetheridge/Dist-Zilla-PluginBundle-Author-ETHER.git
-version: 0.028
+version: 0.029
 x_Dist_Zilla:
   perl:
     version: 5.019004
@@ -242,11 +243,11 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::PromptIfStale
       name: '@Author::ETHER/build'
-      version: 0.007
+      version: 0.008
     -
       class: Dist::Zilla::Plugin::PromptIfStale
       name: '@Author::ETHER/release'
-      version: 0.007
+      version: 0.008
     -
       class: Dist::Zilla::Plugin::ExecDir
       name: '@Author::ETHER/ExecDir'
@@ -287,13 +288,14 @@ x_Dist_Zilla:
       class: Dist::Zilla::Plugin::Test::Compile
       config:
         Dist::Zilla::Plugin::Test::Compile:
+          filename: t/00-compile.t
           module_finder:
             - ':InstallModules'
           script_finder:
             - ':ExecFiles'
             - '@Author::ETHER/Examples'
       name: '@Author::ETHER/Test::Compile'
-      version: 2.033
+      version: 2.035
     -
       class: Dist::Zilla::Plugin::Test::CheckDeps
       name: '@Author::ETHER/Test::CheckDeps'
@@ -308,7 +310,7 @@ x_Dist_Zilla:
             - ':ExecFiles'
             - '@Author::ETHER/Examples'
       name: '@Author::ETHER/Test::NoTabs'
-      version: 0.04
+      version: 0.05
     -
       class: Dist::Zilla::Plugin::EOLTests
       name: '@Author::ETHER/EOLTests'
@@ -352,7 +354,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::Test::ReportPrereqs
       name: '@Author::ETHER/Test::ReportPrereqs'
-      version: 0.006
+      version: 0.007
     -
       class: Dist::Zilla::Plugin::PruneCruft
       name: '@Author::ETHER/PruneCruft'
