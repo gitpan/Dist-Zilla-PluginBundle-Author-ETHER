@@ -5,9 +5,9 @@ BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
 }
 {
-  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.029';
+  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.030';
 }
-# git description: v0.028-9-g506d30a
+# git description: v0.029-3-g993038d
 
 # ABSTRACT: A plugin bundle for distributions built by ETHER
 
@@ -94,7 +94,8 @@ sub configure
         [ 'FileFinder::ByName' => Examples => { dir => 'examples' } ],
 
         # Gather Files
-        [ 'Git::GatherDir'      => { exclude_filename => [ qw(LICENSE CONTRIBUTING) ] } ],
+        # FIXME - exclude_filename should be an exact (anchored) match
+        [ 'Git::GatherDir'      => { exclude_match => [ qw(^LICENSE$ ^CONTRIBUTING$) ] } ],
         qw(MetaYAML MetaJSON License Readme Manifest),
         [ 'GenerateFile::ShareDir' => { -dist => 'Dist-Zilla-PluginBundle-Author-ETHER', -filename => 'CONTRIBUTING' } ],
 
@@ -102,8 +103,7 @@ sub configure
             ':version' => '2.035',
             fail_on_warning => 'author',
             bail_out_on_fail => 1,
-            filename => 'xt/author/00-compile.t',
-            phase => 'develop',
+            xt_mode => 1,
             script_finder => [qw(:ExecFiles @Author::ETHER/Examples)],
           } ],
         [ 'Test::NoTabs'        => { script_finder => [qw(:ExecFiles @Author::ETHER/Examples)] } ],
@@ -227,7 +227,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.029
+version 0.030
 
 =head1 SYNOPSIS
 
@@ -283,8 +283,7 @@ following F<dist.ini> (following the preamble):
     :version = 2.035
     fail_on_warning = author
     bail_out_on_fail = 1
-    filename = xt/author/00-compile.t
-    phase = develop
+    xt_mode = 1
     script_finder = :ExecFiles
     script_finder = Examples
 

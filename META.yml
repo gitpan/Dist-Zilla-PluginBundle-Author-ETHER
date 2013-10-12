@@ -8,8 +8,6 @@ build_requires:
   File::Find: 0
   File::Spec: 0
   File::Spec::Functions: 0
-  IO::Handle: 0
-  IPC::Open3: 0
   JSON: 0
   List::Util: 0
   Module::Runtime: 0
@@ -17,12 +15,11 @@ build_requires:
   Path::Class: 0
   Path::Tiny: 0
   Scalar::Util: 0
-  Test::CheckDeps: 0.007
   Test::DZil: 0
   Test::Deep: 0
   Test::Deep::JSON: 0
   Test::File::ShareDir: 0
-  Test::More: 0.94
+  Test::More: 0
   Test::Requires: 0
   if: 0
   lib: 0
@@ -46,10 +43,10 @@ no_index:
 provides:
   Dist::Zilla::MintingProfile::Author::ETHER:
     file: lib/Dist/Zilla/MintingProfile/Author/ETHER.pm
-    version: 0.029
+    version: 0.030
   Dist::Zilla::PluginBundle::Author::ETHER:
     file: lib/Dist/Zilla/PluginBundle/Author/ETHER.pm
-    version: 0.029
+    version: 0.030
 recommends:
   Dist::Zilla::Plugin::GitHub::Update: 0
   Dist::Zilla::Plugin::GithubMeta: 0
@@ -163,7 +160,7 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-PluginBundle-Author-ETHER
   homepage: https://github.com/karenetheridge/Dist-Zilla-PluginBundle-Author-ETHER
   repository: https://github.com/karenetheridge/Dist-Zilla-PluginBundle-Author-ETHER.git
-version: 0.029
+version: 0.030
 x_Dist_Zilla:
   perl:
     version: 5.019004
@@ -171,6 +168,10 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::ModuleShareDirs
       name: ModuleShareDirs
+      version: 4.300039
+    -
+      class: Dist::Zilla::Plugin::GatherDir
+      name: sharedir
       version: 4.300039
     -
       class: Dist::Zilla::Plugin::GatherDir::Template
@@ -285,21 +286,26 @@ x_Dist_Zilla:
       name: '@Author::ETHER/Manifest'
       version: 4.300039
     -
+      class: Dist::Zilla::Plugin::GenerateFile::ShareDir
+      config:
+        Dist::Zilla::Plugin::GenerateFile::ShareDir:
+          destination_filename: CONTRIBUTING
+          dist: Dist-Zilla-PluginBundle-Author-ETHER
+          source_filename: CONTRIBUTING
+      name: '@Author::ETHER/GenerateFile::ShareDir'
+      version: 0.001
+    -
       class: Dist::Zilla::Plugin::Test::Compile
       config:
         Dist::Zilla::Plugin::Test::Compile:
-          filename: t/00-compile.t
+          filename: xt/author/00-compile.t
           module_finder:
             - ':InstallModules'
           script_finder:
             - ':ExecFiles'
             - '@Author::ETHER/Examples'
       name: '@Author::ETHER/Test::Compile'
-      version: 2.035
-    -
-      class: Dist::Zilla::Plugin::Test::CheckDeps
-      name: '@Author::ETHER/Test::CheckDeps'
-      version: 0.009
+      version: 2.036
     -
       class: Dist::Zilla::Plugin::Test::NoTabs
       config:
@@ -435,6 +441,18 @@ x_Dist_Zilla:
       name: '@Author::ETHER/installer_requirements'
       version: 4.300039
     -
+      class: Dist::Zilla::Plugin::Prereqs
+      config:
+        Dist::Zilla::Plugin::Prereqs:
+          phase: develop
+          type: recommends
+      name: '@Author::ETHER/pluginbundle_version'
+      version: 4.300039
+    -
+      class: Dist::Zilla::Plugin::RunExtraTests
+      name: '@Author::ETHER/RunExtraTests'
+      version: 0.011
+    -
       class: Dist::Zilla::Plugin::ReadmeAnyFromPod
       name: '@Author::ETHER/ReadmeAnyFromPod'
       version: 0.131500
@@ -454,10 +472,6 @@ x_Dist_Zilla:
       class: Dist::Zilla::Plugin::Run::AfterBuild
       name: '@Author::ETHER/Run::AfterBuild'
       version: 0.020
-    -
-      class: Dist::Zilla::Plugin::RunExtraTests
-      name: '@Author::ETHER/RunExtraTests'
-      version: 0.011
     -
       class: Dist::Zilla::Plugin::Git::Check
       name: '@Author::ETHER/Git::Check'

@@ -96,8 +96,6 @@ my @modules = qw(
   File::ShareDir::Install
   File::Spec
   File::Spec::Functions
-  IO::Handle
-  IPC::Open3
   JSON
   List::MoreUtils
   List::Util
@@ -117,7 +115,6 @@ my @modules = qw(
   Scalar::Util
   Test::CPAN::Changes
   Test::CPAN::Meta
-  Test::CheckDeps
   Test::DZil
   Test::Deep
   Test::Deep::JSON
