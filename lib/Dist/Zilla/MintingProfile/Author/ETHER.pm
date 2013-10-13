@@ -5,7 +5,7 @@ BEGIN {
   $Dist::Zilla::MintingProfile::Author::ETHER::AUTHORITY = 'cpan:ETHER';
 }
 {
-  $Dist::Zilla::MintingProfile::Author::ETHER::VERSION = '0.030';
+  $Dist::Zilla::MintingProfile::Author::ETHER::VERSION = '0.031';
 }
 # ABSTRACT: Mint distributions like ETHER does
 
@@ -29,7 +29,7 @@ Dist::Zilla::MintingProfile::Author::ETHER - Mint distributions like ETHER does
 
 =head1 VERSION
 
-version 0.030
+version 0.031
 
 =head1 SYNOPSIS
 

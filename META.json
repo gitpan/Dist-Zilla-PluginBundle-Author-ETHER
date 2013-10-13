@@ -30,7 +30,7 @@
       },
       "develop" : {
          "recommends" : {
-            "Dist::Zilla::PluginBundle::Author::ETHER" : "0.029"
+            "Dist::Zilla::PluginBundle::Author::ETHER" : "0.030"
          },
          "requires" : {
             "Dist::Zilla" : "4.300039",
@@ -55,7 +55,8 @@
             "Test::Pod::No404s" : "0",
             "Test::Spelling" : "0.19",
             "Test::Vars" : "0.004",
-            "Test::Version" : "0"
+            "Test::Version" : "0",
+            "Test::Warnings" : "0"
          }
       },
       "runtime" : {
@@ -137,7 +138,7 @@
             "Dist::Zilla::Plugin::TemplateModule" : "0",
             "Dist::Zilla::Plugin::Test::CPAN::Changes" : "0.008",
             "Dist::Zilla::Plugin::Test::ChangesHasContent" : "0",
-            "Dist::Zilla::Plugin::Test::Compile" : "2.023",
+            "Dist::Zilla::Plugin::Test::Compile" : "2.036",
             "Dist::Zilla::Plugin::Test::Kwalitee" : "2.06",
             "Dist::Zilla::Plugin::Test::MinimumVersion" : "2.000003",
             "Dist::Zilla::Plugin::Test::NoTabs" : "0",
@@ -199,11 +200,11 @@
    "provides" : {
       "Dist::Zilla::MintingProfile::Author::ETHER" : {
          "file" : "lib/Dist/Zilla/MintingProfile/Author/ETHER.pm",
-         "version" : "0.030"
+         "version" : "0.031"
       },
       "Dist::Zilla::PluginBundle::Author::ETHER" : {
          "file" : "lib/Dist/Zilla/PluginBundle/Author/ETHER.pm",
-         "version" : "0.030"
+         "version" : "0.031"
       }
    },
    "release_status" : "stable",
@@ -220,7 +221,7 @@
       },
       "x_MailingList" : "http://www.listbox.com/subscribe/?list_id=139292"
    },
-   "version" : "0.030",
+   "version" : "0.031",
    "x_Dist_Zilla" : {
       "perl" : {
          "version" : "5.019004"
@@ -229,11 +230,6 @@
          {
             "class" : "Dist::Zilla::Plugin::ModuleShareDirs",
             "name" : "ModuleShareDirs",
-            "version" : "4.300039"
-         },
-         {
-            "class" : "Dist::Zilla::Plugin::GatherDir",
-            "name" : "sharedir",
             "version" : "4.300039"
          },
          {

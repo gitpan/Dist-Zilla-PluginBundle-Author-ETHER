@@ -81,7 +81,7 @@ my %WriteMakefileArgs = (
     "Dist::Zilla::Plugin::TemplateModule" => 0,
     "Dist::Zilla::Plugin::Test::CPAN::Changes" => "0.008",
     "Dist::Zilla::Plugin::Test::ChangesHasContent" => 0,
-    "Dist::Zilla::Plugin::Test::Compile" => "2.023",
+    "Dist::Zilla::Plugin::Test::Compile" => "2.036",
     "Dist::Zilla::Plugin::Test::Kwalitee" => "2.06",
     "Dist::Zilla::Plugin::Test::MinimumVersion" => "2.000003",
     "Dist::Zilla::Plugin::Test::NoTabs" => 0,
@@ -135,7 +135,7 @@ my %WriteMakefileArgs = (
     "lib" => 0,
     "parent" => 0
   },
-  "VERSION" => "0.030",
+  "VERSION" => "0.031",
   "test" => {
     "TESTS" => "t/*.t"
   }

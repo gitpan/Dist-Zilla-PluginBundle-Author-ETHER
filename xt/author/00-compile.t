@@ -16,7 +16,7 @@ my @module_files = (
 
 # no fake home requested
 
-my $inc_switch = q[-Mblib];
+my $inc_switch = q[-Ilib];
 
 use File::Spec;
 use IPC::Open3;

@@ -5,9 +5,9 @@ BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
 }
 {
-  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.030';
+  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.031';
 }
-# git description: v0.029-3-g993038d
+# git description: v0.030-7-g39d7b62
 
 # ABSTRACT: A plugin bundle for distributions built by ETHER
 
@@ -100,7 +100,7 @@ sub configure
         [ 'GenerateFile::ShareDir' => { -dist => 'Dist-Zilla-PluginBundle-Author-ETHER', -filename => 'CONTRIBUTING' } ],
 
         [ 'Test::Compile'       => {
-            ':version' => '2.035',
+            ':version' => '2.036',
             fail_on_warning => 'author',
             bail_out_on_fail => 1,
             xt_mode => 1,
@@ -180,7 +180,8 @@ sub configure
 
         # After Build
         [ 'CopyFilesFromBuild'  => { copy => [ qw(LICENSE CONTRIBUTING) ] } ],
-        [ 'Run::AfterBuild' => { run => q!if [ -d %d ]; then test -e .ackrc && grep -q -- '--ignore-dir=%d' .ackrc || echo '--ignore-dir=%d' >> .ackrc; fi! } ],
+        [ 'Run::AfterBuild' => { run => q{if [ `dirname %d` != .build ]; then test -e .ackrc && grep -q -- '--ignore-dir=%d' .ackrc || echo '--ignore-dir=%d' >> .ackrc; fi} } ],
+
 
         # Before Release
         [ 'Git::Check'          => { allow_dirty => [ qw(README.md LICENSE CONTRIBUTING) ] } ],
@@ -227,7 +228,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.030
+version 0.031
 
 =head1 SYNOPSIS
 
@@ -280,7 +281,7 @@ following F<dist.ini> (following the preamble):
     dir = examples
 
     [Test::Compile]
-    :version = 2.035
+    :version = 2.036
     fail_on_warning = author
     bail_out_on_fail = 1
     xt_mode = 1
@@ -383,7 +384,7 @@ following F<dist.ini> (following the preamble):
     copy = CONTRIBUTING
 
     [Run::AfterBuild]
-    run => if [ -d %d ]; then test -e .ackrc && grep -q -- '--ignore-dir=%d' .ackrc || echo '--ignore-dir=%d' >> .ackrc; fi
+    run => if [ `dirname %d` != .build ]; then test -e .ackrc && grep -q -- '--ignore-dir=%d' .ackrc || echo '--ignore-dir=%d' >> .ackrc; fi
 
 
     ;;; Before Release

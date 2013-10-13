@@ -43,10 +43,10 @@ no_index:
 provides:
   Dist::Zilla::MintingProfile::Author::ETHER:
     file: lib/Dist/Zilla/MintingProfile/Author/ETHER.pm
-    version: 0.030
+    version: 0.031
   Dist::Zilla::PluginBundle::Author::ETHER:
     file: lib/Dist/Zilla/PluginBundle/Author/ETHER.pm
-    version: 0.030
+    version: 0.031
 recommends:
   Dist::Zilla::Plugin::GitHub::Update: 0
   Dist::Zilla::Plugin::GithubMeta: 0
@@ -124,7 +124,7 @@ requires:
   Dist::Zilla::Plugin::TemplateModule: 0
   Dist::Zilla::Plugin::Test::CPAN::Changes: 0.008
   Dist::Zilla::Plugin::Test::ChangesHasContent: 0
-  Dist::Zilla::Plugin::Test::Compile: 2.023
+  Dist::Zilla::Plugin::Test::Compile: 2.036
   Dist::Zilla::Plugin::Test::Kwalitee: 2.06
   Dist::Zilla::Plugin::Test::MinimumVersion: 2.000003
   Dist::Zilla::Plugin::Test::NoTabs: 0
@@ -160,7 +160,7 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-PluginBundle-Author-ETHER
   homepage: https://github.com/karenetheridge/Dist-Zilla-PluginBundle-Author-ETHER
   repository: https://github.com/karenetheridge/Dist-Zilla-PluginBundle-Author-ETHER.git
-version: 0.030
+version: 0.031
 x_Dist_Zilla:
   perl:
     version: 5.019004
@@ -168,10 +168,6 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::ModuleShareDirs
       name: ModuleShareDirs
-      version: 4.300039
-    -
-      class: Dist::Zilla::Plugin::GatherDir
-      name: sharedir
       version: 4.300039
     -
       class: Dist::Zilla::Plugin::GatherDir::Template
