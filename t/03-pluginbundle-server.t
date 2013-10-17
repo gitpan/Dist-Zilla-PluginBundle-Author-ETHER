@@ -86,16 +86,18 @@ foreach my $server (keys %server_to_resources)
 
     $tzil->build;
 
-    # check that everything we loaded is in test-requires or run-requires
-    all_plugins_are_required($tzil,
-        'Dist::Zilla::Plugin::GatherDir',   # used by us here
-        'Dist::Zilla::Plugin::MakeMaker',   # via installer option
-        'Dist::Zilla::Plugin::GithubMeta',
-        'Dist::Zilla::Plugin::GitHub::Update',
+    # check that everything we loaded is properly declared as prereqs
+    all_plugins_in_prereqs($tzil,
+        exempt => [ 'Dist::Zilla::Plugin::GatherDir' ],     # used by us here
+        additional => [
+            'Dist::Zilla::Plugin::MakeMaker',       # via installer option
+            'Dist::Zilla::Plugin::GithubMeta',      # via server option
+            'Dist::Zilla::Plugin::GitHub::Update',
+        ],
     );
 
     cmp_deeply(
-        $tzil->slurp_file('build/META.json'),
+        path($tzil->tempdir->file('build', 'META.json'))->slurp_utf8,
         json(superhashof({
             resources => $server_to_resources{$server},
         })),
