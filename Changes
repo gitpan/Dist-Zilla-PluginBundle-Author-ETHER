@@ -1,5 +1,10 @@
 Revision history for Dist-Zilla-PluginBundle-Author-ETHER
 
+0.033     2013-10-24 01:47:28Z (Karen Etheridge)
+          - now only generating README.md, LICENSE and CONTRIBUTING in the
+            build directory, and copying back to the repository (and
+            committing) only at release time
+
 0.032     2013-10-17 02:26:03Z (Karen Etheridge)
           - fix some bad templates for files used in the minting profile
           - added [CheckSelfDependency]
@@ -19,6 +24,7 @@ Revision history for Dist-Zilla-PluginBundle-Author-ETHER
           - fixed broken gathering of sharedir
 
 0.029     2013-10-12 21:27:40Z (Karen Etheridge)
+          --- a.k.a. "the ribasushi release"
           - dropped [Test::CheckDeps]
           - xt/ tests are now run before t/
           - compile test now generated as xt/author/00-compile.t

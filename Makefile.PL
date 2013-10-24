@@ -32,7 +32,7 @@ my %WriteMakefileArgs = (
     "Dist::Zilla::Plugin::CheckPrereqsIndexed" => 0,
     "Dist::Zilla::Plugin::CheckSelfDependency" => 0,
     "Dist::Zilla::Plugin::ConfirmRelease" => 0,
-    "Dist::Zilla::Plugin::CopyFilesFromBuild" => 0,
+    "Dist::Zilla::Plugin::CopyFilesFromRelease" => 0,
     "Dist::Zilla::Plugin::EOLTests" => 0,
     "Dist::Zilla::Plugin::ExecDir" => 0,
     "Dist::Zilla::Plugin::FileFinder::ByName" => 0,
@@ -44,7 +44,7 @@ my %WriteMakefileArgs = (
     "Dist::Zilla::Plugin::Git::CheckFor::MergeConflicts" => 0,
     "Dist::Zilla::Plugin::Git::Commit" => 0,
     "Dist::Zilla::Plugin::Git::Describe" => 0,
-    "Dist::Zilla::Plugin::Git::GatherDir" => 0,
+    "Dist::Zilla::Plugin::Git::GatherDir" => "2.016",
     "Dist::Zilla::Plugin::Git::Init" => 0,
     "Dist::Zilla::Plugin::Git::NextVersion" => 0,
     "Dist::Zilla::Plugin::Git::Push" => 0,
@@ -136,7 +136,7 @@ my %WriteMakefileArgs = (
     "lib" => 0,
     "parent" => 0
   },
-  "VERSION" => "0.032",
+  "VERSION" => "0.033",
   "test" => {
     "TESTS" => "t/*.t"
   }

@@ -22,7 +22,7 @@ my @modules = qw(
   Dist::Zilla::Plugin::CheckPrereqsIndexed
   Dist::Zilla::Plugin::CheckSelfDependency
   Dist::Zilla::Plugin::ConfirmRelease
-  Dist::Zilla::Plugin::CopyFilesFromBuild
+  Dist::Zilla::Plugin::CopyFilesFromRelease
   Dist::Zilla::Plugin::EOLTests
   Dist::Zilla::Plugin::ExecDir
   Dist::Zilla::Plugin::FileFinder::ByName
