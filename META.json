@@ -30,7 +30,7 @@
       },
       "develop" : {
          "recommends" : {
-            "Dist::Zilla::PluginBundle::Author::ETHER" : "0.034"
+            "Dist::Zilla::PluginBundle::Author::ETHER" : "0.035"
          },
          "requires" : {
             "Dist::Zilla" : "5.003",
@@ -206,11 +206,11 @@
    "provides" : {
       "Dist::Zilla::MintingProfile::Author::ETHER" : {
          "file" : "lib/Dist/Zilla/MintingProfile/Author/ETHER.pm",
-         "version" : "0.034"
+         "version" : "0.035"
       },
       "Dist::Zilla::PluginBundle::Author::ETHER" : {
          "file" : "lib/Dist/Zilla/PluginBundle/Author/ETHER.pm",
-         "version" : "0.034"
+         "version" : "0.035"
       }
    },
    "release_status" : "stable",
@@ -227,7 +227,7 @@
       },
       "x_MailingList" : "http://www.listbox.com/subscribe/?list_id=139292"
    },
-   "version" : "0.034",
+   "version" : "0.035",
    "x_Dist_Zilla" : {
       "perl" : {
          "version" : "5.019005"
@@ -497,6 +497,11 @@
             "version" : "5.003"
          },
          {
+            "class" : "Dist::Zilla::Plugin::Authority",
+            "name" : "@Author::ETHER/Authority",
+            "version" : "1.006"
+         },
+         {
             "class" : "Dist::Zilla::Plugin::Git::Describe",
             "name" : "@Author::ETHER/Git::Describe",
             "version" : "0.003"
@@ -538,11 +543,6 @@
             "class" : "Dist::Zilla::Plugin::AutoMetaResources",
             "name" : "@Author::ETHER/AutoMetaResources",
             "version" : "1.20"
-         },
-         {
-            "class" : "Dist::Zilla::Plugin::Authority",
-            "name" : "@Author::ETHER/Authority",
-            "version" : "1.006"
          },
          {
             "class" : "Dist::Zilla::Plugin::MetaNoIndex",

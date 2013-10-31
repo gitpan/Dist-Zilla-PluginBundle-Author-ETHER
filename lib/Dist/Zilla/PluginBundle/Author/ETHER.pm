@@ -1,14 +1,14 @@
 use strict;
 use warnings;
 package Dist::Zilla::PluginBundle::Author::ETHER;
+{
+  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.035';
+}
+# git description: v0.034-2-gf61b7b4
+
 BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
 }
-{
-  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.034';
-}
-# git description: v0.033-3-g1e29777
-
 # ABSTRACT: A plugin bundle for distributions built by ETHER
 
 use Moose;
@@ -128,11 +128,11 @@ sub configure
         'ManifestSkip',
 
         # Munge Files
-        # (Authority)
+        [ 'Authority'           => { authority => 'cpan:ETHER' } ],
         'Git::Describe',
         [ PkgVersion            => { ':version' => '4.300036', die_on_existing_version => 1 } ],
         'PodWeaver',
-        [ 'NextRelease'         => { ':version' => '4.300018', time_zone => 'UTC', format => '%-8V  %{yyyy-MM-dd HH:mm:ss\'Z\'}d (%U)' } ],
+        [ 'NextRelease'         => { ':version' => '4.300018', time_zone => 'UTC', format => '%-8V  %{yyyy-MM-dd HH:mm:ss\'Z\'}d' } ],
         [ 'ReadmeAnyFromPod'    => { type => 'markdown', filename => 'README.md', location => 'build' } ],
 
         # MetaData
@@ -144,7 +144,7 @@ sub configure
             : $self->server eq 'catagits' ? ( 'repository.catagits' => 1 )
             : ()
         } ],
-        [ 'Authority'           => { authority => 'cpan:ETHER' } ],
+        # (Authority)
         [ 'MetaNoIndex'         => { directory => [ qw(t xt examples) ] } ],
         [ 'MetaProvides::Package' => { meta_noindex => 1 } ],
         'MetaConfig',
@@ -240,7 +240,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.034
+version 0.035
 
 =head1 SYNOPSIS
 
@@ -328,7 +328,8 @@ following F<dist.ini> (following the preamble):
 
 
     ;;; Munge Files
-    ; (Authority)
+    [Authority]
+    authority = cpan:ETHER
     [Git::Describe]
     [PkgVersion]
     :version = 4.300036
@@ -338,7 +339,7 @@ following F<dist.ini> (following the preamble):
     [NextRelease]
     :version = 4.300018
     time_zone = UTC
-    format = %-8V  %{yyyy-MM-dd HH:mm:ss'Z'}d (%U)
+    format = %-8V  %{yyyy-MM-dd HH:mm:ss'Z'}d
     [ReadmeAnyFromPod]
     type = markdown
     filename = README.md
@@ -351,8 +352,7 @@ following F<dist.ini> (following the preamble):
     bugtracker.rt = 1
     ; (plus repository.* = 1 if server = 'gitmo' or 'p5sagit')
 
-    [Authority]
-    authority = cpan:ETHER
+    ; (Authority)
 
     [MetaNoIndex]
     directory = t
