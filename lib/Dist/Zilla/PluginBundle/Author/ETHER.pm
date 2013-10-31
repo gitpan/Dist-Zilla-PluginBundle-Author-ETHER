@@ -5,9 +5,9 @@ BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
 }
 {
-  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.033';
+  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.034';
 }
-# git description: v0.032-4-g96140dc
+# git description: v0.033-3-g1e29777
 
 # ABSTRACT: A plugin bundle for distributions built by ETHER
 
@@ -126,7 +126,6 @@ sub configure
         # Prune Files
         'PruneCruft',
         'ManifestSkip',
-        # (ReadmeAnyFromPod)
 
         # Munge Files
         # (Authority)
@@ -134,6 +133,7 @@ sub configure
         [ PkgVersion            => { ':version' => '4.300036', die_on_existing_version => 1 } ],
         'PodWeaver',
         [ 'NextRelease'         => { ':version' => '4.300018', time_zone => 'UTC', format => '%-8V  %{yyyy-MM-dd HH:mm:ss\'Z\'}d (%U)' } ],
+        [ 'ReadmeAnyFromPod'    => { type => 'markdown', filename => 'README.md', location => 'build' } ],
 
         # MetaData
         $self->server eq 'github'
@@ -176,7 +176,6 @@ sub configure
         'RunExtraTests',
 
         # Install Tool
-        [ 'ReadmeAnyFromPod'    => { type => 'markdown', filename => 'README.md', location => 'build' } ],
         ( map { [ $_ => $installer_args{$_} // () ] } $self->installer ),
         'InstallGuide',
 
@@ -241,7 +240,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.033
+version 0.034
 
 =head1 SYNOPSIS
 
@@ -340,6 +339,10 @@ following F<dist.ini> (following the preamble):
     :version = 4.300018
     time_zone = UTC
     format = %-8V  %{yyyy-MM-dd HH:mm:ss'Z'}d (%U)
+    [ReadmeAnyFromPod]
+    type = markdown
+    filename = README.md
+    location = build
 
 
     ;;; MetaData
@@ -383,11 +386,6 @@ following F<dist.ini> (following the preamble):
 
 
     ;;; Install Tool
-    [ReadmeAnyFromPod]
-    type = markdown
-    filename = README.md
-    location = build
-
     <specified installer(s)>
     [InstallGuide]
 

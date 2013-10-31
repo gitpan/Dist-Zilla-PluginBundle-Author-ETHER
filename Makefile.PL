@@ -136,37 +136,130 @@ my %WriteMakefileArgs = (
     "lib" => 0,
     "parent" => 0
   },
-  "VERSION" => "0.033",
+  "VERSION" => "0.034",
   "test" => {
     "TESTS" => "t/*.t"
   }
 );
 
 
-unless ( eval { ExtUtils::MakeMaker->VERSION(6.63_03) } ) {
-  my $tr = delete $WriteMakefileArgs{TEST_REQUIRES};
-  my $br = $WriteMakefileArgs{BUILD_REQUIRES};
-  for my $mod ( keys %$tr ) {
-    if ( exists $br->{$mod} ) {
-      $br->{$mod} = $tr->{$mod} if $tr->{$mod} > $br->{$mod};
-    }
-    else {
-      $br->{$mod} = $tr->{$mod};
-    }
-  }
-}
+my %FallbackPrereqs = (
+  "CPAN::Changes" => "0.23",
+  "Dist::Zilla" => "4.300038",
+  "Dist::Zilla::Plugin::Authority" => 0,
+  "Dist::Zilla::Plugin::AutoMetaResources" => 0,
+  "Dist::Zilla::Plugin::AutoPrereqs" => 0,
+  "Dist::Zilla::Plugin::CheckPrereqsIndexed" => 0,
+  "Dist::Zilla::Plugin::CheckSelfDependency" => 0,
+  "Dist::Zilla::Plugin::ConfirmRelease" => 0,
+  "Dist::Zilla::Plugin::CopyFilesFromRelease" => 0,
+  "Dist::Zilla::Plugin::EOLTests" => 0,
+  "Dist::Zilla::Plugin::ExecDir" => 0,
+  "Dist::Zilla::Plugin::FileFinder::ByName" => 0,
+  "Dist::Zilla::Plugin::GatherDir::Template" => 0,
+  "Dist::Zilla::Plugin::GenerateFile" => 0,
+  "Dist::Zilla::Plugin::GenerateFile::ShareDir" => 0,
+  "Dist::Zilla::Plugin::Git::Check" => 0,
+  "Dist::Zilla::Plugin::Git::CheckFor::CorrectBranch" => 0,
+  "Dist::Zilla::Plugin::Git::CheckFor::MergeConflicts" => 0,
+  "Dist::Zilla::Plugin::Git::Commit" => 0,
+  "Dist::Zilla::Plugin::Git::Describe" => 0,
+  "Dist::Zilla::Plugin::Git::GatherDir" => "2.016",
+  "Dist::Zilla::Plugin::Git::Init" => 0,
+  "Dist::Zilla::Plugin::Git::NextVersion" => 0,
+  "Dist::Zilla::Plugin::Git::Push" => 0,
+  "Dist::Zilla::Plugin::Git::PushInitial" => 0,
+  "Dist::Zilla::Plugin::Git::Remote::Check" => 0,
+  "Dist::Zilla::Plugin::Git::Tag" => 0,
+  "Dist::Zilla::Plugin::GitHub::Create" => "0.35",
+  "Dist::Zilla::Plugin::InstallGuide" => 0,
+  "Dist::Zilla::Plugin::InstallRelease" => 0,
+  "Dist::Zilla::Plugin::License" => 0,
+  "Dist::Zilla::Plugin::Manifest" => 0,
+  "Dist::Zilla::Plugin::ManifestSkip" => 0,
+  "Dist::Zilla::Plugin::MetaConfig" => 0,
+  "Dist::Zilla::Plugin::MetaJSON" => 0,
+  "Dist::Zilla::Plugin::MetaNoIndex" => 0,
+  "Dist::Zilla::Plugin::MetaProvides::Package" => 0,
+  "Dist::Zilla::Plugin::MetaTests" => 0,
+  "Dist::Zilla::Plugin::MetaYAML" => 0,
+  "Dist::Zilla::Plugin::MinimumPerl" => 0,
+  "Dist::Zilla::Plugin::MojibakeTests" => 0,
+  "Dist::Zilla::Plugin::NextRelease" => "4.300018",
+  "Dist::Zilla::Plugin::PkgVersion" => "4.300036",
+  "Dist::Zilla::Plugin::PodCoverageTests" => 0,
+  "Dist::Zilla::Plugin::PodSyntaxTests" => 0,
+  "Dist::Zilla::Plugin::PodWeaver" => 0,
+  "Dist::Zilla::Plugin::Prereqs" => 0,
+  "Dist::Zilla::Plugin::PromptIfStale" => 0,
+  "Dist::Zilla::Plugin::PruneCruft" => 0,
+  "Dist::Zilla::Plugin::Readme" => 0,
+  "Dist::Zilla::Plugin::ReadmeAnyFromPod" => 0,
+  "Dist::Zilla::Plugin::Run::AfterBuild" => 0,
+  "Dist::Zilla::Plugin::Run::AfterMint" => 0,
+  "Dist::Zilla::Plugin::RunExtraTests" => 0,
+  "Dist::Zilla::Plugin::ShareDir" => 0,
+  "Dist::Zilla::Plugin::TemplateModule" => 0,
+  "Dist::Zilla::Plugin::Test::CPAN::Changes" => "0.008",
+  "Dist::Zilla::Plugin::Test::ChangesHasContent" => 0,
+  "Dist::Zilla::Plugin::Test::Compile" => "2.036",
+  "Dist::Zilla::Plugin::Test::Kwalitee" => "2.06",
+  "Dist::Zilla::Plugin::Test::MinimumVersion" => "2.000003",
+  "Dist::Zilla::Plugin::Test::NoTabs" => 0,
+  "Dist::Zilla::Plugin::Test::Pod::No404s" => 0,
+  "Dist::Zilla::Plugin::Test::PodSpelling" => "2.006001",
+  "Dist::Zilla::Plugin::Test::ReportPrereqs" => 0,
+  "Dist::Zilla::Plugin::Test::UnusedVars" => 0,
+  "Dist::Zilla::Plugin::Test::Version" => 0,
+  "Dist::Zilla::Plugin::TestRelease" => 0,
+  "Dist::Zilla::Plugin::UploadToCPAN" => 0,
+  "Dist::Zilla::Role::MintingProfile::ShareDir" => 0,
+  "Dist::Zilla::Role::PluginBundle::Config::Slicer" => 0,
+  "Dist::Zilla::Role::PluginBundle::Easy" => 0,
+  "Dist::Zilla::Role::PluginBundle::PluginRemover" => "0.102",
+  "Dist::Zilla::Util" => 0,
+  "Exporter" => 0,
+  "ExtUtils::MakeMaker" => 0,
+  "File::Find" => 0,
+  "File::Spec" => 0,
+  "File::Spec::Functions" => 0,
+  "JSON" => 0,
+  "List::MoreUtils" => 0,
+  "List::Util" => 0,
+  "Module::Runtime" => 0,
+  "Moose" => 0,
+  "Moose::Util" => 0,
+  "Moose::Util::TypeConstraints" => 0,
+  "Path::Class" => 0,
+  "Path::Tiny" => 0,
+  "Pod::Elemental::Transformer::List" => 0,
+  "Pod::Weaver::Plugin::Encoding" => 0,
+  "Pod::Weaver::Plugin::StopWords" => 0,
+  "Pod::Weaver::Plugin::Transformer" => 0,
+  "Pod::Weaver::PluginBundle::Default" => 0,
+  "Scalar::Util" => 0,
+  "Test::DZil" => 0,
+  "Test::Deep" => 0,
+  "Test::Deep::JSON" => 0,
+  "Test::File::ShareDir" => 0,
+  "Test::More" => 0,
+  "Test::Requires" => 0,
+  "Test::Spelling" => "0.19",
+  "Test::Vars" => "0.004",
+  "Text::Tabs" => "2013.0426",
+  "if" => 0,
+  "lib" => 0,
+  "namespace::autoclean" => 0,
+  "parent" => 0,
+  "strict" => 0,
+  "warnings" => 0
+);
 
-unless ( eval { ExtUtils::MakeMaker->VERSION(6.56) } ) {
-  my $br = delete $WriteMakefileArgs{BUILD_REQUIRES};
-  my $pp = $WriteMakefileArgs{PREREQ_PM};
-  for my $mod ( keys %$br ) {
-    if ( exists $pp->{$mod} ) {
-      $pp->{$mod} = $br->{$mod} if $br->{$mod} > $pp->{$mod};
-    }
-    else {
-      $pp->{$mod} = $br->{$mod};
-    }
-  }
+
+unless ( eval { ExtUtils::MakeMaker->VERSION(6.63_03) } ) {
+  delete $WriteMakefileArgs{TEST_REQUIRES};
+  delete $WriteMakefileArgs{BUILD_REQUIRES};
+  $WriteMakefileArgs{PREREQ_PM} = \%FallbackPrereqs;
 }
 
 delete $WriteMakefileArgs{CONFIGURE_REQUIRES}
