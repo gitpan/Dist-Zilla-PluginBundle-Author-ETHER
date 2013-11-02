@@ -15,6 +15,7 @@ my @modules = qw(
   CPAN::Changes
   CPAN::Meta
   CPAN::Meta::Requirements
+  Config::Identity::GitHub
   Dist::Zilla
   Dist::Zilla::Plugin::Authority
   Dist::Zilla::Plugin::AutoMetaResources
@@ -31,7 +32,6 @@ my @modules = qw(
   Dist::Zilla::Plugin::GenerateFile::ShareDir
   Dist::Zilla::Plugin::Git::Check
   Dist::Zilla::Plugin::Git::CheckFor::CorrectBranch
-  Dist::Zilla::Plugin::Git::CheckFor::MergeConflicts
   Dist::Zilla::Plugin::Git::Commit
   Dist::Zilla::Plugin::Git::Describe
   Dist::Zilla::Plugin::Git::GatherDir

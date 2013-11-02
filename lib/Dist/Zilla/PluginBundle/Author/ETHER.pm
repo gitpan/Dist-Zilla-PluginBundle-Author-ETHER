@@ -2,9 +2,9 @@ use strict;
 use warnings;
 package Dist::Zilla::PluginBundle::Author::ETHER;
 {
-  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.035';
+  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.036';
 }
-# git description: v0.034-2-gf61b7b4
+# git description: v0.035-8-g728de41
 
 BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
@@ -113,7 +113,7 @@ sub configure
         [ 'Test::CPAN::Changes' => { ':version' => '0.008' } ],
         'Test::ChangesHasContent',
         'Test::UnusedVars',
-        [ 'Test::MinimumVersion' => { ':version' => '2.000003', max_target_perl => '5.008008' } ],
+        [ 'Test::MinimumVersion' => { ':version' => '2.000003', max_target_perl => '5.008001' } ],
         'PodSyntaxTests',
         'PodCoverageTests',
         'Test::PodSpelling',
@@ -132,7 +132,7 @@ sub configure
         'Git::Describe',
         [ PkgVersion            => { ':version' => '4.300036', die_on_existing_version => 1 } ],
         'PodWeaver',
-        [ 'NextRelease'         => { ':version' => '4.300018', time_zone => 'UTC', format => '%-8V  %{yyyy-MM-dd HH:mm:ss\'Z\'}d' } ],
+        [ 'NextRelease'         => { ':version' => '4.300018', time_zone => 'UTC', format => '%-8v  %{yyyy-MM-dd HH:mm:ss\'Z\'}d%{ (TRIAL RELEASE)}T' } ],
         [ 'ReadmeAnyFromPod'    => { type => 'markdown', filename => 'README.md', location => 'build' } ],
 
         # MetaData
@@ -185,12 +185,13 @@ sub configure
 
 
         # Before Release
-        [ 'Git::Check'          => { allow_dirty => [] } ],
-        'Git::CheckFor::MergeConflicts',
+        [ 'Git::Check'          => 'git_check_1' => { allow_dirty => [] } ],
+        #'Git::CheckFor::MergeConflicts',
         [ 'Git::CheckFor::CorrectBranch' => { ':version' => '0.004', release_branch => 'master' } ],
         [ 'Git::Remote::Check'  => { branch => 'master', remote_branch => 'master' } ],
         'CheckPrereqsIndexed',
         'TestRelease',
+        [ 'Git::Check'          => 'git_check_2' => { allow_dirty => [] } ],
         # (ConfirmRelease)
 
         # Releaser
@@ -198,7 +199,7 @@ sub configure
 
         # After Release
         [ 'CopyFilesFromRelease' => { filename => [ qw(README.md LICENSE CONTRIBUTING) ] } ],
-        [ 'Git::Commit'         => { allow_dirty => [ qw(Changes README.md LICENSE CONTRIBUTING) ], commit_msg => '%N-%v%t%n%n%c' } ],
+        [ 'Git::Commit'         => { add_files_in => '.', allow_dirty => [ qw(Changes README.md LICENSE CONTRIBUTING) ], commit_msg => '%N-%v%t%n%n%c' } ],
         [ 'Git::Tag'            => { tag_format => 'v%v%t', tag_message => 'v%v%t' } ],
         $self->server eq 'github' ? (
             [ 'GitHub::Update' => { metacpan => 1 } ],
@@ -240,7 +241,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.035
+version 0.036
 
 =head1 SYNOPSIS
 
@@ -339,7 +340,7 @@ following F<dist.ini> (following the preamble):
     [NextRelease]
     :version = 4.300018
     time_zone = UTC
-    format = %-8V  %{yyyy-MM-dd HH:mm:ss'Z'}d
+    format = %-8v  %{uyyy-MM-dd HH:mm:ss'Z'}d%{ (TRIAL RELEASE)}T
     [ReadmeAnyFromPod]
     type = markdown
     filename = README.md
@@ -398,10 +399,10 @@ following F<dist.ini> (following the preamble):
 
 
     ;;; Before Release
-    [Git::Check]
+    [Git::Check / git_check_1]
     allow_dirty =
 
-    [Git::CheckFor::MergeConflicts]
+    ;[Git::CheckFor::MergeConflicts]
 
     [Git::CheckFor::CorrectBranch]
     :version = 0.004
@@ -413,6 +414,8 @@ following F<dist.ini> (following the preamble):
 
     [CheckPrereqsIndexed]
     [TestRelease]
+    [Git::Check / git_check_2]
+    allow_dirty =
     ;(ConfirmRelease)
 
 
@@ -427,6 +430,7 @@ following F<dist.ini> (following the preamble):
     copy = CONTRIBUTING
 
     [Git::Commit]
+    add_files_in = .
     allow_dirty = Changes
     allow_dirty = README.md
     allow_dirty = LICENSE
