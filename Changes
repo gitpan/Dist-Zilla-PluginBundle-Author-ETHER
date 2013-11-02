@@ -1,5 +1,8 @@
 Revision history for Dist-Zilla-PluginBundle-Author-ETHER
 
+0.037     2013-11-02 20:58:18Z
+          - fix regexp error while creating CONTRIBUTING file
+
 0.036     2013-11-02 20:54:09Z
           - version format in Changes file altered from appending -TRIAL to
             the version (which violates CPAN::Meta::Spec) to adding
