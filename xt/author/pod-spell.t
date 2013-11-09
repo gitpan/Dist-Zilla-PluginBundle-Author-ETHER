@@ -13,6 +13,9 @@ __DATA__
 Karen
 Etheridge
 ether
+Sergey
+Romanov
+complefor
 lib
 Dist
 Zilla

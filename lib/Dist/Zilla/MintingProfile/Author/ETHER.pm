@@ -2,7 +2,7 @@ use strict;
 use warnings;
 package Dist::Zilla::MintingProfile::Author::ETHER;
 {
-  $Dist::Zilla::MintingProfile::Author::ETHER::VERSION = '0.037';
+  $Dist::Zilla::MintingProfile::Author::ETHER::VERSION = '0.038';
 }
 BEGIN {
   $Dist::Zilla::MintingProfile::Author::ETHER::AUTHORITY = 'cpan:ETHER';
@@ -29,7 +29,7 @@ Dist::Zilla::MintingProfile::Author::ETHER - Mint distributions like ETHER does
 
 =head1 VERSION
 
-version 0.037
+version 0.038
 
 =head1 SYNOPSIS
 

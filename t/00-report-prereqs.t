@@ -66,6 +66,7 @@ my @modules = qw(
   Dist::Zilla::Plugin::PodSyntaxTests
   Dist::Zilla::Plugin::PodWeaver
   Dist::Zilla::Plugin::Prereqs
+  Dist::Zilla::Plugin::Prereqs::AuthorDeps
   Dist::Zilla::Plugin::PromptIfStale
   Dist::Zilla::Plugin::PruneCruft
   Dist::Zilla::Plugin::Readme

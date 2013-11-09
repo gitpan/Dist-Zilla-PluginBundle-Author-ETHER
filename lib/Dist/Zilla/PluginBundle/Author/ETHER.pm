@@ -2,9 +2,9 @@ use strict;
 use warnings;
 package Dist::Zilla::PluginBundle::Author::ETHER;
 {
-  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.037';
+  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.038';
 }
-# git description: v0.036-1-ged2f308
+# git description: v0.037-8-ga7388ee
 
 BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
@@ -153,6 +153,7 @@ sub configure
         # Register Prereqs
         # (MakeMaker or other installer)
         'AutoPrereqs',
+        'Prereqs::AuthorDeps',
         'MinimumPerl',
         [ 'Prereqs' => installer_requirements => {
                 '-phase' => 'develop', '-relationship' => 'requires',
@@ -185,13 +186,13 @@ sub configure
 
 
         # Before Release
-        [ 'Git::Check'          => 'git_check_1' => { allow_dirty => [] } ],
+        [ 'Git::Check'          => 'initial check' => { allow_dirty => [] } ],
         #'Git::CheckFor::MergeConflicts',
         [ 'Git::CheckFor::CorrectBranch' => { ':version' => '0.004', release_branch => 'master' } ],
         [ 'Git::Remote::Check'  => { branch => 'master', remote_branch => 'master' } ],
         'CheckPrereqsIndexed',
         'TestRelease',
-        [ 'Git::Check'          => 'git_check_2' => { allow_dirty => [] } ],
+        [ 'Git::Check'          => 'after tests' => { allow_dirty => [] } ],
         # (ConfirmRelease)
 
         # Releaser
@@ -232,8 +233,8 @@ __END__
 
 =encoding UTF-8
 
-=for :stopwords Karen Etheridge metacpan Stopwords ModuleBuildTiny customizations KENTNL
-irc
+=for :stopwords Karen Etheridge Sergey Romanov metacpan Stopwords ModuleBuildTiny
+customizations KENTNL irc
 
 =head1 NAME
 
@@ -241,7 +242,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.037
+version 0.038
 
 =head1 SYNOPSIS
 
@@ -399,7 +400,7 @@ following F<dist.ini> (following the preamble):
 
 
     ;;; Before Release
-    [Git::Check / git_check_1]
+    [Git::Check / initial check]
     allow_dirty =
 
     ;[Git::CheckFor::MergeConflicts]
@@ -414,7 +415,7 @@ following F<dist.ini> (following the preamble):
 
     [CheckPrereqsIndexed]
     [TestRelease]
-    [Git::Check / git_check_2]
+    [Git::Check / after tests]
     allow_dirty =
     ;(ConfirmRelease)
 
@@ -466,13 +467,14 @@ The version and other metadata is derived directly from the local git repository
 
 =head2 version
 
-Use C<< V=<version> >> to override the version of the distribution being built;
+Use C<< V=<version> >> in the shell to override the version of the distribution being built;
 otherwise the version is
 incremented from the last git tag.
 
 =head2 pod coverage
 
-Subs can be considered "covered" for pod coverage tests by adding a directive to pod:
+Subs can be considered "covered" for pod coverage tests by adding a directive to pod,
+as described in L<Pod::Coverage::TrustPod>:
 
     =for Pod::Coverage foo bar baz
 
@@ -486,8 +488,9 @@ many as you'd like), as described in L<Pod::Spell/ADDING STOPWORDS>:
 =head2 installer
 
 The installer back-end(s) to use (can be specified more than once); defaults
-to C<MakeMaker::Fallback>
-and C<ModuleBuildTiny> (which generates a F<Build.PL> for normal use, and
+to L<C<MakeMaker::Fallback>|Dist::Zilla::Plugin::MakeMaker::Fallback>
+and L<C<ModuleBuildTiny>|Dist::Zilla::Plugin::ModuleBuildTiny>
+(which generates a F<Build.PL> for normal use, and
 F<Makefile.PL> as a fallback, containing an upgrade warning).
 
 You can select other backends (by plugin name, without the C<[]>), with the
@@ -502,6 +505,8 @@ Encouraged choices are:
     installer = none (if you are including your own later on, with configs)
 
 =head2 server
+
+If provided, must be one of:
 
 =over 4
 
@@ -571,5 +576,9 @@ This software is copyright (c) 2013 by Karen Etheridge.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
+
+=head1 CONTRIBUTOR
+
+Sergey Romanov <complefor@rambler.ru>
 
 =cut
