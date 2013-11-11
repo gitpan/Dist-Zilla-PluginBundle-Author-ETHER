@@ -2,9 +2,9 @@ use strict;
 use warnings;
 package Dist::Zilla::PluginBundle::Author::ETHER;
 {
-  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.038';
+  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.039';
 }
-# git description: v0.037-8-ga7388ee
+# git description: v0.038-3-g410ce29
 
 BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
@@ -200,7 +200,7 @@ sub configure
 
         # After Release
         [ 'CopyFilesFromRelease' => { filename => [ qw(README.md LICENSE CONTRIBUTING) ] } ],
-        [ 'Git::Commit'         => { add_files_in => '.', allow_dirty => [ qw(Changes README.md LICENSE CONTRIBUTING) ], commit_msg => '%N-%v%t%n%n%c' } ],
+        [ 'Git::Commit'         => { add_files_in => [''], allow_dirty => [ qw(Changes README.md LICENSE CONTRIBUTING) ], commit_msg => '%N-%v%t%n%n%c' } ],
         [ 'Git::Tag'            => { tag_format => 'v%v%t', tag_message => 'v%v%t' } ],
         $self->server eq 'github' ? (
             [ 'GitHub::Update' => { metacpan => 1 } ],
@@ -242,7 +242,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.038
+version 0.039
 
 =head1 SYNOPSIS
 

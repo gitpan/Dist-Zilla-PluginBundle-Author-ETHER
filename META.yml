@@ -43,10 +43,10 @@ no_index:
 provides:
   Dist::Zilla::MintingProfile::Author::ETHER:
     file: lib/Dist/Zilla/MintingProfile/Author/ETHER.pm
-    version: 0.038
+    version: 0.039
   Dist::Zilla::PluginBundle::Author::ETHER:
     file: lib/Dist/Zilla/PluginBundle/Author/ETHER.pm
-    version: 0.038
+    version: 0.039
 recommends:
   Config::Identity::GitHub: 0
   Dist::Zilla::Plugin::GitHub::Update: 0
@@ -73,6 +73,7 @@ requires:
   Dist::Zilla::Plugin::Authority: 0
   Dist::Zilla::Plugin::AutoMetaResources: 0
   Dist::Zilla::Plugin::AutoPrereqs: 0
+  Dist::Zilla::Plugin::AutoVersion: 0
   Dist::Zilla::Plugin::CheckPrereqsIndexed: 0
   Dist::Zilla::Plugin::CheckSelfDependency: 0
   Dist::Zilla::Plugin::ConfirmRelease: 0
@@ -81,7 +82,6 @@ requires:
   Dist::Zilla::Plugin::ExecDir: 0
   Dist::Zilla::Plugin::FileFinder::ByName: 0
   Dist::Zilla::Plugin::GatherDir::Template: 0
-  Dist::Zilla::Plugin::GenerateFile: 0
   Dist::Zilla::Plugin::GenerateFile::ShareDir: 0
   Dist::Zilla::Plugin::Git::Check: 0
   Dist::Zilla::Plugin::Git::CheckFor::CorrectBranch: 0
@@ -167,7 +167,7 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-PluginBundle-Author-ETHER
   homepage: https://github.com/karenetheridge/Dist-Zilla-PluginBundle-Author-ETHER
   repository: https://github.com/karenetheridge/Dist-Zilla-PluginBundle-Author-ETHER.git
-version: 0.038
+version: 0.039
 x_Dist_Zilla:
   perl:
     version: 5.019005
@@ -259,11 +259,11 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::PromptIfStale
       name: '@Author::ETHER/build'
-      version: 0.010
+      version: 0.012
     -
       class: Dist::Zilla::Plugin::PromptIfStale
       name: '@Author::ETHER/release'
-      version: 0.010
+      version: 0.012
     -
       class: Dist::Zilla::Plugin::ExecDir
       name: '@Author::ETHER/ExecDir'

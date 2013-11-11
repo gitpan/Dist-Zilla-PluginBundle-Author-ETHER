@@ -20,6 +20,7 @@ my @modules = qw(
   Dist::Zilla::Plugin::Authority
   Dist::Zilla::Plugin::AutoMetaResources
   Dist::Zilla::Plugin::AutoPrereqs
+  Dist::Zilla::Plugin::AutoVersion
   Dist::Zilla::Plugin::CheckPrereqsIndexed
   Dist::Zilla::Plugin::CheckSelfDependency
   Dist::Zilla::Plugin::ConfirmRelease
@@ -28,7 +29,6 @@ my @modules = qw(
   Dist::Zilla::Plugin::ExecDir
   Dist::Zilla::Plugin::FileFinder::ByName
   Dist::Zilla::Plugin::GatherDir::Template
-  Dist::Zilla::Plugin::GenerateFile
   Dist::Zilla::Plugin::GenerateFile::ShareDir
   Dist::Zilla::Plugin::Git::Check
   Dist::Zilla::Plugin::Git::CheckFor::CorrectBranch
