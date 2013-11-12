@@ -2,9 +2,9 @@ use strict;
 use warnings;
 package Dist::Zilla::PluginBundle::Author::ETHER;
 {
-  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.039';
+  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.040';
 }
-# git description: v0.038-3-g410ce29
+# git description: v0.039-2-g6b34477
 
 BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
@@ -187,7 +187,7 @@ sub configure
 
         # Before Release
         [ 'Git::Check'          => 'initial check' => { allow_dirty => [] } ],
-        #'Git::CheckFor::MergeConflicts',
+        'Git::CheckFor::MergeConflicts',
         [ 'Git::CheckFor::CorrectBranch' => { ':version' => '0.004', release_branch => 'master' } ],
         [ 'Git::Remote::Check'  => { branch => 'master', remote_branch => 'master' } ],
         'CheckPrereqsIndexed',
@@ -242,7 +242,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.039
+version 0.040
 
 =head1 SYNOPSIS
 

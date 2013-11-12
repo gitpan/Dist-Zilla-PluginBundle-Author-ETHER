@@ -2,7 +2,7 @@ use strict;
 use warnings;
 package Dist::Zilla::MintingProfile::Author::ETHER;
 {
-  $Dist::Zilla::MintingProfile::Author::ETHER::VERSION = '0.039';
+  $Dist::Zilla::MintingProfile::Author::ETHER::VERSION = '0.040';
 }
 BEGIN {
   $Dist::Zilla::MintingProfile::Author::ETHER::AUTHORITY = 'cpan:ETHER';
@@ -12,6 +12,11 @@ BEGIN {
 use Moose;
 with 'Dist::Zilla::Role::MintingProfile::ShareDir';
 use namespace::autoclean;
+
+use Module::Runtime 'use_module';
+die 'Dist::Zilla::Plugin::ReadmeAnyFromPod is not new enough'
+    if not $INC{'Test/Builder.pm'}
+        and not use_module('Dist::Zilla::Plugin::ReadmeAnyFromPod')->does('Dist::Zilla::Role::FileGatherer');
 
 __PACKAGE__->meta->make_immutable;
 
@@ -29,7 +34,7 @@ Dist::Zilla::MintingProfile::Author::ETHER - Mint distributions like ETHER does
 
 =head1 VERSION
 
-version 0.039
+version 0.040
 
 =head1 SYNOPSIS
 

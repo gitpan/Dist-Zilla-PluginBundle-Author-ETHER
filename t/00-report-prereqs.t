@@ -32,6 +32,7 @@ my @modules = qw(
   Dist::Zilla::Plugin::GenerateFile::ShareDir
   Dist::Zilla::Plugin::Git::Check
   Dist::Zilla::Plugin::Git::CheckFor::CorrectBranch
+  Dist::Zilla::Plugin::Git::CheckFor::MergeConflicts
   Dist::Zilla::Plugin::Git::Commit
   Dist::Zilla::Plugin::Git::Describe
   Dist::Zilla::Plugin::Git::GatherDir
