@@ -19,7 +19,7 @@ complefor
 lib
 Dist
 Zilla
-PluginBundle
+MintingProfile
 Author
 ETHER
-MintingProfile
+PluginBundle

@@ -85,6 +85,7 @@ my @modules = qw(
   Dist::Zilla::Plugin::Test::NoTabs
   Dist::Zilla::Plugin::Test::Pod::No404s
   Dist::Zilla::Plugin::Test::PodSpelling
+  Dist::Zilla::Plugin::Test::Portability
   Dist::Zilla::Plugin::Test::ReportPrereqs
   Dist::Zilla::Plugin::Test::UnusedVars
   Dist::Zilla::Plugin::Test::Version
@@ -112,6 +113,7 @@ my @modules = qw(
   Path::Tiny
   Pod::Coverage::TrustPod
   Pod::Elemental::Transformer::List
+  Pod::Markdown
   Pod::Weaver::Plugin::Encoding
   Pod::Weaver::Plugin::StopWords
   Pod::Weaver::Plugin::Transformer
@@ -132,6 +134,7 @@ my @modules = qw(
   Test::Pod
   Test::Pod::Coverage
   Test::Pod::No404s
+  Test::Portability::Files
   Test::Requires
   Test::Spelling
   Test::Vars

@@ -2,9 +2,9 @@ use strict;
 use warnings;
 package Dist::Zilla::PluginBundle::Author::ETHER;
 {
-  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.040';
+  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.041';
 }
-# git description: v0.039-2-g6b34477
+# git description: v0.040-6-g8cd5cef
 
 BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
@@ -85,8 +85,10 @@ sub configure
         [ 'Git::NextVersion'    => { version_regexp => '^v([\d._]+)(-TRIAL)?$' } ],
 
         # BeforeBuild
-        [ 'PromptIfStale' => 'build' => { phase => 'build', module => [ blessed($self) ] } ],
-        [ 'PromptIfStale' => 'release' => { phase => 'release', check_all_plugins => 1, check_all_prereqs => 1 } ],
+        [ 'PromptIfStale' => 'build' => { phase => 'build', module => [ blessed($self) ],
+            } ],
+        [ 'PromptIfStale' => 'release' => { phase => 'release', check_all_plugins => 1, check_all_prereqs => 1,
+            skip => [ qw(Dist::Zilla::Plugin::Git::Check Dist::Zilla::Plugin::Git::Commit Dist::Zilla::Plugin::Git::GatherDir Dist::Zilla::Plugin::Git::NextVersion Dist::Zilla::Plugin::Git::Push Dist::Zilla::Plugin::Git::Tag Dist::Zilla::Plugin::Git::Init) ] } ],
 
         # ExecFiles, ShareDir
         [ 'ExecDir'             => { dir => 'script' } ],
@@ -122,6 +124,8 @@ sub configure
         'Test::Kwalitee',
         'MojibakeTests',
         [ 'Test::ReportPrereqs' => { verify_prereqs => 1 } ],
+        'Test::Portability',
+
 
         # Prune Files
         'PruneCruft',
@@ -242,7 +246,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.040
+version 0.041
 
 =head1 SYNOPSIS
 
@@ -266,7 +270,13 @@ following F<dist.ini> (following the preamble):
     [PromptIfStale / release]
     phase = release
     check_all_plugins = 1
-    ; requires :version = 0.004, but we will be checking ourselves)
+    skip = Dist::Zilla::Plugin::Git::Check
+    skip = Dist::Zilla::Plugin::Git::Commit
+    skip = Dist::Zilla::Plugin::Git::GatherDir
+    skip = Dist::Zilla::Plugin::Git::NextVersion
+    skip = Dist::Zilla::Plugin::Git::Push
+    skip = Dist::Zilla::Plugin::Git::Tag
+    skip = Dist::Zilla::Plugin::Git::Init
     check_all_prereqs = 1
 
 
@@ -327,6 +337,7 @@ following F<dist.ini> (following the preamble):
     [MojibakeTests]
     [Test::ReportPrereqs]
     verify_prereqs = 1
+    [Test::Portability]
 
 
     ;;; Munge Files
