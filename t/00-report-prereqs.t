@@ -91,6 +91,7 @@ my @modules = qw(
   Dist::Zilla::Plugin::Test::Version
   Dist::Zilla::Plugin::TestRelease
   Dist::Zilla::Plugin::UploadToCPAN
+  Dist::Zilla::Role::BeforeRelease
   Dist::Zilla::Role::MintingProfile::ShareDir
   Dist::Zilla::Role::PluginBundle::Config::Slicer
   Dist::Zilla::Role::PluginBundle::Easy
@@ -114,7 +115,6 @@ my @modules = qw(
   Pod::Coverage::TrustPod
   Pod::Elemental::Transformer::List
   Pod::Markdown
-  Pod::Weaver::Plugin::Encoding
   Pod::Weaver::Plugin::StopWords
   Pod::Weaver::Plugin::Transformer
   Pod::Weaver::PluginBundle::Default
@@ -126,6 +126,7 @@ my @modules = qw(
   Test::Deep
   Test::Deep::JSON
   Test::EOL
+  Test::Fatal
   Test::File::ShareDir
   Test::MinimumVersion
   Test::Mojibake
@@ -138,6 +139,7 @@ my @modules = qw(
   Test::Requires
   Test::Spelling
   Test::Vars
+  Test::Warnings
   Text::Tabs
   if
   lib

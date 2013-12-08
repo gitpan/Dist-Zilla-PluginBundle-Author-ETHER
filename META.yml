@@ -18,9 +18,11 @@ build_requires:
   Test::DZil: 0
   Test::Deep: 0
   Test::Deep::JSON: 0
+  Test::Fatal: 0
   Test::File::ShareDir: 0
   Test::More: 0
   Test::Requires: 0
+  Test::Warnings: 0.005
   if: 0
   lib: 0
   parent: 0
@@ -28,7 +30,7 @@ configure_requires:
   ExtUtils::MakeMaker: 6.30
   File::ShareDir::Install: 0.03
 dynamic_config: 0
-generated_by: 'Dist::Zilla version 5.006, CPAN::Meta::Converter version 2.132830'
+generated_by: 'Dist::Zilla version 5.006, CPAN::Meta::Converter version 2.133380'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -43,10 +45,10 @@ no_index:
 provides:
   Dist::Zilla::MintingProfile::Author::ETHER:
     file: lib/Dist/Zilla/MintingProfile/Author/ETHER.pm
-    version: 0.041
+    version: 0.042
   Dist::Zilla::PluginBundle::Author::ETHER:
     file: lib/Dist/Zilla/PluginBundle/Author/ETHER.pm
-    version: 0.041
+    version: 0.042
 recommends:
   Config::Identity::GitHub: 0
   Dist::Zilla::Plugin::GitHub::Update: 0
@@ -144,6 +146,7 @@ requires:
   Dist::Zilla::Plugin::Test::Version: 0
   Dist::Zilla::Plugin::TestRelease: 0
   Dist::Zilla::Plugin::UploadToCPAN: 0
+  Dist::Zilla::Role::BeforeRelease: 0
   Dist::Zilla::Role::MintingProfile::ShareDir: 0
   Dist::Zilla::Role::PluginBundle::Config::Slicer: 0
   Dist::Zilla::Role::PluginBundle::Easy: 0
@@ -154,10 +157,9 @@ requires:
   Moose::Util::TypeConstraints: 0
   Pod::Elemental::Transformer::List: 0
   Pod::Markdown: 1.500
-  Pod::Weaver::Plugin::Encoding: 0
   Pod::Weaver::Plugin::StopWords: 0
   Pod::Weaver::Plugin::Transformer: 0
-  Pod::Weaver::PluginBundle::Default: 0
+  Pod::Weaver::PluginBundle::Default: 4.000
   Test::Portability::Files: 0.06
   Test::Spelling: 0.19
   Test::Vars: 0.004
@@ -172,7 +174,7 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-PluginBundle-Author-ETHER
   homepage: https://github.com/karenetheridge/Dist-Zilla-PluginBundle-Author-ETHER
   repository: https://github.com/karenetheridge/Dist-Zilla-PluginBundle-Author-ETHER.git
-version: 0.041
+version: 0.042
 x_Dist_Zilla:
   perl:
     version: 5.019006
@@ -348,7 +350,7 @@ x_Dist_Zilla:
             - ':ExecFiles'
             - '@Author::ETHER/Examples'
       name: '@Author::ETHER/Test::Compile'
-      version: 2.037
+      version: 2.039
     -
       class: Dist::Zilla::Plugin::Test::NoTabs
       config:
@@ -509,10 +511,6 @@ x_Dist_Zilla:
               name: '-StopWords'
               version: 1.008
             -
-              class: Pod::Weaver::Plugin::Encoding
-              name: '-Encoding'
-              version: 0.02
-            -
               class: Pod::Weaver::Section::Contributors
               name: Contributors
               version: 0.006
@@ -525,7 +523,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::ReadmeAnyFromPod
       name: '@Author::ETHER/ReadmeAnyFromPod'
-      version: 0.133290
+      version: 0.133360
     -
       class: Dist::Zilla::Plugin::GithubMeta
       name: '@Author::ETHER/GithubMeta'
@@ -599,7 +597,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::CheckSelfDependency
       name: '@Author::ETHER/CheckSelfDependency'
-      version: 0.005
+      version: 0.006
     -
       class: Dist::Zilla::Plugin::Run::AfterBuild
       name: '@Author::ETHER/Run::AfterBuild'
@@ -651,7 +649,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::GitHub::Update
       name: '@Author::ETHER/GitHub::Update'
-      version: 0.35
+      version: 0.36
     -
       class: Dist::Zilla::Plugin::Git::Push
       name: '@Author::ETHER/Git::Push'

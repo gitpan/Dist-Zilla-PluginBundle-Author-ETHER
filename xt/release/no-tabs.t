@@ -8,6 +8,7 @@ use Test::NoTabs;
 
 my @files = (
     'lib/Dist/Zilla/MintingProfile/Author/ETHER.pm',
+    'lib/Dist/Zilla/Plugin/BlockRelease.pm',
     'lib/Dist/Zilla/PluginBundle/Author/ETHER.pm'
 );
 

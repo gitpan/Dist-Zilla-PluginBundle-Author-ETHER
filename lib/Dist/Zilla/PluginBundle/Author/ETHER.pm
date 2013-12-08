@@ -2,9 +2,9 @@ use strict;
 use warnings;
 package Dist::Zilla::PluginBundle::Author::ETHER;
 {
-  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.041';
+  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.042';
 }
-# git description: v0.040-6-g8cd5cef
+# git description: v0.041-4-gc0fc271
 
 BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
@@ -48,6 +48,16 @@ has server => (
     },
 );
 
+has airplane => (
+    is => 'ro', isa => 'Bool',
+    lazy => 1,
+    default => sub {
+        exists $_[0]->payload->{airplane}
+            ? $_[0]->payload->{airplane}
+            : 0;
+    },
+);
+
 has _requested_version => (
     is => 'ro', isa => 'Str',
     lazy => 1,
@@ -61,6 +71,19 @@ has _requested_version => (
 my %installer_args = (
     ModuleBuildTiny => { ':version' => '0.004' },
 );
+
+# plugins that use the network when they run
+my @network_plugins = qw(
+    PromptIfStale
+    Test::Pod::LinkCheck
+    Test::Pod::No404s
+    Git::Remote::Check
+    CheckPrereqsIndexed
+    UploadToCPAN
+    Git::Push
+);
+my %network_plugins;
+@network_plugins{ map { Dist::Zilla::Util->expand_config_package_name($_) } @network_plugins } = () x @network_plugins;
 
 around BUILDARGS => sub
 {
@@ -80,7 +103,7 @@ sub configure
 
     my %extra_develop_requires;
 
-    $self->add_plugins(
+    my @plugins = (
         # VersionProvider
         [ 'Git::NextVersion'    => { version_regexp => '^v([\d._]+)(-TRIAL)?$' } ],
 
@@ -217,12 +240,28 @@ sub configure
         'ConfirmRelease',
     );
 
-    $self->add_plugins(
+    push @plugins, (
         [ 'Prereqs' => via_options => {
             '-phase' => 'develop', '-relationship' => 'requires',
             %extra_develop_requires
           } ]
     ) if keys %extra_develop_requires;
+
+    if ($self->airplane)
+    {
+        warn 'building in airplane mode - plugins requiring the network are skipped, and releases are not permitted';
+        @plugins = grep {
+            my $plugin = Dist::Zilla::Util->expand_config_package_name(
+                !ref($_) ? $_ : ref eq 'ARRAY' ? $_->[0] : die 'wtf'
+            );
+            not grep { $_ eq $plugin } @network_plugins;
+        } @plugins;
+
+        # halt release before any pre-release checks
+        unshift @plugins, 'BlockRelease';
+    }
+
+    $self->add_plugins(@plugins);
 
     # check for a bin/ that should probably be renamed to script/
     warn 'bin/ detected - should this be moved to script/, so its contents can be installed into $PATH?'
@@ -246,7 +285,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.041
+version 0.042
 
 =head1 SYNOPSIS
 
@@ -557,6 +596,12 @@ no special configuration of metadata (relating to repositories etc) is done --
 you'll need to provide this yourself.
 
 =back
+
+=head2 airplane
+
+A boolean option, that when set, removes the use of all plugins that use the
+network (generally for comparing metadata against PAUSE, and querying the
+remote git server), as well as blocking the use of the C<release> command.
 
 =head2 other customizations
 

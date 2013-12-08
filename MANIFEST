@@ -10,6 +10,7 @@ README
 README.md
 dist.ini
 lib/Dist/Zilla/MintingProfile/Author/ETHER.pm
+lib/Dist/Zilla/Plugin/BlockRelease.pm
 lib/Dist/Zilla/PluginBundle/Author/ETHER.pm
 profiles/github/Module.pm
 profiles/github/build_templates/profile.ini
@@ -24,6 +25,7 @@ t/02-minter-github.t
 t/03-pluginbundle-server.t
 t/04-pluginbundle-installer.t
 t/05-pluginbundle-core.t
+t/06-airplane.t
 t/corpus/global/config.ini
 t/lib/Helper.pm
 weaver.ini
