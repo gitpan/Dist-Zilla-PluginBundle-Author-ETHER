@@ -77,7 +77,7 @@ my %WriteMakefileArgs = (
     "Dist::Zilla::Plugin::PodWeaver" => 0,
     "Dist::Zilla::Plugin::Prereqs" => 0,
     "Dist::Zilla::Plugin::Prereqs::AuthorDeps" => 0,
-    "Dist::Zilla::Plugin::PromptIfStale" => "0.014",
+    "Dist::Zilla::Plugin::PromptIfStale" => "0.004",
     "Dist::Zilla::Plugin::PruneCruft" => 0,
     "Dist::Zilla::Plugin::Readme" => 0,
     "Dist::Zilla::Plugin::ReadmeAnyFromPod" => "0.133290",
@@ -147,7 +147,7 @@ my %WriteMakefileArgs = (
     "lib" => 0,
     "parent" => 0
   },
-  "VERSION" => "0.042",
+  "VERSION" => "0.043",
   "test" => {
     "TESTS" => "t/*.t"
   }
@@ -208,7 +208,7 @@ my %FallbackPrereqs = (
   "Dist::Zilla::Plugin::PodWeaver" => 0,
   "Dist::Zilla::Plugin::Prereqs" => 0,
   "Dist::Zilla::Plugin::Prereqs::AuthorDeps" => 0,
-  "Dist::Zilla::Plugin::PromptIfStale" => "0.014",
+  "Dist::Zilla::Plugin::PromptIfStale" => "0.004",
   "Dist::Zilla::Plugin::PruneCruft" => 0,
   "Dist::Zilla::Plugin::Readme" => 0,
   "Dist::Zilla::Plugin::ReadmeAnyFromPod" => "0.133290",

@@ -2,9 +2,9 @@ use strict;
 use warnings;
 package Dist::Zilla::PluginBundle::Author::ETHER;
 {
-  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.042';
+  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.043';
 }
-# git description: v0.041-4-gc0fc271
+# git description: v0.042-4-g2c44008
 
 BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
@@ -108,10 +108,8 @@ sub configure
         [ 'Git::NextVersion'    => { version_regexp => '^v([\d._]+)(-TRIAL)?$' } ],
 
         # BeforeBuild
-        [ 'PromptIfStale' => 'build' => { phase => 'build', module => [ blessed($self) ],
-            } ],
-        [ 'PromptIfStale' => 'release' => { phase => 'release', check_all_plugins => 1, check_all_prereqs => 1,
-            skip => [ qw(Dist::Zilla::Plugin::Git::Check Dist::Zilla::Plugin::Git::Commit Dist::Zilla::Plugin::Git::GatherDir Dist::Zilla::Plugin::Git::NextVersion Dist::Zilla::Plugin::Git::Push Dist::Zilla::Plugin::Git::Tag Dist::Zilla::Plugin::Git::Init) ] } ],
+        [ 'PromptIfStale' => 'build' => { phase => 'build', module => [ blessed($self) ] } ],
+        [ 'PromptIfStale' => 'release' => { phase => 'release', check_all_plugins => 1, check_all_prereqs => 1 } ],
 
         # ExecFiles, ShareDir
         [ 'ExecDir'             => { dir => 'script' } ],
@@ -285,7 +283,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.042
+version 0.043
 
 =head1 SYNOPSIS
 
@@ -309,13 +307,6 @@ following F<dist.ini> (following the preamble):
     [PromptIfStale / release]
     phase = release
     check_all_plugins = 1
-    skip = Dist::Zilla::Plugin::Git::Check
-    skip = Dist::Zilla::Plugin::Git::Commit
-    skip = Dist::Zilla::Plugin::Git::GatherDir
-    skip = Dist::Zilla::Plugin::Git::NextVersion
-    skip = Dist::Zilla::Plugin::Git::Push
-    skip = Dist::Zilla::Plugin::Git::Tag
-    skip = Dist::Zilla::Plugin::Git::Init
     check_all_prereqs = 1
 
 

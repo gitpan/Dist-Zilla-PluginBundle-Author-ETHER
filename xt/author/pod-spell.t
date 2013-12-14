@@ -19,9 +19,9 @@ complefor
 lib
 Dist
 Zilla
+Plugin
+BlockRelease
 PluginBundle
 Author
 ETHER
 MintingProfile
-Plugin
-BlockRelease
