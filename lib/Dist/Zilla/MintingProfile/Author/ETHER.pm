@@ -2,7 +2,7 @@ use strict;
 use warnings;
 package Dist::Zilla::MintingProfile::Author::ETHER;
 {
-  $Dist::Zilla::MintingProfile::Author::ETHER::VERSION = '0.043';
+  $Dist::Zilla::MintingProfile::Author::ETHER::VERSION = '0.044';
 }
 BEGIN {
   $Dist::Zilla::MintingProfile::Author::ETHER::AUTHORITY = 'cpan:ETHER';
@@ -21,7 +21,7 @@ __END__
 
 =encoding UTF-8
 
-=for :stopwords Karen Etheridge irc
+=for :stopwords Karen Etheridge Sergey Romanov irc
 
 =head1 NAME
 
@@ -29,7 +29,7 @@ Dist::Zilla::MintingProfile::Author::ETHER - Mint distributions like ETHER does
 
 =head1 VERSION
 
-version 0.043
+version 0.044
 
 =head1 SYNOPSIS
 

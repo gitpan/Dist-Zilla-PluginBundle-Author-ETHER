@@ -1,5 +1,10 @@
 Revision history for Dist-Zilla-PluginBundle-Author-ETHER
 
+0.044     2014-01-04 18:46:04Z
+          - adjust airplane mode so it performs all (non-network) pre-release
+            checks first, before aborting the release
+          - minor tweaks to CONTRIBUTING text
+
 0.043     2013-12-14 17:34:14Z
           - stale [@Git] modules now being checked for again
 

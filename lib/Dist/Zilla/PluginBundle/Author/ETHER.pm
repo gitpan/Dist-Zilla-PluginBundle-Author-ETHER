@@ -2,9 +2,9 @@ use strict;
 use warnings;
 package Dist::Zilla::PluginBundle::Author::ETHER;
 {
-  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.043';
+  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.044';
 }
-# git description: v0.042-4-g2c44008
+# git description: v0.043-4-g0158303
 
 BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
@@ -233,9 +233,6 @@ sub configure
         ) : (),
         'Git::Push',
         [ 'InstallRelease'      => { install_command => 'cpanm .' } ],
-
-        # listed late, to allow all other plugins which do BeforeRelease checks to run first.
-        'ConfirmRelease',
     );
 
     push @plugins, (
@@ -247,7 +244,7 @@ sub configure
 
     if ($self->airplane)
     {
-        warn 'building in airplane mode - plugins requiring the network are skipped, and releases are not permitted';
+        warn "building in airplane mode - plugins requiring the network are skipped, and releases are not permitted\n";
         @plugins = grep {
             my $plugin = Dist::Zilla::Util->expand_config_package_name(
                 !ref($_) ? $_ : ref eq 'ARRAY' ? $_->[0] : die 'wtf'
@@ -255,9 +252,14 @@ sub configure
             not grep { $_ eq $plugin } @network_plugins;
         } @plugins;
 
-        # halt release before any pre-release checks
-        unshift @plugins, 'BlockRelease';
+        # halt release after pre-release checks, but before ConfirmRelease
+        push @plugins, 'BlockRelease';
     }
+
+    push @plugins, (
+        # listed late, to allow all other plugins which do BeforeRelease checks to run first.
+        'ConfirmRelease',
+    );
 
     $self->add_plugins(@plugins);
 
@@ -283,7 +285,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.043
+version 0.044
 
 =head1 SYNOPSIS
 
