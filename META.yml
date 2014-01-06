@@ -45,10 +45,10 @@ no_index:
 provides:
   Dist::Zilla::MintingProfile::Author::ETHER:
     file: lib/Dist/Zilla/MintingProfile/Author/ETHER.pm
-    version: 0.044
+    version: 0.045
   Dist::Zilla::PluginBundle::Author::ETHER:
     file: lib/Dist/Zilla/PluginBundle/Author/ETHER.pm
-    version: 0.044
+    version: 0.045
 recommends:
   Config::Identity::GitHub: 0
   Dist::Zilla::Plugin::GitHub::Update: 0
@@ -174,7 +174,7 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-PluginBundle-Author-ETHER
   homepage: https://github.com/karenetheridge/Dist-Zilla-PluginBundle-Author-ETHER
   repository: https://github.com/karenetheridge/Dist-Zilla-PluginBundle-Author-ETHER.git
-version: 0.044
+version: 0.045
 x_Dist_Zilla:
   perl:
     version: 5.019007
@@ -508,7 +508,7 @@ x_Dist_Zilla:
               name: '-StopWords'
               version: 1.008
       name: '@Author::ETHER/PodWeaver'
-      version: 4.002
+      version: 4.004
     -
       class: Dist::Zilla::Plugin::NextRelease
       name: '@Author::ETHER/NextRelease'
@@ -652,16 +652,16 @@ x_Dist_Zilla:
       name: '@Author::ETHER/InstallRelease'
       version: 0.008
     -
-      class: Dist::Zilla::Plugin::ConfirmRelease
-      name: '@Author::ETHER/ConfirmRelease'
-      version: 5.008
-    -
       class: Dist::Zilla::Plugin::Prereqs
       config:
         Dist::Zilla::Plugin::Prereqs:
           phase: develop
           type: requires
       name: '@Author::ETHER/via_options'
+      version: 5.008
+    -
+      class: Dist::Zilla::Plugin::ConfirmRelease
+      name: '@Author::ETHER/ConfirmRelease'
       version: 5.008
     -
       class: Dist::Zilla::Plugin::FinderCode
@@ -702,4 +702,5 @@ x_Dist_Zilla:
     version: 5.008
 x_authority: cpan:ETHER
 x_contributors:
+  - 'Randy Stauner <randy@magnificent-tears.com>'
   - 'Sergey Romanov <complefor@rambler.ru>'

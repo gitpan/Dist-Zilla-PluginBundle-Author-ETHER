@@ -2,9 +2,9 @@ use strict;
 use warnings;
 package Dist::Zilla::PluginBundle::Author::ETHER;
 {
-  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.044';
+  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.045';
 }
-# git description: v0.043-4-g0158303
+# git description: v0.044-8-g6fba129
 
 BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
@@ -19,7 +19,7 @@ with
 
 use Dist::Zilla::Util;
 use Moose::Util::TypeConstraints;
-use List::MoreUtils 'any';
+use List::MoreUtils qw(any first_index);
 use namespace::autoclean;
 
 sub mvp_multivalue_args { qw(installer) }
@@ -252,6 +252,9 @@ sub configure
             not grep { $_ eq $plugin } @network_plugins;
         } @plugins;
 
+        # allow our uncommitted dist.ini edit which sets 'airplane = 1'
+        push @{ $plugins[ first_index { ref eq 'ARRAY' && $_->[0] eq 'Git::Check' } @plugins ][-1]{allow_dirty} }, 'dist.ini';
+
         # halt release after pre-release checks, but before ConfirmRelease
         push @plugins, 'BlockRelease';
     }
@@ -276,8 +279,8 @@ __END__
 
 =encoding UTF-8
 
-=for :stopwords Karen Etheridge Sergey Romanov metacpan Stopwords ModuleBuildTiny
-customizations KENTNL irc
+=for :stopwords Karen Etheridge Randy Stauner Sergey Romanov metacpan Stopwords
+ModuleBuildTiny customizations KENTNL irc
 
 =head1 NAME
 
@@ -285,7 +288,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.044
+version 0.045
 
 =head1 SYNOPSIS
 
@@ -565,21 +568,21 @@ metadata and release plugins are tailored to L<github|http://github.com>.
 C<gitmo>
 
 metadata and release plugins are tailored to
-L<http://git.moose.perl.org|gitmo@git.moose.perl.org>.
+L<gitmo@git.moose.perl.org|http://git.moose.perl.org>.
 
 =item *
 
 C<p5sagit>
 
 metadata and release plugins are tailored to
-L<http://git.shadowcat.co.uk|p5sagit@git.shadowcat.co.uk>.
+L<p5sagit@git.shadowcat.co.uk|http://git.shadowcat.co.uk>.
 
 =item *
 
 C<catagits>
 
 metadata and release plugins are tailored to
-L<http://git.shadowcat.co.uk|catagits@git.shadowcat.co.uk>.
+L<catagits@git.shadowcat.co.uk|http://git.shadowcat.co.uk>.
 
 =item *
 
@@ -626,8 +629,18 @@ This software is copyright (c) 2013 by Karen Etheridge.
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
-=head1 CONTRIBUTOR
+=head1 CONTRIBUTORS
+
+=over 4
+
+=item *
+
+Randy Stauner <randy@magnificent-tears.com>
+
+=item *
 
 Sergey Romanov <complefor@rambler.ru>
+
+=back
 
 =cut

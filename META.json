@@ -30,7 +30,7 @@
       },
       "develop" : {
          "recommends" : {
-            "Dist::Zilla::PluginBundle::Author::ETHER" : "0.043"
+            "Dist::Zilla::PluginBundle::Author::ETHER" : "0.044"
          },
          "requires" : {
             "Dist::Zilla" : "5.008",
@@ -228,11 +228,11 @@
    "provides" : {
       "Dist::Zilla::MintingProfile::Author::ETHER" : {
          "file" : "lib/Dist/Zilla/MintingProfile/Author/ETHER.pm",
-         "version" : "0.044"
+         "version" : "0.045"
       },
       "Dist::Zilla::PluginBundle::Author::ETHER" : {
          "file" : "lib/Dist/Zilla/PluginBundle/Author/ETHER.pm",
-         "version" : "0.044"
+         "version" : "0.045"
       }
    },
    "release_status" : "stable",
@@ -250,7 +250,7 @@
       "x_IRC" : "irc://irc.perl.org/#distzilla",
       "x_MailingList" : "http://dzil.org/#mailing-list"
    },
-   "version" : "0.044",
+   "version" : "0.045",
    "x_Dist_Zilla" : {
       "perl" : {
          "version" : "5.019007"
@@ -683,7 +683,7 @@
                }
             },
             "name" : "@Author::ETHER/PodWeaver",
-            "version" : "4.002"
+            "version" : "4.004"
          },
          {
             "class" : "Dist::Zilla::Plugin::NextRelease",
@@ -866,11 +866,6 @@
             "version" : "0.008"
          },
          {
-            "class" : "Dist::Zilla::Plugin::ConfirmRelease",
-            "name" : "@Author::ETHER/ConfirmRelease",
-            "version" : "5.008"
-         },
-         {
             "class" : "Dist::Zilla::Plugin::Prereqs",
             "config" : {
                "Dist::Zilla::Plugin::Prereqs" : {
@@ -879,6 +874,11 @@
                }
             },
             "name" : "@Author::ETHER/via_options",
+            "version" : "5.008"
+         },
+         {
+            "class" : "Dist::Zilla::Plugin::ConfirmRelease",
+            "name" : "@Author::ETHER/ConfirmRelease",
             "version" : "5.008"
          },
          {
@@ -932,6 +932,7 @@
    },
    "x_authority" : "cpan:ETHER",
    "x_contributors" : [
+      "Randy Stauner <randy@magnificent-tears.com>",
       "Sergey Romanov <complefor@rambler.ru>"
    ]
 }
