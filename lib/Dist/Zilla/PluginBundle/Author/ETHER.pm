@@ -2,9 +2,9 @@ use strict;
 use warnings;
 package Dist::Zilla::PluginBundle::Author::ETHER;
 {
-  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.045';
+  $Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.046';
 }
-# git description: v0.044-8-g6fba129
+# git description: v0.045-7-g5a2aa89
 
 BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
@@ -170,8 +170,8 @@ sub configure
             : ()
         } ],
         # (Authority)
-        [ 'MetaNoIndex'         => { directory => [ qw(t xt examples) ] } ],
-        [ 'MetaProvides::Package' => { meta_noindex => 1 } ],
+        [ 'MetaNoIndex'         => { directory => [ qw(t xt examples share) ] } ],
+        [ 'MetaProvides::Package' => { meta_noindex => 1, ':version' => '1.15000002', finder => ':InstallModules' } ],
         'MetaConfig',
         #[ContributorsFromGit]
 
@@ -288,7 +288,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.045
+version 0.046
 
 =head1 SYNOPSIS
 

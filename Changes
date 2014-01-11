@@ -1,5 +1,10 @@
 Revision history for Dist-Zilla-PluginBundle-Author-ETHER
 
+0.046     2014-01-11 19:23:31Z
+          - ensure that .pod files are also eligible for indexing
+          - minting profile switched to using a dist sharedir to store
+            profiles, so we can now ship using Module::Build::Tiny
+
 0.045     2014-01-06 18:32:05Z
           - fixed transposed link text in documentation (thanks, rwstauner!)
           - fixed new tests that fail when run outside a git repository

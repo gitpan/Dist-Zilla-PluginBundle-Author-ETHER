@@ -2,7 +2,7 @@ use strict;
 use warnings;
 package Dist::Zilla::MintingProfile::Author::ETHER;
 {
-  $Dist::Zilla::MintingProfile::Author::ETHER::VERSION = '0.045';
+  $Dist::Zilla::MintingProfile::Author::ETHER::VERSION = '0.046';
 }
 BEGIN {
   $Dist::Zilla::MintingProfile::Author::ETHER::AUTHORITY = 'cpan:ETHER';
@@ -10,8 +10,26 @@ BEGIN {
 # ABSTRACT: Mint distributions like ETHER does
 
 use Moose;
-with 'Dist::Zilla::Role::MintingProfile::ShareDir';
+with 'Dist::Zilla::Role::MintingProfile';
+use File::ShareDir;
+use Path::Class;        # sadly, we still need to use Path::Class :(
+use Carp;
 use namespace::autoclean;
+
+sub profile_dir
+{
+    my ($self, $profile_name) = @_;
+
+    # I'd template this as '{{ $dist->name }}', except [GatherDir::Template]
+    # uses FromCode files, which prevents other munging, e.g. PodWeaver
+    my $dist_name = 'Dist-Zilla-PluginBundle-Author-ETHER';
+    my $profile_dir = dir( File::ShareDir::dist_dir($dist_name) )
+                      ->subdir( 'profiles', $profile_name );
+
+    return $profile_dir if -d $profile_dir;
+
+    confess "Can't find profile $profile_name via $self: it should be in $profile_dir";
+}
 
 __PACKAGE__->meta->make_immutable;
 
@@ -29,7 +47,7 @@ Dist::Zilla::MintingProfile::Author::ETHER - Mint distributions like ETHER does
 
 =head1 VERSION
 
-version 0.045
+version 0.046
 
 =head1 SYNOPSIS
 
