@@ -25,6 +25,6 @@ Zilla
 PluginBundle
 Author
 ETHER
+MintingProfile
 Plugin
 BlockRelease
-MintingProfile

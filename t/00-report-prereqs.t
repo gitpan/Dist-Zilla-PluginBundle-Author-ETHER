@@ -116,6 +116,7 @@ my @modules = qw(
   Path::Class
   Path::Tiny
   Pod::Coverage::TrustPod
+  Pod::Elemental::PerlMunger
   Pod::Elemental::Transformer::List
   Pod::Markdown
   Pod::Weaver::Plugin::StopWords

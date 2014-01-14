@@ -8,8 +8,8 @@ use warnings;
 
 BEGIN {
 my %configure_requires = (
-    'ExtUtils::MakeMaker' => '6.30',
     'File::ShareDir::Install' => '0.03',
+    'ExtUtils::MakeMaker' => '6.30',
     'Module::Build::Tiny' => '0.030',
 );
 
@@ -101,7 +101,7 @@ my %WriteMakefileArgs = (
     "Dist::Zilla::Plugin::GatherDir::Template" => 0,
     "Dist::Zilla::Plugin::GenerateFile::ShareDir" => 0,
     "Dist::Zilla::Plugin::Git::Check" => 0,
-    "Dist::Zilla::Plugin::Git::CheckFor::CorrectBranch" => 0,
+    "Dist::Zilla::Plugin::Git::CheckFor::CorrectBranch" => "0.004",
     "Dist::Zilla::Plugin::Git::CheckFor::MergeConflicts" => "0.008",
     "Dist::Zilla::Plugin::Git::Commit" => 0,
     "Dist::Zilla::Plugin::Git::Describe" => 0,
@@ -132,7 +132,7 @@ my %WriteMakefileArgs = (
     "Dist::Zilla::Plugin::ModuleBuildTiny" => "0.004",
     "Dist::Zilla::Plugin::MojibakeTests" => 0,
     "Dist::Zilla::Plugin::NextRelease" => "4.300018",
-    "Dist::Zilla::Plugin::PkgVersion" => "4.300036",
+    "Dist::Zilla::Plugin::PkgVersion" => "5.010",
     "Dist::Zilla::Plugin::PodCoverageTests" => 0,
     "Dist::Zilla::Plugin::PodSyntaxTests" => 0,
     "Dist::Zilla::Plugin::PodWeaver" => "4.005",
@@ -172,6 +172,7 @@ my %WriteMakefileArgs = (
     "Moose" => 0,
     "Moose::Util::TypeConstraints" => 0,
     "Path::Class" => 0,
+    "Pod::Elemental::PerlMunger" => "0.200001",
     "Pod::Elemental::Transformer::List" => 0,
     "Pod::Markdown" => "1.500",
     "Pod::Weaver::Plugin::StopWords" => 0,
@@ -209,7 +210,7 @@ my %WriteMakefileArgs = (
     "lib" => 0,
     "parent" => 0
   },
-  "VERSION" => "0.046",
+  "VERSION" => "0.047",
   "test" => {
     "TESTS" => "t/*.t"
   }
@@ -234,7 +235,7 @@ my %FallbackPrereqs = (
   "Dist::Zilla::Plugin::GatherDir::Template" => 0,
   "Dist::Zilla::Plugin::GenerateFile::ShareDir" => 0,
   "Dist::Zilla::Plugin::Git::Check" => 0,
-  "Dist::Zilla::Plugin::Git::CheckFor::CorrectBranch" => 0,
+  "Dist::Zilla::Plugin::Git::CheckFor::CorrectBranch" => "0.004",
   "Dist::Zilla::Plugin::Git::CheckFor::MergeConflicts" => "0.008",
   "Dist::Zilla::Plugin::Git::Commit" => 0,
   "Dist::Zilla::Plugin::Git::Describe" => 0,
@@ -265,7 +266,7 @@ my %FallbackPrereqs = (
   "Dist::Zilla::Plugin::ModuleBuildTiny" => "0.004",
   "Dist::Zilla::Plugin::MojibakeTests" => 0,
   "Dist::Zilla::Plugin::NextRelease" => "4.300018",
-  "Dist::Zilla::Plugin::PkgVersion" => "4.300036",
+  "Dist::Zilla::Plugin::PkgVersion" => "5.010",
   "Dist::Zilla::Plugin::PodCoverageTests" => 0,
   "Dist::Zilla::Plugin::PodSyntaxTests" => 0,
   "Dist::Zilla::Plugin::PodWeaver" => "4.005",
@@ -315,6 +316,7 @@ my %FallbackPrereqs = (
   "Moose::Util::TypeConstraints" => 0,
   "Path::Class" => 0,
   "Path::Tiny" => 0,
+  "Pod::Elemental::PerlMunger" => "0.200001",
   "Pod::Elemental::Transformer::List" => 0,
   "Pod::Markdown" => "1.500",
   "Pod::Weaver::Plugin::StopWords" => 0,
