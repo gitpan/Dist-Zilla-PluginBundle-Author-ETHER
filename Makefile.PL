@@ -8,9 +8,9 @@ use warnings;
 
 BEGIN {
 my %configure_requires = (
+    'Module::Build::Tiny' => '0.033',
     'File::ShareDir::Install' => '0.03',
     'ExtUtils::MakeMaker' => '6.30',
-    'Module::Build::Tiny' => '0.030',
 );
 
 my @missing = grep {
@@ -77,7 +77,7 @@ my %WriteMakefileArgs = (
   "CONFIGURE_REQUIRES" => {
     "ExtUtils::MakeMaker" => "6.30",
     "File::ShareDir::Install" => "0.03",
-    "Module::Build::Tiny" => "0.030"
+    "Module::Build::Tiny" => "0.033"
   },
   "DISTNAME" => "Dist-Zilla-PluginBundle-Author-ETHER",
   "EXE_FILES" => [],
@@ -197,7 +197,6 @@ my %WriteMakefileArgs = (
     "Module::Runtime" => 0,
     "Moose::Util" => 0,
     "Path::Tiny" => 0,
-    "Scalar::Util" => 0,
     "Test::DZil" => 0,
     "Test::Deep" => 0,
     "Test::Deep::JSON" => 0,
@@ -210,7 +209,7 @@ my %WriteMakefileArgs = (
     "lib" => 0,
     "parent" => 0
   },
-  "VERSION" => "0.047",
+  "VERSION" => "0.048",
   "test" => {
     "TESTS" => "t/*.t"
   }
@@ -322,7 +321,6 @@ my %FallbackPrereqs = (
   "Pod::Weaver::Plugin::StopWords" => 0,
   "Pod::Weaver::Plugin::Transformer" => 0,
   "Pod::Weaver::PluginBundle::Default" => "4.000",
-  "Scalar::Util" => 0,
   "Test::DZil" => 0,
   "Test::Deep" => 0,
   "Test::Deep::JSON" => 0,
