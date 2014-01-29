@@ -24,10 +24,11 @@ build_requires:
   if: 0
   lib: 0
   parent: 0
+  version: 0
 configure_requires:
   ExtUtils::MakeMaker: 6.30
   File::ShareDir::Install: 0.03
-  Module::Build::Tiny: 0.033
+  Module::Build::Tiny: 0.034
 dynamic_config: 0
 generated_by: 'Dist::Zilla version 5.012, CPAN::Meta::Converter version 2.133380'
 license: perl
@@ -44,10 +45,10 @@ no_index:
 provides:
   Dist::Zilla::MintingProfile::Author::ETHER:
     file: lib/Dist/Zilla/MintingProfile/Author/ETHER.pm
-    version: 0.048
+    version: 0.049
   Dist::Zilla::PluginBundle::Author::ETHER:
     file: lib/Dist/Zilla/PluginBundle/Author/ETHER.pm
-    version: 0.048
+    version: 0.049
 recommends:
   Config::Identity::GitHub: 0
   Dist::Zilla::Plugin::GitHub::Update: 0
@@ -177,23 +178,11 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-PluginBundle-Author-ETHER
   homepage: https://github.com/karenetheridge/Dist-Zilla-PluginBundle-Author-ETHER
   repository: https://github.com/karenetheridge/Dist-Zilla-PluginBundle-Author-ETHER.git
-version: 0.048
+version: 0.049
 x_Dist_Zilla:
   perl:
     version: 5.019007
   plugins:
-    -
-      class: Dist::Zilla::Plugin::GatherDir::Template
-      name: profile.ini
-      version: 5.012
-    -
-      class: Dist::Zilla::Plugin::PruneFiles
-      name: PruneFiles
-      version: 5.012
-    -
-      class: Dist::Zilla::Plugin::GatherDir
-      name: 'minting profile configs'
-      version: 5.012
     -
       class: Dist::Zilla::Plugin::Prereqs
       config:
@@ -266,6 +255,16 @@ x_Dist_Zilla:
       class: Dist::Zilla::Plugin::ContributorsFromGit
       name: ContributorsFromGit
       version: 0.006
+    -
+      class: Dist::Zilla::Plugin::MungeFile::WithDataSection
+      config:
+        Dist::Zilla::Plugin::MungeFile::WithDataSection:
+          files:
+            - lib/Dist/Zilla/MintingProfile/Author/ETHER.pm
+            - share/profiles/github/profile.ini
+          finder: []
+      name: MungeFile::WithDataSection
+      version: 0.007
     -
       class: Dist::Zilla::Plugin::Git::NextVersion
       name: '@Author::ETHER/Git::NextVersion'
@@ -405,7 +404,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::Test::ReportPrereqs
       name: '@Author::ETHER/Test::ReportPrereqs'
-      version: 0.012
+      version: 0.013
     -
       class: Dist::Zilla::Plugin::Test::Portability
       name: '@Author::ETHER/Test::Portability'
@@ -584,7 +583,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::MakeMaker::Fallback
       name: '@Author::ETHER/MakeMaker::Fallback'
-      version: 0.005
+      version: 0.006
     -
       class: Dist::Zilla::Plugin::ModuleBuildTiny
       name: '@Author::ETHER/ModuleBuildTiny'
@@ -595,8 +594,12 @@ x_Dist_Zilla:
       version: 1.200002
     -
       class: Dist::Zilla::Plugin::CheckSelfDependency
+      config:
+        Dist::Zilla::Plugin::CheckSelfDependency:
+          finder:
+            - ':InstallModules'
       name: '@Author::ETHER/CheckSelfDependency'
-      version: 0.006
+      version: 0.007
     -
       class: Dist::Zilla::Plugin::Run::AfterBuild
       name: '@Author::ETHER/Run::AfterBuild'
@@ -608,11 +611,11 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::Git::CheckFor::MergeConflicts
       name: '@Author::ETHER/Git::CheckFor::MergeConflicts'
-      version: 0.008
+      version: 0.009
     -
       class: Dist::Zilla::Plugin::Git::CheckFor::CorrectBranch
       name: '@Author::ETHER/Git::CheckFor::CorrectBranch'
-      version: 0.008
+      version: 0.009
     -
       class: Dist::Zilla::Plugin::Git::Remote::Check
       name: '@Author::ETHER/Git::Remote::Check'

@@ -4,8 +4,8 @@ package Dist::Zilla::PluginBundle::Author::ETHER;
 BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
 }
-# git description: v0.047-5-g2ef9e82
-$Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.048';
+# git description: v0.048-5-g6ee0e3c
+$Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.049';
 # ABSTRACT: A plugin bundle for distributions built by ETHER
 # vim: set ts=8 sw=4 tw=78 et :
 
@@ -131,14 +131,10 @@ sub configure
         # Gather Files
         [ 'Git::GatherDir'      => { ':version' => '2.016', exclude_filename => [ $self->copy_files_from_release ] } ],
         qw(MetaYAML MetaJSON License Readme Manifest),
-        [ 'GenerateFile::ShareDir' => { -dist => 'Dist-Zilla-PluginBundle-Author-ETHER', -filename => 'CONTRIBUTING' } ],
+        [ 'GenerateFile::ShareDir' => 'generate CONTRIBUTING' => { -dist => 'Dist-Zilla-PluginBundle-Author-ETHER', -filename => 'CONTRIBUTING' } ],
 
-        [ 'Test::Compile'       => {
-            ':version' => '2.036',
-            bail_out_on_fail => 1,
-            xt_mode => 1,
-            script_finder => [qw(:ExecFiles @Author::ETHER/Examples)],
-          } ],
+        [ 'Test::Compile'       => { ':version' => '2.036', bail_out_on_fail => 1, xt_mode => 1,
+            script_finder => [qw(:ExecFiles @Author::ETHER/Examples)] } ],
         [ 'Test::NoTabs'        => { script_finder => [qw(:ExecFiles @Author::ETHER/Examples)] } ],
         'EOLTests',
         'MetaTests',
@@ -294,7 +290,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.048
+version 0.049
 
 =head1 SYNOPSIS
 

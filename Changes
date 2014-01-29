@@ -1,5 +1,9 @@
 Revision history for Dist-Zilla-PluginBundle-Author-ETHER
 
+0.049     2014-01-29 02:56:31Z
+          - fixed tests that can fail on systems with no spelling dictionaries
+            installed
+
 0.048     2014-01-21 04:07:40Z
           - removed [PruneCruft], which does nothing useful with
             [Git::GatherDir]

@@ -6,7 +6,7 @@ BEGIN {
 }
 # ABSTRACT: Mint distributions like ETHER does
 # vim: set ts=8 sw=4 tw=78 et :
-$Dist::Zilla::MintingProfile::Author::ETHER::VERSION = '0.048';
+$Dist::Zilla::MintingProfile::Author::ETHER::VERSION = '0.049';
 use Moose;
 with 'Dist::Zilla::Role::MintingProfile';
 use File::ShareDir;
@@ -18,8 +18,6 @@ sub profile_dir
 {
     my ($self, $profile_name) = @_;
 
-    # I'd template this as '{{ $dist->name }}', except [GatherDir::Template]
-    # uses FromCode files, which prevents other munging, e.g. PodWeaver
     my $dist_name = 'Dist-Zilla-PluginBundle-Author-ETHER';
     my $profile_dir = dir( File::ShareDir::dist_dir($dist_name) )
                       ->subdir( 'profiles', $profile_name );
@@ -37,7 +35,7 @@ __END__
 
 =encoding UTF-8
 
-=for :stopwords Karen Etheridge irc
+=for :stopwords Karen Etheridge Randy Stauner Sergey Romanov irc
 
 =head1 NAME
 
@@ -45,7 +43,7 @@ Dist::Zilla::MintingProfile::Author::ETHER - Mint distributions like ETHER does
 
 =head1 VERSION
 
-version 0.048
+version 0.049
 
 =head1 SYNOPSIS
 
