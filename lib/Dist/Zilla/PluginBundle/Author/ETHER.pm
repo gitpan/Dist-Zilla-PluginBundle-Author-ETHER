@@ -4,8 +4,8 @@ package Dist::Zilla::PluginBundle::Author::ETHER;
 BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
 }
-# git description: v0.048-5-g6ee0e3c
-$Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.049';
+# git description: v0.049-4-gb217aab
+$Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.050';
 # ABSTRACT: A plugin bundle for distributions built by ETHER
 # vim: set ts=8 sw=4 tw=78 et :
 
@@ -213,13 +213,13 @@ sub configure
 
 
         # Before Release
-        [ 'Git::Check'          => 'initial check' => { allow_dirty => ['foo'] } ],
+        [ 'Git::Check'          => 'initial check' => { allow_dirty => [''] } ],
         'Git::CheckFor::MergeConflicts',
         [ 'Git::CheckFor::CorrectBranch' => { ':version' => '0.004', release_branch => 'master' } ],
         [ 'Git::Remote::Check'  => { branch => 'master', remote_branch => 'master' } ],
         'CheckPrereqsIndexed',
         'TestRelease',
-        [ 'Git::Check'          => 'after tests' => { allow_dirty => ['foo'] } ],
+        [ 'Git::Check'          => 'after tests' => { allow_dirty => [''] } ],
         # (ConfirmRelease)
 
         # Releaser
@@ -290,7 +290,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.049
+version 0.050
 
 =head1 SYNOPSIS
 
@@ -545,8 +545,8 @@ many as you'd like), as described in L<Pod::Spell/ADDING STOPWORDS>:
 =head2 installer
 
 The installer back-end(s) to use (can be specified more than once); defaults
-to L<C<MakeMaker::Fallback>|Dist::Zilla::Plugin::MakeMaker::Fallback>
-and L<C<ModuleBuildTiny>|Dist::Zilla::Plugin::ModuleBuildTiny>
+to L<C<ModuleBuildTiny>|Dist::Zilla::Plugin::ModuleBuildTiny>
+and L<C<MakeMaker::Fallback>|Dist::Zilla::Plugin::MakeMaker::Fallback>
 (which generates a F<Build.PL> for normal use, and
 F<Makefile.PL> as a fallback, containing an upgrade warning).
 

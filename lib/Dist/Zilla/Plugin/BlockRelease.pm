@@ -23,7 +23,7 @@ __END__
 
 =encoding UTF-8
 
-=for :stopwords Karen Etheridge Randy Stauner Sergey Romanov irc
+=for :stopwords Karen Etheridge irc
 
 =head1 NAME
 
@@ -31,7 +31,7 @@ Dist::Zilla::Plugin::BlockRelease - Prevent a release from occurring
 
 =head1 VERSION
 
-version 0.049
+version 0.050
 
 =head1 SYNOPSIS
 
