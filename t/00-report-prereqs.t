@@ -47,12 +47,12 @@ my $static_prereqs = do { my $x = {
                         'requires' => {
                                         'ExtUtils::MakeMaker' => '6.30',
                                         'File::ShareDir::Install' => '0.03',
-                                        'Module::Build::Tiny' => '0.034'
+                                        'Module::Build::Tiny' => '0.035'
                                       }
                       },
        'develop' => {
                       'recommends' => {
-                                        'Dist::Zilla::PluginBundle::Author::ETHER' => '0.049'
+                                        'Dist::Zilla::PluginBundle::Author::ETHER' => '0.051'
                                       },
                       'requires' => {
                                       'Dist::Zilla' => '5.013',
@@ -246,6 +246,7 @@ my $static_prereqs = do { my $x = {
                                    'if' => '0',
                                    'lib' => '0',
                                    'parent' => '0',
+                                   'perl' => '5.013002',
                                    'version' => '0'
                                  }
                  }

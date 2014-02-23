@@ -10,7 +10,7 @@ BEGIN {
 my %configure_requires = (
     'ExtUtils::MakeMaker' => '6.30',
     'File::ShareDir::Install' => '0.03',
-    'Module::Build::Tiny' => '0.034',
+    'Module::Build::Tiny' => '0.035',
 );
 
 my @missing = grep {
@@ -77,7 +77,7 @@ my %WriteMakefileArgs = (
   "CONFIGURE_REQUIRES" => {
     "ExtUtils::MakeMaker" => "6.30",
     "File::ShareDir::Install" => "0.03",
-    "Module::Build::Tiny" => "0.034"
+    "Module::Build::Tiny" => "0.035"
   },
   "DISTNAME" => "Dist-Zilla-PluginBundle-Author-ETHER",
   "EXE_FILES" => [],
@@ -210,7 +210,7 @@ my %WriteMakefileArgs = (
     "parent" => 0,
     "version" => 0
   },
-  "VERSION" => "0.050",
+  "VERSION" => "0.051",
   "test" => {
     "TESTS" => "t/*.t"
   }

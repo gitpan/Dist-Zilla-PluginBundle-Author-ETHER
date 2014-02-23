@@ -16,10 +16,12 @@ use Moose::Util 'find_meta';
 plan skip_all => 'this test requires a built dist'
     unless -d 'blib/lib/auto/share/dist/Dist-Zilla-PluginBundle-Author-ETHER/profiles';
 
+plan skip_all => 'minting requires perl 5.014' unless eval { require 5.013002 };
+
 my $tzil = Minter->_new_from_profile(
     [ 'Author::ETHER' => 'github' ],
     { name => 'My-New-Dist', },
-    { global_config_root => dir('t/corpus/global')->absolute },
+    { global_config_root => dir('t/corpus/global')->absolute }, # sadly, this must quack like a Path::Class
 );
 
 # we need to stop the git plugins from doing their thing
@@ -32,7 +34,7 @@ foreach my $plugin (grep { /Git/ } map { ref } @{$tzil->plugins})
 }
 
 $tzil->mint_dist;
-my $mint_dir = $tzil->tempdir->subdir('mint');
+my $mint_dir = path($tzil->tempdir)->child('mint');
 
 my @expected_files = qw(
     .gitignore

@@ -4,8 +4,8 @@ package Dist::Zilla::PluginBundle::Author::ETHER;
 BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
 }
-# git description: v0.049-4-gb217aab
-$Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.050';
+# git description: v0.050-5-g3bfcce2
+$Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.051';
 # ABSTRACT: A plugin bundle for distributions built by ETHER
 # vim: set ts=8 sw=4 tw=78 et :
 
@@ -46,15 +46,18 @@ has server => (
     },
 );
 
-has airplane => (
-    is => 'ro', isa => 'Bool',
-    lazy => 1,
-    default => sub {
-        exists $_[0]->payload->{airplane}
-            ? $_[0]->payload->{airplane}
-            : 0;
-    },
-);
+foreach my $option (qw(airplane surgical_podweaver))
+{
+    has $option => (
+        is => 'ro', isa => 'Bool',
+        lazy => 1,
+        default => sub {
+            exists $_[0]->payload->{$option}
+                ? $_[0]->payload->{$option}
+                : 0;
+        },
+    );
+}
 
 has copy_file_from_release => (
     isa => 'ArrayRef[Str]',
@@ -78,8 +81,10 @@ has _requested_version => (
     },
 );
 
-my %installer_args = (
+# when these plugins are used, use these options
+my %extra_args = (
     ModuleBuildTiny => { ':version' => '0.004' },
+    PodWeaver => { ':version' => '4.005' },
 );
 
 # plugins that use the network when they run
@@ -158,7 +163,16 @@ sub configure
         'Git::Describe',
         [ PkgVersion            => { ':version' => '5.010', die_on_existing_version => 1, die_on_line_insertion => 1 } ],
         [ 'Authority'           => { authority => 'cpan:ETHER' } ],
-        [ PodWeaver             => { ':version' => '4.005', replacer => 'replace_with_comment', post_code_replacer => 'replace_with_nothing' } ],
+        [
+            do {
+                my $weaver = $self->surgical_podweaver ? 'SurgicalPodWeaver' : 'PodWeaver';
+                $weaver => {
+                    %{$extra_args{$weaver}},
+                    replacer => 'replace_with_comment',
+                    post_code_replacer => 'replace_with_nothing',
+                }
+            }
+        ],
         [ 'NextRelease'         => { ':version' => '4.300018', time_zone => 'UTC', format => '%-8v  %{yyyy-MM-dd HH:mm:ss\'Z\'}d%{ (TRIAL RELEASE)}T' } ],
         [ 'ReadmeAnyFromPod'    => { type => 'markdown', filename => 'README.md', location => 'build' } ],
 
@@ -192,7 +206,7 @@ sub configure
                 # but it is useful for people doing "cpanm --with-develop"
                 ( map {
                     Dist::Zilla::Util->expand_config_package_name($_) =>
-                        ($installer_args{$_} // {})->{':version'} // 0
+                        ($extra_args{$_} // {})->{':version'} // 0
                 } $self->installer ),
             } ],
         [ 'Prereqs' => pluginbundle_version => {
@@ -204,7 +218,7 @@ sub configure
         'RunExtraTests',
 
         # Install Tool
-        ( map { [ $_ => $installer_args{$_} // () ] } $self->installer ),
+        ( map { [ $_ => $extra_args{$_} // () ] } $self->installer ),
         'InstallGuide',
 
         # After Build
@@ -227,7 +241,7 @@ sub configure
 
         # After Release
         [ 'CopyFilesFromRelease' => { filename => [ $self->copy_files_from_release ] } ],
-        [ 'Git::Commit'         => { add_files_in => [''], allow_dirty => [ 'Changes', $self->copy_files_from_release ], commit_msg => '%N-%v%t%n%n%c' } ],
+        [ 'Git::Commit'         => { ':version' => '2.020', add_files_in => ['.'], allow_dirty => [ 'Changes', $self->copy_files_from_release ], commit_msg => '%N-%v%t%n%n%c' } ],
         [ 'Git::Tag'            => { tag_format => 'v%v%t', tag_message => 'v%v%t' } ],
         $self->server eq 'github' ? (
             [ 'GitHub::Update' => { metacpan => 1 } ],
@@ -282,7 +296,7 @@ __END__
 =encoding UTF-8
 
 =for :stopwords Karen Etheridge Randy Stauner Sergey Romanov metacpan Stopwords
-ModuleBuildTiny customizations KENTNL irc
+ModuleBuildTiny PodWeaver SurgicalPodWeaver customizations KENTNL irc
 
 =head1 NAME
 
@@ -290,7 +304,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.050
+version 0.051
 
 =head1 SYNOPSIS
 
@@ -387,7 +401,7 @@ following F<dist.ini> (following the preamble):
     [Authority]
     authority = cpan:ETHER
 
-    [PodWeaver]
+    [PodWeaver] (or [SurgicalPodWeaver])
     :version = 4.005
     replacer = replace_with_comment
     post_code_replacer = replace_with_nothing
@@ -488,7 +502,8 @@ following F<dist.ini> (following the preamble):
     filename = CONTRIBUTING
 
     [Git::Commit]
-    add_files_in =
+    :version = 2.020
+    add_files_in = .
     allow_dirty = Changes
     allow_dirty = README.md
     allow_dirty = LICENSE
@@ -609,12 +624,20 @@ you'll need to provide this yourself.
 A boolean option, that when set, removes the use of all plugins that use the
 network (generally for comparing metadata against PAUSE, and querying the
 remote git server), as well as blocking the use of the C<release> command.
+Defaults to false.
 
 =head2 copy_file_from_release
 
 A file, to be present in the build, which is copied back to the source
 repository at release time and committed to git. Can be repeated more than
 once. Defaults to: F<README.md>, F<LICENSE>, F<CONTRIBUTING>.
+
+=head2 surgical_podweaver
+
+A boolean option, that when set, uses
+L<[SurgicalPodWeaver]|Dist::Zilla::Plugin::SurgicalPodWeaver> instead of
+L<[PodWeaver]|Dist::Zilla::Plugin::SurgicalPodWeaver>, but with all the same
+options. Defaults to false.
 
 =head2 other customizations
 
