@@ -46,10 +46,10 @@ no_index:
 provides:
   Dist::Zilla::MintingProfile::Author::ETHER:
     file: lib/Dist/Zilla/MintingProfile/Author/ETHER.pm
-    version: '0.051'
+    version: '0.052'
   Dist::Zilla::PluginBundle::Author::ETHER:
     file: lib/Dist/Zilla/PluginBundle/Author/ETHER.pm
-    version: '0.051'
+    version: '0.052'
 recommends:
   Config::Identity::GitHub: '0'
   Dist::Zilla::Plugin::GitHub::Update: '0'
@@ -90,7 +90,7 @@ requires:
   Dist::Zilla::Plugin::Git::Check: '0'
   Dist::Zilla::Plugin::Git::CheckFor::CorrectBranch: '0.004'
   Dist::Zilla::Plugin::Git::CheckFor::MergeConflicts: '0.008'
-  Dist::Zilla::Plugin::Git::Commit: '0'
+  Dist::Zilla::Plugin::Git::Commit: '2.020'
   Dist::Zilla::Plugin::Git::Describe: '0'
   Dist::Zilla::Plugin::Git::GatherDir: '2.016'
   Dist::Zilla::Plugin::Git::Init: '0'
@@ -148,6 +148,7 @@ requires:
   Dist::Zilla::Plugin::Test::Version: '0'
   Dist::Zilla::Plugin::TestRelease: '0'
   Dist::Zilla::Plugin::UploadToCPAN: '0'
+  Dist::Zilla::Plugin::VerifyPhases: '0'
   Dist::Zilla::Role::BeforeRelease: '0'
   Dist::Zilla::Role::MintingProfile: '0'
   Dist::Zilla::Role::PluginBundle::Config::Slicer: '0'
@@ -179,10 +180,10 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-PluginBundle-Author-ETHER
   homepage: https://github.com/karenetheridge/Dist-Zilla-PluginBundle-Author-ETHER
   repository: https://github.com/karenetheridge/Dist-Zilla-PluginBundle-Author-ETHER.git
-version: '0.051'
+version: '0.052'
 x_Dist_Zilla:
   perl:
-    version: '5.019008'
+    version: '5.019009'
   plugins:
     -
       class: Dist::Zilla::Plugin::Prereqs
@@ -285,7 +286,7 @@ x_Dist_Zilla:
           phase: build
           skip: []
       name: '@Author::ETHER/build'
-      version: '0.017'
+      version: '0.018'
     -
       class: Dist::Zilla::Plugin::PromptIfStale
       config:
@@ -296,7 +297,7 @@ x_Dist_Zilla:
           phase: release
           skip: []
       name: '@Author::ETHER/release'
-      version: '0.017'
+      version: '0.018'
     -
       class: Dist::Zilla::Plugin::ExecDir
       name: '@Author::ETHER/ExecDir'
@@ -397,7 +398,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::Test::PodSpelling
       name: '@Author::ETHER/Test::PodSpelling'
-      version: '2.006002'
+      version: '2.006005'
     -
       class: Dist::Zilla::Plugin::Test::Kwalitee
       name: '@Author::ETHER/Test::Kwalitee'
@@ -608,7 +609,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::Run::AfterBuild
       name: '@Author::ETHER/Run::AfterBuild'
-      version: '0.020'
+      version: '0.021'
     -
       class: Dist::Zilla::Plugin::Git::Check
       name: '@Author::ETHER/initial check'
@@ -677,6 +678,10 @@ x_Dist_Zilla:
       class: Dist::Zilla::Plugin::ConfirmRelease
       name: '@Author::ETHER/ConfirmRelease'
       version: '5.013'
+    -
+      class: Dist::Zilla::Plugin::VerifyPhases
+      name: '@Author::ETHER/PHASE VERIFICATION'
+      version: '0.001'
     -
       class: Dist::Zilla::Plugin::FinderCode
       name: ':InstallModules'

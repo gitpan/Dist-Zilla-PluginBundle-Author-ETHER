@@ -4,8 +4,8 @@ package Dist::Zilla::PluginBundle::Author::ETHER;
 BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
 }
-# git description: v0.050-5-g3bfcce2
-$Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.051';
+# git description: v0.051-4-gfe1c3a4
+$Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.052';
 # ABSTRACT: A plugin bundle for distributions built by ETHER
 # vim: set ts=8 sw=4 tw=78 et :
 
@@ -167,7 +167,7 @@ sub configure
             do {
                 my $weaver = $self->surgical_podweaver ? 'SurgicalPodWeaver' : 'PodWeaver';
                 $weaver => {
-                    %{$extra_args{$weaver}},
+                    %{$extra_args{$weaver} // {}},
                     replacer => 'replace_with_comment',
                     post_code_replacer => 'replace_with_nothing',
                 }
@@ -278,6 +278,9 @@ sub configure
     push @plugins, (
         # listed late, to allow all other plugins which do BeforeRelease checks to run first.
         'ConfirmRelease',
+
+        # listed last, to be sure we run at the very end of each phase
+        [ 'VerifyPhases' => 'PHASE VERIFICATION' ],
     );
 
     $self->add_plugins(@plugins);
@@ -304,7 +307,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.051
+version 0.052
 
 =head1 SYNOPSIS
 
@@ -525,6 +528,9 @@ following F<dist.ini> (following the preamble):
 
     ; listed late, to allow all other plugins which do BeforeRelease checks to run first.
     [ConfirmRelease]
+
+    ; listed last, to be sure we run at the very end of each phase
+    [VerifyPhases]
 
 =for Pod::Coverage configure mvp_multivalue_args
 

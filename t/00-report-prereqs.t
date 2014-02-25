@@ -52,7 +52,7 @@ my $static_prereqs = do { my $x = {
                       },
        'develop' => {
                       'recommends' => {
-                                        'Dist::Zilla::PluginBundle::Author::ETHER' => '0.051'
+                                        'Dist::Zilla::PluginBundle::Author::ETHER' => '0.052'
                                       },
                       'requires' => {
                                       'Dist::Zilla' => '5.013',
@@ -134,7 +134,7 @@ my $static_prereqs = do { my $x = {
                                       'Dist::Zilla::Plugin::Git::Check' => '0',
                                       'Dist::Zilla::Plugin::Git::CheckFor::CorrectBranch' => '0.004',
                                       'Dist::Zilla::Plugin::Git::CheckFor::MergeConflicts' => '0.008',
-                                      'Dist::Zilla::Plugin::Git::Commit' => '0',
+                                      'Dist::Zilla::Plugin::Git::Commit' => '2.020',
                                       'Dist::Zilla::Plugin::Git::Describe' => '0',
                                       'Dist::Zilla::Plugin::Git::GatherDir' => '2.016',
                                       'Dist::Zilla::Plugin::Git::Init' => '0',
@@ -192,6 +192,7 @@ my $static_prereqs = do { my $x = {
                                       'Dist::Zilla::Plugin::Test::Version' => '0',
                                       'Dist::Zilla::Plugin::TestRelease' => '0',
                                       'Dist::Zilla::Plugin::UploadToCPAN' => '0',
+                                      'Dist::Zilla::Plugin::VerifyPhases' => '0',
                                       'Dist::Zilla::Role::BeforeRelease' => '0',
                                       'Dist::Zilla::Role::MintingProfile' => '0',
                                       'Dist::Zilla::Role::PluginBundle::Config::Slicer' => '0',

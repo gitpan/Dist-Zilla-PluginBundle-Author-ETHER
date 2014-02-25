@@ -1,5 +1,11 @@
 Revision history for Dist-Zilla-PluginBundle-Author-ETHER
 
+0.052     2014-02-25 04:56:32Z
+          - [VerifyPhases] added (another information-only plugin)
+          - added missing prereq (from v0.051)
+          - minted clean-namespaces.t test no longer skips ::Conflicts
+            module (added in v0.019)
+
 0.051     2014-02-23 01:10:45Z
           - fix argument passed to [Git::Commit] that no longer works now that
             it uses Path::Tiny instead of Path::Class
