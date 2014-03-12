@@ -12,6 +12,7 @@ build_requires:
   List::Util: '0'
   Module::Runtime: '0'
   Moose::Util: '0'
+  PadWalker: '0'
   Path::Tiny: '0'
   Test::DZil: '0'
   Test::Deep: '0'
@@ -31,7 +32,7 @@ configure_requires:
   File::ShareDir::Install: '0.03'
   Module::Build::Tiny: '0.035'
 dynamic_config: 0
-generated_by: 'Dist::Zilla version 5.013, CPAN::Meta::Converter version 2.133380'
+generated_by: 'Dist::Zilla version 5.013, CPAN::Meta::Converter version 2.140640'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -46,10 +47,10 @@ no_index:
 provides:
   Dist::Zilla::MintingProfile::Author::ETHER:
     file: lib/Dist/Zilla/MintingProfile/Author/ETHER.pm
-    version: '0.052'
+    version: '0.053'
   Dist::Zilla::PluginBundle::Author::ETHER:
     file: lib/Dist/Zilla/PluginBundle/Author/ETHER.pm
-    version: '0.052'
+    version: '0.053'
 recommends:
   Config::Identity::GitHub: '0'
   Dist::Zilla::Plugin::GitHub::Update: '0'
@@ -180,7 +181,7 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-PluginBundle-Author-ETHER
   homepage: https://github.com/karenetheridge/Dist-Zilla-PluginBundle-Author-ETHER
   repository: https://github.com/karenetheridge/Dist-Zilla-PluginBundle-Author-ETHER.git
-version: '0.052'
+version: '0.053'
 x_Dist_Zilla:
   perl:
     version: '5.019009'
@@ -272,6 +273,10 @@ x_Dist_Zilla:
       name: Test::CheckBreaks
       version: '0.007'
     -
+      class: Dist::Zilla::Plugin::Test::CleanNamespaces
+      name: Test::CleanNamespaces
+      version: '0.003'
+    -
       class: Dist::Zilla::Plugin::Git::NextVersion
       name: '@Author::ETHER/Git::NextVersion'
       version: '2.020'
@@ -286,7 +291,7 @@ x_Dist_Zilla:
           phase: build
           skip: []
       name: '@Author::ETHER/build'
-      version: '0.018'
+      version: '0.020'
     -
       class: Dist::Zilla::Plugin::PromptIfStale
       config:
@@ -297,7 +302,7 @@ x_Dist_Zilla:
           phase: release
           skip: []
       name: '@Author::ETHER/release'
-      version: '0.018'
+      version: '0.020'
     -
       class: Dist::Zilla::Plugin::ExecDir
       name: '@Author::ETHER/ExecDir'
@@ -398,7 +403,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::Test::PodSpelling
       name: '@Author::ETHER/Test::PodSpelling'
-      version: '2.006005'
+      version: '2.006007'
     -
       class: Dist::Zilla::Plugin::Test::Kwalitee
       name: '@Author::ETHER/Test::Kwalitee'
@@ -589,7 +594,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::MakeMaker::Fallback
       name: '@Author::ETHER/MakeMaker::Fallback'
-      version: '0.006'
+      version: '0.007'
     -
       class: Dist::Zilla::Plugin::ModuleBuildTiny
       name: '@Author::ETHER/ModuleBuildTiny'
@@ -679,10 +684,6 @@ x_Dist_Zilla:
       name: '@Author::ETHER/ConfirmRelease'
       version: '5.013'
     -
-      class: Dist::Zilla::Plugin::VerifyPhases
-      name: '@Author::ETHER/PHASE VERIFICATION'
-      version: '0.001'
-    -
       class: Dist::Zilla::Plugin::FinderCode
       name: ':InstallModules'
       version: '5.013'
@@ -714,6 +715,10 @@ x_Dist_Zilla:
       class: Dist::Zilla::Plugin::FinderCode
       name: ':NoFiles'
       version: '5.013'
+    -
+      class: Dist::Zilla::Plugin::VerifyPhases
+      name: '@Author::ETHER/PHASE VERIFICATION'
+      version: '0.002'
   zilla:
     class: Dist::Zilla::Dist::Builder
     config:

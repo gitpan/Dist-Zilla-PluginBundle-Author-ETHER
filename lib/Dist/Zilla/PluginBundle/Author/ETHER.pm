@@ -4,8 +4,8 @@ package Dist::Zilla::PluginBundle::Author::ETHER;
 BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
 }
-# git description: v0.051-4-gfe1c3a4
-$Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.052';
+# git description: v0.052-5-g0aa5041
+$Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.053';
 # ABSTRACT: A plugin bundle for distributions built by ETHER
 # vim: set ts=8 sw=4 tw=78 et :
 
@@ -265,7 +265,9 @@ sub configure
             my $plugin = Dist::Zilla::Util->expand_config_package_name(
                 !ref($_) ? $_ : ref eq 'ARRAY' ? $_->[0] : die 'wtf'
             );
-            not grep { $_ eq $plugin } @network_plugins;
+            not grep { $_ eq $plugin }
+            map { Dist::Zilla::Util->expand_config_package_name($_) }
+            @network_plugins;
         } @plugins;
 
         # allow our uncommitted dist.ini edit which sets 'airplane = 1'
@@ -307,7 +309,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.052
+version 0.053
 
 =head1 SYNOPSIS
 
@@ -530,7 +532,7 @@ following F<dist.ini> (following the preamble):
     [ConfirmRelease]
 
     ; listed last, to be sure we run at the very end of each phase
-    [VerifyPhases]
+    [VerifyPhases / PHASE VERIFICATION]
 
 =for Pod::Coverage configure mvp_multivalue_args
 

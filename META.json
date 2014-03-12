@@ -4,7 +4,7 @@
       "Karen Etheridge <ether@cpan.org>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Dist::Zilla version 5.013, CPAN::Meta::Converter version 2.133380",
+   "generated_by" : "Dist::Zilla version 5.013, CPAN::Meta::Converter version 2.140640",
    "license" : [
       "perl_5"
    ],
@@ -44,6 +44,7 @@
             "Dist::Zilla::Plugin::MungeFile::WithDataSection" : "0",
             "Dist::Zilla::Plugin::Prereqs" : "0",
             "Dist::Zilla::Plugin::Test::CheckBreaks" : "0",
+            "Dist::Zilla::Plugin::Test::CleanNamespaces" : "0",
             "Dist::Zilla::PluginBundle::Author::ETHER" : "0.019",
             "File::Spec" : "0",
             "IO::Handle" : "0",
@@ -56,7 +57,7 @@
             "Pod::Wordlist" : "1.09",
             "Test::CPAN::Changes" : "0.19",
             "Test::CPAN::Meta" : "0",
-            "Test::CleanNamespaces" : "0",
+            "Test::CleanNamespaces" : ">= 0.04, != 0.06",
             "Test::EOL" : "0",
             "Test::Kwalitee" : "1.12",
             "Test::MinimumVersion" : "0",
@@ -214,6 +215,7 @@
             "List::Util" : "0",
             "Module::Runtime" : "0",
             "Moose::Util" : "0",
+            "PadWalker" : "0",
             "Path::Tiny" : "0",
             "Test::DZil" : "0",
             "Test::Deep" : "0",
@@ -234,11 +236,11 @@
    "provides" : {
       "Dist::Zilla::MintingProfile::Author::ETHER" : {
          "file" : "lib/Dist/Zilla/MintingProfile/Author/ETHER.pm",
-         "version" : "0.052"
+         "version" : "0.053"
       },
       "Dist::Zilla::PluginBundle::Author::ETHER" : {
          "file" : "lib/Dist/Zilla/PluginBundle/Author/ETHER.pm",
-         "version" : "0.052"
+         "version" : "0.053"
       }
    },
    "release_status" : "stable",
@@ -256,7 +258,7 @@
       "x_IRC" : "irc://irc.perl.org/#distzilla",
       "x_MailingList" : "http://dzil.org/#mailing-list"
    },
-   "version" : "0.052",
+   "version" : "0.053",
    "x_Dist_Zilla" : {
       "perl" : {
          "version" : "5.019009"
@@ -380,6 +382,11 @@
             "version" : "0.007"
          },
          {
+            "class" : "Dist::Zilla::Plugin::Test::CleanNamespaces",
+            "name" : "Test::CleanNamespaces",
+            "version" : "0.003"
+         },
+         {
             "class" : "Dist::Zilla::Plugin::Git::NextVersion",
             "name" : "@Author::ETHER/Git::NextVersion",
             "version" : "2.020"
@@ -398,7 +405,7 @@
                }
             },
             "name" : "@Author::ETHER/build",
-            "version" : "0.018"
+            "version" : "0.020"
          },
          {
             "class" : "Dist::Zilla::Plugin::PromptIfStale",
@@ -412,7 +419,7 @@
                }
             },
             "name" : "@Author::ETHER/release",
-            "version" : "0.018"
+            "version" : "0.020"
          },
          {
             "class" : "Dist::Zilla::Plugin::ExecDir",
@@ -543,7 +550,7 @@
          {
             "class" : "Dist::Zilla::Plugin::Test::PodSpelling",
             "name" : "@Author::ETHER/Test::PodSpelling",
-            "version" : "2.006005"
+            "version" : "2.006007"
          },
          {
             "class" : "Dist::Zilla::Plugin::Test::Kwalitee",
@@ -789,7 +796,7 @@
          {
             "class" : "Dist::Zilla::Plugin::MakeMaker::Fallback",
             "name" : "@Author::ETHER/MakeMaker::Fallback",
-            "version" : "0.006"
+            "version" : "0.007"
          },
          {
             "class" : "Dist::Zilla::Plugin::ModuleBuildTiny",
@@ -905,11 +912,6 @@
             "version" : "5.013"
          },
          {
-            "class" : "Dist::Zilla::Plugin::VerifyPhases",
-            "name" : "@Author::ETHER/PHASE VERIFICATION",
-            "version" : "0.001"
-         },
-         {
             "class" : "Dist::Zilla::Plugin::FinderCode",
             "name" : ":InstallModules",
             "version" : "5.013"
@@ -948,6 +950,11 @@
             "class" : "Dist::Zilla::Plugin::FinderCode",
             "name" : ":NoFiles",
             "version" : "5.013"
+         },
+         {
+            "class" : "Dist::Zilla::Plugin::VerifyPhases",
+            "name" : "@Author::ETHER/PHASE VERIFICATION",
+            "version" : "0.002"
          }
       ],
       "zilla" : {
