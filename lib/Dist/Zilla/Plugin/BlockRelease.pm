@@ -31,7 +31,7 @@ Dist::Zilla::Plugin::BlockRelease - Prevent a release from occurring
 
 =head1 VERSION
 
-version 0.053
+version 0.054
 
 =head1 SYNOPSIS
 

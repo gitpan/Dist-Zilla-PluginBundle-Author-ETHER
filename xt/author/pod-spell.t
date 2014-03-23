@@ -22,9 +22,9 @@ complefor
 lib
 Dist
 Zilla
-PluginBundle
+MintingProfile
 Author
 ETHER
-MintingProfile
 Plugin
 BlockRelease
+PluginBundle

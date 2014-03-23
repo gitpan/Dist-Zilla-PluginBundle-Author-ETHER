@@ -52,14 +52,14 @@ my $static_prereqs = do { my $x = {
                       },
        'develop' => {
                       'recommends' => {
-                                        'Dist::Zilla::PluginBundle::Author::ETHER' => '0.052'
+                                        'Dist::Zilla::PluginBundle::Author::ETHER' => '0.054'
                                       },
                       'requires' => {
-                                      'Dist::Zilla' => '5.013',
+                                      'Dist::Zilla' => '5.014',
                                       'Dist::Zilla::Plugin::ContributorsFromGit' => '0',
                                       'Dist::Zilla::Plugin::GitHub::Update' => '0',
                                       'Dist::Zilla::Plugin::GithubMeta' => '0',
-                                      'Dist::Zilla::Plugin::MakeMaker::Fallback' => '0',
+                                      'Dist::Zilla::Plugin::MakeMaker::Fallback' => '0.008',
                                       'Dist::Zilla::Plugin::MetaResources' => '0',
                                       'Dist::Zilla::Plugin::ModuleBuildTiny' => '0.004',
                                       'Dist::Zilla::Plugin::MungeFile::WithDataSection' => '0',
@@ -176,7 +176,7 @@ my $static_prereqs = do { my $x = {
                                       'Dist::Zilla::Plugin::ReadmeAnyFromPod' => '0.133290',
                                       'Dist::Zilla::Plugin::Run::AfterBuild' => '0',
                                       'Dist::Zilla::Plugin::Run::AfterMint' => '0',
-                                      'Dist::Zilla::Plugin::RunExtraTests' => '0',
+                                      'Dist::Zilla::Plugin::RunExtraTests' => '0.019',
                                       'Dist::Zilla::Plugin::ShareDir' => '0',
                                       'Dist::Zilla::Plugin::TemplateModule' => '0',
                                       'Dist::Zilla::Plugin::Test::CPAN::Changes' => '0.008',
@@ -202,6 +202,7 @@ my $static_prereqs = do { my $x = {
                                       'Dist::Zilla::Util' => '0',
                                       'File::ShareDir' => '0',
                                       'List::MoreUtils' => '0',
+                                      'Module::Runtime' => '0',
                                       'Moose' => '0',
                                       'Moose::Util::TypeConstraints' => '0',
                                       'Path::Class' => '0',
@@ -234,7 +235,6 @@ my $static_prereqs = do { my $x = {
                                    'File::Spec::Functions' => '0',
                                    'JSON' => '0',
                                    'List::Util' => '0',
-                                   'Module::Runtime' => '0',
                                    'Moose::Util' => '0',
                                    'PadWalker' => '0',
                                    'Path::Tiny' => '0',

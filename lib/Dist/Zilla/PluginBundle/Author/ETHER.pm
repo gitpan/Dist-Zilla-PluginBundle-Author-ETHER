@@ -4,8 +4,8 @@ package Dist::Zilla::PluginBundle::Author::ETHER;
 BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
 }
-# git description: v0.052-5-g0aa5041
-$Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.053';
+# git description: v0.053-4-gbc37cf9
+$Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.054';
 # ABSTRACT: A plugin bundle for distributions built by ETHER
 # vim: set ts=8 sw=4 tw=78 et :
 
@@ -18,6 +18,7 @@ with
 use Dist::Zilla::Util;
 use Moose::Util::TypeConstraints;
 use List::MoreUtils qw(any first_index);
+use Module::Runtime 'use_module';
 use namespace::autoclean;
 
 sub mvp_multivalue_args { qw(installer copy_file_from_release) }
@@ -81,10 +82,12 @@ has _requested_version => (
     },
 );
 
-# when these plugins are used, use these options
+# configs are applied when plugins match ->isa($key) or ->does($key)
 my %extra_args = (
-    ModuleBuildTiny => { ':version' => '0.004' },
-    PodWeaver => { ':version' => '4.005' },
+    'Dist::Zilla::Plugin::ModuleBuildTiny' => { ':version' => '0.004' },
+    'Dist::Zilla::Plugin::MakeMaker::Fallback' => { ':version' => '0.008' },
+    # default_jobs is no-op until Dist::Zilla 5.014
+    'Dist::Zilla::Role::TestRunner' => { default_jobs => 9 },
 );
 
 # plugins that use the network when they run
@@ -164,13 +167,9 @@ sub configure
         [ PkgVersion            => { ':version' => '5.010', die_on_existing_version => 1, die_on_line_insertion => 1 } ],
         [ 'Authority'           => { authority => 'cpan:ETHER' } ],
         [
-            do {
-                my $weaver = $self->surgical_podweaver ? 'SurgicalPodWeaver' : 'PodWeaver';
-                $weaver => {
-                    %{$extra_args{$weaver} // {}},
-                    replacer => 'replace_with_comment',
-                    post_code_replacer => 'replace_with_nothing',
-                }
+            ($self->surgical_podweaver ? 'SurgicalPodWeaver' : 'PodWeaver') => {
+                replacer => 'replace_with_comment',
+                post_code_replacer => 'replace_with_nothing',
             }
         ],
         [ 'NextRelease'         => { ':version' => '4.300018', time_zone => 'UTC', format => '%-8v  %{yyyy-MM-dd HH:mm:ss\'Z\'}d%{ (TRIAL RELEASE)}T' } ],
@@ -186,7 +185,7 @@ sub configure
             : ()
         } ],
         # (Authority)
-        [ 'MetaNoIndex'         => { directory => [ qw(t xt examples share) ] } ],
+        [ 'MetaNoIndex'         => { directory => [ qw(t xt), grep { -d } qw(examples share corpus) ] } ],
         [ 'MetaProvides::Package' => { meta_noindex => 1, ':version' => '1.15000002', finder => ':InstallModules' } ],
         'MetaConfig',
         #[ContributorsFromGit]
@@ -205,8 +204,12 @@ sub configure
                 # runs, we're already trying to load the installer plugin --
                 # but it is useful for people doing "cpanm --with-develop"
                 ( map {
-                    Dist::Zilla::Util->expand_config_package_name($_) =>
-                        ($extra_args{$_} // {})->{':version'} // 0
+                    my $plugin = Dist::Zilla::Util->expand_config_package_name($_);
+                    my $args = $self->_extra_plugin_args($plugin);
+                    $plugin => 0,    # plugin at version 0, if nothing more specific found
+                    map {
+                        defined $args->{$_}{':version'} ? ( $_ => $args->{$_}{':version'} ) : ()
+                    } keys %$args;
                 } $self->installer ),
             } ],
         [ 'Prereqs' => pluginbundle_version => {
@@ -215,10 +218,16 @@ sub configure
             } ],
 
         # Test Runner
-        'RunExtraTests',
+        [ 'RunExtraTests' => { ':version' => '0.019', %{ $extra_args{'Dist::Zilla::Role::TestRunner'} } } ],
 
         # Install Tool
-        ( map { [ $_ => $extra_args{$_} // () ] } $self->installer ),
+        ( map {
+            [ $_ => +{
+                map { %$_ }
+                values %{ $self->_extra_plugin_args(Dist::Zilla::Util->expand_config_package_name($_)) }
+              }
+            ]
+         } $self->installer ),
         'InstallGuide',
 
         # After Build
@@ -292,6 +301,18 @@ sub configure
         if -d 'bin' and any { $_ eq 'ModuleBuildTiny' } $self->installer;
 }
 
+# returns a subhash of %extra_args where keys match isa or does checks
+sub _extra_plugin_args
+{
+    my ($self, $plugin) = @_;
+    use_module($plugin);
+    my @keys = grep { $plugin->isa($_) or $plugin->does($_) } keys %extra_args;
+
+    my %slice;
+    @slice{@keys} = @extra_args{@keys};
+    \%slice;
+}
+
 __PACKAGE__->meta->make_immutable;
 
 __END__
@@ -309,7 +330,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.053
+version 0.054
 
 =head1 SYNOPSIS
 
@@ -460,6 +481,8 @@ following F<dist.ini> (following the preamble):
 
     ;;; Test Runner
     [RunExtraTests]
+    :version = 0.019
+    default_jobs = 9
     # <specified installer(s)>
 
 
