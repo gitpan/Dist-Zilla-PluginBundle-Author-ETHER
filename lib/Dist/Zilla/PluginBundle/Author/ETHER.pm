@@ -4,8 +4,8 @@ package Dist::Zilla::PluginBundle::Author::ETHER;
 BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
 }
-# git description: v0.053-4-gbc37cf9
-$Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.054';
+# git description: v0.054-2-g5c304a4
+$Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.055';
 # ABSTRACT: A plugin bundle for distributions built by ETHER
 # vim: set ts=8 sw=4 tw=78 et :
 
@@ -330,7 +330,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.054
+version 0.055
 
 =head1 SYNOPSIS
 
