@@ -1,5 +1,10 @@
 Revision history for Dist-Zilla-PluginBundle-Author-ETHER
 
+0.056     2014-04-08 02:43:13Z
+          - automatically add keywords to metadata, extracted from # KEYWORDS:
+            comment in main module
+          - switch from [Test::Version] to [CheckStrictVersion]
+
 0.055     2014-03-24 04:03:47Z
           - fix missing prereq declaration needed from last release
 

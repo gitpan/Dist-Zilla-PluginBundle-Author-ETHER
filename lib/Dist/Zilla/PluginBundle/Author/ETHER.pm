@@ -4,9 +4,10 @@ package Dist::Zilla::PluginBundle::Author::ETHER;
 BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
 }
-# git description: v0.054-2-g5c304a4
-$Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.055';
+# git description: v0.055-2-g36a1d49
+$Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.056';
 # ABSTRACT: A plugin bundle for distributions built by ETHER
+# KEYWORDS: author bundle distribution tool
 # vim: set ts=8 sw=4 tw=78 et :
 
 use Moose;
@@ -146,7 +147,6 @@ sub configure
         [ 'Test::NoTabs'        => { script_finder => [qw(:ExecFiles @Author::ETHER/Examples)] } ],
         'EOLTests',
         'MetaTests',
-        [ 'Test::Version'       => { is_strict => 1 } ],
         [ 'Test::CPAN::Changes' => { ':version' => '0.008' } ],
         'Test::ChangesHasContent',
         'Test::UnusedVars',
@@ -188,6 +188,7 @@ sub configure
         [ 'MetaNoIndex'         => { directory => [ qw(t xt), grep { -d } qw(examples share corpus) ] } ],
         [ 'MetaProvides::Package' => { meta_noindex => 1, ':version' => '1.15000002', finder => ':InstallModules' } ],
         'MetaConfig',
+        [ 'Keywords'            => { ':version' => '0.004' } ],
         #[ContributorsFromGit]
 
         # Register Prereqs
@@ -236,6 +237,7 @@ sub configure
 
 
         # Before Release
+        [ 'CheckStrictVersion' => { decimal_only => 1 } ],
         [ 'Git::Check'          => 'initial check' => { allow_dirty => [''] } ],
         'Git::CheckFor::MergeConflicts',
         [ 'Git::CheckFor::CorrectBranch' => { ':version' => '0.004', release_branch => 'master' } ],
@@ -330,7 +332,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.055
+version 0.056
 
 =head1 SYNOPSIS
 
@@ -397,8 +399,6 @@ following F<dist.ini> (following the preamble):
 
     [EOLTests]
     [MetaTests]
-    [Test::Version]
-    is_strict = 1
     [Test::CPAN::Changes]
     :version = 0.008
     [Test::ChangesHasContent]
@@ -461,7 +461,8 @@ following F<dist.ini> (following the preamble):
     finder = :InstallModules
 
     [MetaConfig]
-
+    [Keywords]
+    :version = 0.004
 
     ;;; Register Prereqs
     [AutoPrereqs]
@@ -511,6 +512,9 @@ following F<dist.ini> (following the preamble):
     [Git::Remote::Check]
     branch = master
     remote_branch = master
+
+    [CheckStrictVersion]
+    decimal_only = 1
 
     [CheckPrereqsIndexed]
     [TestRelease]
