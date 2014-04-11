@@ -36,7 +36,7 @@
       },
       "develop" : {
          "recommends" : {
-            "Dist::Zilla::PluginBundle::Author::ETHER" : "0.056"
+            "Dist::Zilla::PluginBundle::Author::ETHER" : "0.057"
          },
          "requires" : {
             "Dist::Zilla" : "5.015",
@@ -201,7 +201,7 @@
             "Test::Vars" : "0.004",
             "Text::Tabs" : "2013.0426",
             "namespace::autoclean" : "0",
-            "perl" : "5.013002",
+            "perl" : "5.010",
             "strict" : "0",
             "warnings" : "0"
          }
@@ -233,7 +233,6 @@
             "if" : "0",
             "lib" : "0",
             "parent" : "0",
-            "perl" : "5.013002",
             "version" : "0"
          }
       }
@@ -241,11 +240,11 @@
    "provides" : {
       "Dist::Zilla::MintingProfile::Author::ETHER" : {
          "file" : "lib/Dist/Zilla/MintingProfile/Author/ETHER.pm",
-         "version" : "0.056"
+         "version" : "0.057"
       },
       "Dist::Zilla::PluginBundle::Author::ETHER" : {
          "file" : "lib/Dist/Zilla/PluginBundle/Author/ETHER.pm",
-         "version" : "0.056"
+         "version" : "0.057"
       }
    },
    "release_status" : "stable",
@@ -263,7 +262,7 @@
       "x_IRC" : "irc://irc.perl.org/#distzilla",
       "x_MailingList" : "http://dzil.org/#mailing-list"
    },
-   "version" : "0.056",
+   "version" : "0.057",
    "x_Dist_Zilla" : {
       "perl" : {
          "version" : "5.019010"
@@ -365,7 +364,7 @@
          {
             "class" : "Dist::Zilla::Plugin::ContributorsFromGit",
             "name" : "ContributorsFromGit",
-            "version" : "0.008"
+            "version" : "0.010"
          },
          {
             "class" : "Dist::Zilla::Plugin::MungeFile::WithDataSection",
@@ -997,8 +996,8 @@
    },
    "x_authority" : "cpan:ETHER",
    "x_contributors" : [
-      "Randy Stauner <randy@magnificent-tears.com>",
-      "Sergey Romanov <complefor@rambler.ru>"
+      "Randy Stauner <rwstauner@cpan.org>",
+      "Сергей Романов <sromanov@cpan.org>"
    ]
 }
 

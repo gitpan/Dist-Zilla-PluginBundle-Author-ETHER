@@ -6,7 +6,7 @@ BEGIN {
 }
 # ABSTRACT: Mint distributions like ETHER does
 # vim: set ts=8 sw=4 tw=78 et :
-$Dist::Zilla::MintingProfile::Author::ETHER::VERSION = '0.056';
+$Dist::Zilla::MintingProfile::Author::ETHER::VERSION = '0.057';
 use Moose;
 with 'Dist::Zilla::Role::MintingProfile';
 use File::ShareDir;
@@ -17,6 +17,8 @@ use namespace::autoclean;
 sub profile_dir
 {
     my ($self, $profile_name) = @_;
+
+    die 'minting requires perl 5.014' unless $] >= 5.013002;
 
     my $dist_name = 'Dist-Zilla-PluginBundle-Author-ETHER';
     my $profile_dir = dir( File::ShareDir::dist_dir($dist_name) )
@@ -35,7 +37,7 @@ __END__
 
 =encoding UTF-8
 
-=for :stopwords Karen Etheridge Randy Stauner Sergey Romanov irc
+=for :stopwords Karen Etheridge irc
 
 =head1 NAME
 
@@ -43,7 +45,7 @@ Dist::Zilla::MintingProfile::Author::ETHER - Mint distributions like ETHER does
 
 =head1 VERSION
 
-version 0.056
+version 0.057
 
 =head1 SYNOPSIS
 

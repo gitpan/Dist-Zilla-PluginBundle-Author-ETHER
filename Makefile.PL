@@ -62,7 +62,7 @@ EOW
 }
 }
 
-use 5.013002;
+use 5.010;
 
 use ExtUtils::MakeMaker 6.30;
 
@@ -213,7 +213,7 @@ my %WriteMakefileArgs = (
     "parent" => 0,
     "version" => 0
   },
-  "VERSION" => "0.056",
+  "VERSION" => "0.057",
   "test" => {
     "TESTS" => "t/*.t"
   }

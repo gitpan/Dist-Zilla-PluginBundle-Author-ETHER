@@ -16,7 +16,7 @@ use Moose::Util 'find_meta';
 plan skip_all => 'this test requires a built dist'
     unless -d 'blib/lib/auto/share/dist/Dist-Zilla-PluginBundle-Author-ETHER/profiles';
 
-plan skip_all => 'minting requires perl 5.014' unless eval { require 5.013002 };
+plan skip_all => 'minting requires perl 5.014' unless $] >= 5.013002;
 
 my $tzil = Minter->_new_from_profile(
     [ 'Author::ETHER' => 'github' ],
@@ -37,6 +37,7 @@ $tzil->mint_dist;
 my $mint_dir = path($tzil->tempdir)->child('mint');
 
 my @expected_files = qw(
+    .ackrc
     .gitignore
     Changes
     dist.ini

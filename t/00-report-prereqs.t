@@ -52,7 +52,7 @@ my $static_prereqs = do { my $x = {
                       },
        'develop' => {
                       'recommends' => {
-                                        'Dist::Zilla::PluginBundle::Author::ETHER' => '0.056'
+                                        'Dist::Zilla::PluginBundle::Author::ETHER' => '0.057'
                                       },
                       'requires' => {
                                       'Dist::Zilla' => '5.015',
@@ -217,7 +217,7 @@ my $static_prereqs = do { my $x = {
                                       'Test::Vars' => '0.004',
                                       'Text::Tabs' => '2013.0426',
                                       'namespace::autoclean' => '0',
-                                      'perl' => '5.013002',
+                                      'perl' => '5.010',
                                       'strict' => '0',
                                       'warnings' => '0'
                                     }
@@ -249,7 +249,6 @@ my $static_prereqs = do { my $x = {
                                    'if' => '0',
                                    'lib' => '0',
                                    'parent' => '0',
-                                   'perl' => '5.013002',
                                    'version' => '0'
                                  }
                  }

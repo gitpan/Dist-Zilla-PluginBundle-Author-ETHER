@@ -4,8 +4,8 @@ package Dist::Zilla::PluginBundle::Author::ETHER;
 BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
 }
-# git description: v0.055-2-g36a1d49
-$Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.056';
+# git description: v0.056-6-gfba2693
+$Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.057';
 # ABSTRACT: A plugin bundle for distributions built by ETHER
 # KEYWORDS: author bundle distribution tool
 # vim: set ts=8 sw=4 tw=78 et :
@@ -233,7 +233,7 @@ sub configure
 
         # After Build
         'CheckSelfDependency',
-        [ 'Run::AfterBuild' => { run => q{if [ `dirname %d` != .build ]; then test -e .ackrc && grep -q -- '--ignore-dir=%d' .ackrc || echo '--ignore-dir=%d' >> .ackrc; fi} } ],
+        [ 'Run::AfterBuild' => { run => q{if [ `dirname %d` != .build ]; then test -e .ackrc && grep -q -- '--ignore-dir=%d' .ackrc || echo '--ignore-dir=%d' >> .ackrc; ln -sf %d .latest; fi} } ],
 
 
         # Before Release
@@ -323,7 +323,7 @@ __END__
 
 =encoding UTF-8
 
-=for :stopwords Karen Etheridge Randy Stauner Sergey Romanov metacpan Stopwords
+=for :stopwords Karen Etheridge Randy Stauner Сергей Романов metacpan Stopwords
 ModuleBuildTiny PodWeaver SurgicalPodWeaver customizations KENTNL irc
 
 =head1 NAME
@@ -332,7 +332,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.056
+version 0.057
 
 =head1 SYNOPSIS
 
@@ -496,7 +496,7 @@ following F<dist.ini> (following the preamble):
     [CheckSelfDependency]
 
     [Run::AfterBuild]
-    run => if [ `dirname %d` != .build ]; then test -e .ackrc && grep -q -- '--ignore-dir=%d' .ackrc || echo '--ignore-dir=%d' >> .ackrc; fi
+    run = if [ `dirname %d` != .build ]; then test -e .ackrc && grep -q -- '--ignore-dir=%d' .ackrc || echo '--ignore-dir=%d' >> .ackrc; ln -sf %d .latest ; fi
 
 
     ;;; Before Release
@@ -710,11 +710,11 @@ the same terms as the Perl 5 programming language system itself.
 
 =item *
 
-Randy Stauner <randy@magnificent-tears.com>
+Randy Stauner <rwstauner@cpan.org>
 
 =item *
 
-Sergey Romanov <complefor@rambler.ru>
+Сергей Романов <sromanov@cpan.org>
 
 =back
 
