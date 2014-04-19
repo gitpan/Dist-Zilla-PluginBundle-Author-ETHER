@@ -45,6 +45,7 @@ my %exclude = map {; $_ => 1 } qw(
 my $static_prereqs = do { my $x = {
        'configure' => {
                         'requires' => {
+                                        'Devel::CheckBin' => '0',
                                         'ExtUtils::MakeMaker' => '6.30',
                                         'File::ShareDir::Install' => '0.03',
                                         'Module::Build::Tiny' => '0.035'
@@ -56,6 +57,7 @@ my $static_prereqs = do { my $x = {
                                       },
                       'requires' => {
                                       'Dist::Zilla' => '5.015',
+                                      'Dist::Zilla::Plugin::CheckBin' => '0',
                                       'Dist::Zilla::Plugin::ContributorsFromGit' => '0',
                                       'Dist::Zilla::Plugin::GitHub::Update' => '0',
                                       'Dist::Zilla::Plugin::GithubMeta' => '0',
@@ -88,7 +90,6 @@ my $static_prereqs = do { my $x = {
                                       'Test::Pod' => '1.41',
                                       'Test::Pod::No404s' => '0',
                                       'Test::Spelling' => '0.19',
-                                      'Test::Vars' => '0.004',
                                       'Test::Warnings' => '0'
                                     }
                     },
@@ -111,8 +112,7 @@ my $static_prereqs = do { my $x = {
                                         'Test::Pod' => '1.41',
                                         'Test::Pod::Coverage' => '1.08',
                                         'Test::Pod::No404s' => '0',
-                                        'Test::Spelling' => '0.19',
-                                        'Test::Vars' => '0.004'
+                                        'Test::Spelling' => '0.19'
                                       },
                       'requires' => {
                                       'CPAN::Changes' => '0.23',
@@ -190,7 +190,6 @@ my $static_prereqs = do { my $x = {
                                       'Dist::Zilla::Plugin::Test::PodSpelling' => '2.006001',
                                       'Dist::Zilla::Plugin::Test::Portability' => '0',
                                       'Dist::Zilla::Plugin::Test::ReportPrereqs' => '0',
-                                      'Dist::Zilla::Plugin::Test::UnusedVars' => '0',
                                       'Dist::Zilla::Plugin::TestRelease' => '0',
                                       'Dist::Zilla::Plugin::UploadToCPAN' => '0',
                                       'Dist::Zilla::Plugin::VerifyPhases' => '0',
@@ -214,7 +213,6 @@ my $static_prereqs = do { my $x = {
                                       'Pod::Weaver::PluginBundle::Default' => '4.000',
                                       'Test::Portability::Files' => '0.06',
                                       'Test::Spelling' => '0.19',
-                                      'Test::Vars' => '0.004',
                                       'Text::Tabs' => '2013.0426',
                                       'namespace::autoclean' => '0',
                                       'perl' => '5.010',

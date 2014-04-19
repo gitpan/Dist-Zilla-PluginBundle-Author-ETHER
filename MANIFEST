@@ -27,6 +27,7 @@ t/03-pluginbundle-server.t
 t/04-pluginbundle-installer.t
 t/05-pluginbundle-core.t
 t/06-airplane.t
+t/07-minter-dzil-plugin.t
 t/corpus/global/config.ini
 t/lib/Helper.pm
 t/zzz-check-breaks.t

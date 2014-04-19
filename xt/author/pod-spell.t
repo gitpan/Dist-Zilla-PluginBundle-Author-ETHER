@@ -22,9 +22,9 @@ sromanov
 lib
 Dist
 Zilla
-PluginBundle
+MintingProfile
 Author
 ETHER
 Plugin
 BlockRelease
-MintingProfile
+PluginBundle

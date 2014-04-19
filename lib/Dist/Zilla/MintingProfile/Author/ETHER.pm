@@ -6,7 +6,7 @@ BEGIN {
 }
 # ABSTRACT: Mint distributions like ETHER does
 # vim: set ts=8 sw=4 tw=78 et :
-$Dist::Zilla::MintingProfile::Author::ETHER::VERSION = '0.057';
+$Dist::Zilla::MintingProfile::Author::ETHER::VERSION = '0.058';
 use Moose;
 with 'Dist::Zilla::Role::MintingProfile';
 use File::ShareDir;
@@ -45,7 +45,7 @@ Dist::Zilla::MintingProfile::Author::ETHER - Mint distributions like ETHER does
 
 =head1 VERSION
 
-version 0.057
+version 0.058
 
 =head1 SYNOPSIS
 

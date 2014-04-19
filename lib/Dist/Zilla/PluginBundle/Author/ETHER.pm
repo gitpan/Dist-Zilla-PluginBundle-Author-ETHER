@@ -4,8 +4,8 @@ package Dist::Zilla::PluginBundle::Author::ETHER;
 BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
 }
-# git description: v0.056-6-gfba2693
-$Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.057';
+# git description: v0.057-6-g8fed135
+$Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.058';
 # ABSTRACT: A plugin bundle for distributions built by ETHER
 # KEYWORDS: author bundle distribution tool
 # vim: set ts=8 sw=4 tw=78 et :
@@ -149,7 +149,6 @@ sub configure
         'MetaTests',
         [ 'Test::CPAN::Changes' => { ':version' => '0.008' } ],
         'Test::ChangesHasContent',
-        'Test::UnusedVars',
         [ 'Test::MinimumVersion' => { ':version' => '2.000003', max_target_perl => '5.008001' } ],
         'PodSyntaxTests',
         'PodCoverageTests',
@@ -291,10 +290,12 @@ sub configure
     push @plugins, (
         # listed late, to allow all other plugins which do BeforeRelease checks to run first.
         'ConfirmRelease',
+    );
 
+    push @plugins, (
         # listed last, to be sure we run at the very end of each phase
         [ 'VerifyPhases' => 'PHASE VERIFICATION' ],
-    );
+    ) if ($ENV{USER} // '') eq 'ether';
 
     $self->add_plugins(@plugins);
 
@@ -332,7 +333,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.057
+version 0.058
 
 =head1 SYNOPSIS
 
@@ -402,7 +403,6 @@ following F<dist.ini> (following the preamble):
     [Test::CPAN::Changes]
     :version = 0.008
     [Test::ChangesHasContent]
-    [Test::UnusedVars]
     [Test::MinimumVersion]
     :version = 2.000003
     max_target_perl = 5.008001
