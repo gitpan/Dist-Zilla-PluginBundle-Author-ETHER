@@ -34,7 +34,7 @@ sub _merge_requires {
 }
 
 my %include = map {; $_ => 1 } qw(
-
+  Dist::CheckConflicts
 );
 
 my %exclude = map {; $_ => 1 } qw(
@@ -53,7 +53,7 @@ my $static_prereqs = do { my $x = {
                       },
        'develop' => {
                       'recommends' => {
-                                        'Dist::Zilla::PluginBundle::Author::ETHER' => '0.057'
+                                        'Dist::Zilla::PluginBundle::Author::ETHER' => '0.059'
                                       },
                       'requires' => {
                                       'Dist::Zilla' => '5.015',

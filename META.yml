@@ -50,10 +50,10 @@ no_index:
 provides:
   Dist::Zilla::MintingProfile::Author::ETHER:
     file: lib/Dist/Zilla/MintingProfile/Author/ETHER.pm
-    version: '0.058'
+    version: '0.059'
   Dist::Zilla::PluginBundle::Author::ETHER:
     file: lib/Dist/Zilla/PluginBundle/Author/ETHER.pm
-    version: '0.058'
+    version: '0.059'
 recommends:
   Config::Identity::GitHub: '0'
   Dist::Zilla::Plugin::GitHub::Update: '0'
@@ -183,10 +183,10 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-PluginBundle-Author-ETHER
   homepage: https://github.com/karenetheridge/Dist-Zilla-PluginBundle-Author-ETHER
   repository: https://github.com/karenetheridge/Dist-Zilla-PluginBundle-Author-ETHER.git
-version: '0.058'
+version: '0.059'
 x_Dist_Zilla:
   perl:
-    version: '5.019010'
+    version: '5.019011'
   plugins:
     -
       class: Dist::Zilla::Plugin::Prereqs
@@ -259,7 +259,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::ContributorsFromGit
       name: ContributorsFromGit
-      version: '0.012'
+      version: '0.013'
     -
       class: Dist::Zilla::Plugin::MungeFile::WithDataSection
       config:
@@ -288,7 +288,7 @@ x_Dist_Zilla:
         Dist::Zilla::Role::Git::Repo:
           repo_root: .
       name: '@Author::ETHER/Git::NextVersion'
-      version: '2.021'
+      version: '2.022'
     -
       class: Dist::Zilla::Plugin::PromptIfStale
       config:
@@ -300,7 +300,7 @@ x_Dist_Zilla:
           phase: build
           skip: []
       name: '@Author::ETHER/build'
-      version: '0.021'
+      version: '0.022'
     -
       class: Dist::Zilla::Plugin::PromptIfStale
       config:
@@ -311,7 +311,7 @@ x_Dist_Zilla:
           phase: release
           skip: []
       name: '@Author::ETHER/release'
-      version: '0.021'
+      version: '0.022'
     -
       class: Dist::Zilla::Plugin::ExecDir
       name: '@Author::ETHER/ExecDir'
@@ -332,7 +332,7 @@ x_Dist_Zilla:
         Dist::Zilla::Role::Git::Repo:
           repo_root: .
       name: '@Author::ETHER/Git::GatherDir'
-      version: '2.021'
+      version: '2.022'
     -
       class: Dist::Zilla::Plugin::MetaYAML
       name: '@Author::ETHER/MetaYAML'
@@ -402,10 +402,6 @@ x_Dist_Zilla:
       class: Dist::Zilla::Plugin::Test::ChangesHasContent
       name: '@Author::ETHER/Test::ChangesHasContent'
       version: '0.006'
-    -
-      class: Dist::Zilla::Plugin::Test::UnusedVars
-      name: '@Author::ETHER/Test::UnusedVars'
-      version: '2.000005'
     -
       class: Dist::Zilla::Plugin::Test::MinimumVersion
       name: '@Author::ETHER/Test::MinimumVersion'
@@ -539,7 +535,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::ReadmeAnyFromPod
       name: '@Author::ETHER/ReadmeAnyFromPod'
-      version: '0.133360'
+      version: '0.141120'
     -
       class: Dist::Zilla::Plugin::GithubMeta
       name: '@Author::ETHER/GithubMeta'
@@ -652,14 +648,13 @@ x_Dist_Zilla:
         Dist::Zilla::Plugin::Git::Check:
           untracked_files: die
         Dist::Zilla::Role::Git::DirtyFiles:
-          allow_dirty:
-            - ''
+          allow_dirty: []
           allow_dirty_match: []
           changelog: Changes
         Dist::Zilla::Role::Git::Repo:
           repo_root: .
       name: '@Author::ETHER/initial check'
-      version: '2.021'
+      version: '2.022'
     -
       class: Dist::Zilla::Plugin::Git::CheckFor::MergeConflicts
       config:
@@ -692,14 +687,13 @@ x_Dist_Zilla:
         Dist::Zilla::Plugin::Git::Check:
           untracked_files: die
         Dist::Zilla::Role::Git::DirtyFiles:
-          allow_dirty:
-            - ''
+          allow_dirty: []
           allow_dirty_match: []
           changelog: Changes
         Dist::Zilla::Role::Git::Repo:
           repo_root: .
       name: '@Author::ETHER/after tests'
-      version: '2.021'
+      version: '2.022'
     -
       class: Dist::Zilla::Plugin::UploadToCPAN
       name: '@Author::ETHER/UploadToCPAN'
@@ -727,21 +721,21 @@ x_Dist_Zilla:
         Dist::Zilla::Role::Git::Repo:
           repo_root: .
       name: '@Author::ETHER/Git::Commit'
-      version: '2.021'
+      version: '2.022'
     -
       class: Dist::Zilla::Plugin::Git::Tag
       config:
         Dist::Zilla::Plugin::Git::Tag:
           branch: ~
           signed: 0
-          tag: v0.058
+          tag: v0.059
           tag_format: v%v%t
           tag_message: v%v%t
           time_zone: local
         Dist::Zilla::Role::Git::Repo:
           repo_root: .
       name: '@Author::ETHER/Git::Tag'
-      version: '2.021'
+      version: '2.022'
     -
       class: Dist::Zilla::Plugin::GitHub::Update
       name: '@Author::ETHER/GitHub::Update'
@@ -756,7 +750,7 @@ x_Dist_Zilla:
         Dist::Zilla::Role::Git::Repo:
           repo_root: .
       name: '@Author::ETHER/Git::Push'
-      version: '2.021'
+      version: '2.022'
     -
       class: Dist::Zilla::Plugin::InstallRelease
       name: '@Author::ETHER/InstallRelease'
