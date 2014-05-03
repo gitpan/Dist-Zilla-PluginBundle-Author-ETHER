@@ -12,7 +12,6 @@ README
 README.md
 dist.ini
 lib/Dist/Zilla/MintingProfile/Author/ETHER.pm
-lib/Dist/Zilla/Plugin/BlockRelease.pm
 lib/Dist/Zilla/PluginBundle/Author/ETHER.pm
 share/CONTRIBUTING
 share/profiles/github/Module.pm

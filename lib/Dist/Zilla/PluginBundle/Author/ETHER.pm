@@ -4,8 +4,8 @@ package Dist::Zilla::PluginBundle::Author::ETHER;
 BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
 }
-# git description: v0.058-5-g2be5b66
-$Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.059';
+# git description: v0.059-4-gbfb0698
+$Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.060';
 # ABSTRACT: A plugin bundle for distributions built by ETHER
 # KEYWORDS: author bundle distribution tool
 # vim: set ts=8 sw=4 tw=78 et :
@@ -127,6 +127,7 @@ sub configure
         [ 'Git::NextVersion'    => { version_regexp => '^v([\d._]+)(-TRIAL)?$' } ],
 
         # BeforeBuild
+        [ 'EnsurePrereqsInstalled' ],
         [ 'PromptIfStale' => 'build' => { phase => 'build', module => [ $self->meta->name ] } ],
         [ 'PromptIfStale' => 'release' => { phase => 'release', check_all_plugins => 1, check_all_prereqs => 1 } ],
 
@@ -232,7 +233,7 @@ sub configure
 
         # After Build
         'CheckSelfDependency',
-        [ 'Run::AfterBuild' => { run => q{if [ `dirname %d` != .build ]; then test -e .ackrc && grep -q -- '--ignore-dir=%d' .ackrc || echo '--ignore-dir=%d' >> .ackrc; ln -sf %d .latest; fi} } ],
+        [ 'Run::AfterBuild' => { run => q{if [ `dirname %d` != .build ]; then test -e .ackrc && grep -q -- '--ignore-dir=%d' .ackrc || echo '--ignore-dir=%d' >> .ackrc; ln -sFhn %d .latest; fi} } ],
 
 
         # Before Release
@@ -261,13 +262,6 @@ sub configure
         [ 'InstallRelease'      => { install_command => 'cpanm .' } ],
     );
 
-    push @plugins, (
-        [ 'Prereqs' => via_options => {
-            '-phase' => 'develop', '-relationship' => 'requires',
-            %extra_develop_requires
-          } ]
-    ) if keys %extra_develop_requires;
-
     if ($self->airplane)
     {
         warn "building in airplane mode - plugins requiring the network are skipped, and releases are not permitted\n";
@@ -283,9 +277,18 @@ sub configure
         # allow our uncommitted dist.ini edit which sets 'airplane = 1'
         push @{ $plugins[ first_index { ref eq 'ARRAY' && $_->[0] eq 'Git::Check' } @plugins ][-1]{allow_dirty} }, 'dist.ini';
 
+        $extra_develop_requires{'Dist::Zilla::Plugin::BlockRelease'} = 0;
+
         # halt release after pre-release checks, but before ConfirmRelease
         push @plugins, 'BlockRelease';
     }
+
+    push @plugins, (
+        [ 'Prereqs' => via_options => {
+            '-phase' => 'develop', '-relationship' => 'requires',
+            %extra_develop_requires
+          } ]
+    ) if keys %extra_develop_requires;
 
     push @plugins, (
         # listed late, to allow all other plugins which do BeforeRelease checks to run first.
@@ -324,16 +327,13 @@ __END__
 
 =encoding UTF-8
 
-=for :stopwords Karen Etheridge Randy Stauner Сергей Романов metacpan Stopwords
-ModuleBuildTiny PodWeaver SurgicalPodWeaver customizations KENTNL irc
-
 =head1 NAME
 
 Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions built by ETHER
 
 =head1 VERSION
 
-version 0.059
+version 0.060
 
 =head1 SYNOPSIS
 
@@ -496,7 +496,7 @@ following F<dist.ini> (following the preamble):
     [CheckSelfDependency]
 
     [Run::AfterBuild]
-    run = if [ `dirname %d` != .build ]; then test -e .ackrc && grep -q -- '--ignore-dir=%d' .ackrc || echo '--ignore-dir=%d' >> .ackrc; ln -sf %d .latest ; fi
+    run = if [ `dirname %d` != .build ]; then test -e .ackrc && grep -q -- '--ignore-dir=%d' .ackrc || echo '--ignore-dir=%d' >> .ackrc; ln -sFhn %d .latest ; fi
 
 
     ;;; Before Release
@@ -563,6 +563,8 @@ following F<dist.ini> (following the preamble):
 
 =for Pod::Coverage configure mvp_multivalue_args
 
+=for stopwords metacpan
+
 The distribution's code is assumed to be hosted at L<github|http://github.com>;
 L<RT|http://rt.cpan.org> is used as the issue tracker.
 The home page in the metadata points to L<github|http://github.com>,
@@ -587,12 +589,16 @@ as described in L<Pod::Coverage::TrustPod>:
 
 =head2 spelling stopwords
 
+=for stopwords Stopwords
+
 Stopwords for spelling tests can be added by adding a directive to pod (as
 many as you'd like), as described in L<Pod::Spell/ADDING STOPWORDS>:
 
     =for stopwords foo bar baz
 
 =head2 installer
+
+=for stopwords ModuleBuildTiny
 
 The installer back-end(s) to use (can be specified more than once); defaults
 to L<C<ModuleBuildTiny>|Dist::Zilla::Plugin::ModuleBuildTiny>
@@ -669,10 +675,14 @@ once. Defaults to: F<README.md>, F<LICENSE>, F<CONTRIBUTING>.
 
 =head2 surgical_podweaver
 
+=for stopwords PodWeaver SurgicalPodWeaver
+
 A boolean option, that when set, uses
 L<[SurgicalPodWeaver]|Dist::Zilla::Plugin::SurgicalPodWeaver> instead of
 L<[PodWeaver]|Dist::Zilla::Plugin::SurgicalPodWeaver>, but with all the same
 options. Defaults to false.
+
+=for stopwords customizations
 
 =head2 other customizations
 
@@ -684,10 +694,14 @@ install or are otherwise problematic.
 
 =head1 NAMING SCHEME
 
+=for stopwords KENTNL
+
 This distribution follows best practices for author-oriented plugin bundles; for more information,
 see L<KENTNL's distribution|Dist::Zilla::PluginBundle::Author::KENTNL/NAMING-SCHEME>.
 
 =head1 SUPPORT
+
+=for stopwords irc
 
 Bugs may be submitted through L<the RT bug tracker|https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-PluginBundle-Author-ETHER>
 (or L<bug-Dist-Zilla-PluginBundle-Author-ETHER@rt.cpan.org|mailto:bug-Dist-Zilla-PluginBundle-Author-ETHER@rt.cpan.org>).

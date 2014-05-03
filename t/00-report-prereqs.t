@@ -48,15 +48,16 @@ my $static_prereqs = do { my $x = {
                                         'Devel::CheckBin' => '0',
                                         'ExtUtils::MakeMaker' => '6.30',
                                         'File::ShareDir::Install' => '0.03',
-                                        'Module::Build::Tiny' => '0.035'
+                                        'Module::Build::Tiny' => '0.036'
                                       }
                       },
        'develop' => {
                       'recommends' => {
-                                        'Dist::Zilla::PluginBundle::Author::ETHER' => '0.059'
+                                        'Dist::Zilla::PluginBundle::Author::ETHER' => '0.060'
                                       },
                       'requires' => {
                                       'Dist::Zilla' => '5.015',
+                                      'Dist::Zilla::Plugin::BlockRelease' => '0',
                                       'Dist::Zilla::Plugin::CheckBin' => '0',
                                       'Dist::Zilla::Plugin::ContributorsFromGit' => '0',
                                       'Dist::Zilla::Plugin::GitHub::Update' => '0',
@@ -73,7 +74,6 @@ my $static_prereqs = do { my $x = {
                                       'IO::Handle' => '0',
                                       'IPC::Open3' => '0',
                                       'Pod::Elemental::Transformer::List' => '0',
-                                      'Pod::Weaver::Plugin::StopWords' => '0',
                                       'Pod::Weaver::Plugin::Transformer' => '0',
                                       'Pod::Weaver::PluginBundle::Default' => '0',
                                       'Pod::Weaver::Section::Contributors' => '0',
@@ -96,6 +96,7 @@ my $static_prereqs = do { my $x = {
        'runtime' => {
                       'recommends' => {
                                         'Config::Identity::GitHub' => '0',
+                                        'Dist::Zilla::Plugin::BlockRelease' => '0',
                                         'Dist::Zilla::Plugin::GitHub::Update' => '0',
                                         'Dist::Zilla::Plugin::GithubMeta' => '0',
                                         'Dist::Zilla::Plugin::MakeMaker' => '0',
@@ -128,6 +129,7 @@ my $static_prereqs = do { my $x = {
                                       'Dist::Zilla::Plugin::ConfirmRelease' => '0',
                                       'Dist::Zilla::Plugin::CopyFilesFromRelease' => '0',
                                       'Dist::Zilla::Plugin::EOLTests' => '0',
+                                      'Dist::Zilla::Plugin::EnsurePrereqsInstalled' => '0',
                                       'Dist::Zilla::Plugin::ExecDir' => '0',
                                       'Dist::Zilla::Plugin::FileFinder::ByName' => '0',
                                       'Dist::Zilla::Plugin::GatherDir::Template' => '0',
@@ -193,7 +195,6 @@ my $static_prereqs = do { my $x = {
                                       'Dist::Zilla::Plugin::TestRelease' => '0',
                                       'Dist::Zilla::Plugin::UploadToCPAN' => '0',
                                       'Dist::Zilla::Plugin::VerifyPhases' => '0',
-                                      'Dist::Zilla::Role::BeforeRelease' => '0',
                                       'Dist::Zilla::Role::MintingProfile' => '0',
                                       'Dist::Zilla::Role::PluginBundle::Config::Slicer' => '0',
                                       'Dist::Zilla::Role::PluginBundle::Easy' => '0',
@@ -208,7 +209,6 @@ my $static_prereqs = do { my $x = {
                                       'Pod::Elemental::PerlMunger' => '0.200001',
                                       'Pod::Elemental::Transformer::List' => '0',
                                       'Pod::Markdown' => '1.500',
-                                      'Pod::Weaver::Plugin::StopWords' => '0',
                                       'Pod::Weaver::Plugin::Transformer' => '0',
                                       'Pod::Weaver::PluginBundle::Default' => '4.000',
                                       'Test::Portability::Files' => '0.06',

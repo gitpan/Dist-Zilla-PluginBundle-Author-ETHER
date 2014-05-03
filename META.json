@@ -4,7 +4,7 @@
       "Karen Etheridge <ether@cpan.org>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Dist::Zilla version 5.015, CPAN::Meta::Converter version 2.140640",
+   "generated_by" : "Dist::Zilla version 5.015, CPAN::Meta::Converter version 2.141170",
    "keywords" : [
       "author",
       "bundle",
@@ -32,15 +32,16 @@
             "Devel::CheckBin" : "0",
             "ExtUtils::MakeMaker" : "6.30",
             "File::ShareDir::Install" : "0.03",
-            "Module::Build::Tiny" : "0.035"
+            "Module::Build::Tiny" : "0.036"
          }
       },
       "develop" : {
          "recommends" : {
-            "Dist::Zilla::PluginBundle::Author::ETHER" : "0.059"
+            "Dist::Zilla::PluginBundle::Author::ETHER" : "0.060"
          },
          "requires" : {
             "Dist::Zilla" : "5.015",
+            "Dist::Zilla::Plugin::BlockRelease" : "0",
             "Dist::Zilla::Plugin::CheckBin" : "0",
             "Dist::Zilla::Plugin::ContributorsFromGit" : "0",
             "Dist::Zilla::Plugin::GitHub::Update" : "0",
@@ -57,7 +58,6 @@
             "IO::Handle" : "0",
             "IPC::Open3" : "0",
             "Pod::Elemental::Transformer::List" : "0",
-            "Pod::Weaver::Plugin::StopWords" : "0",
             "Pod::Weaver::Plugin::Transformer" : "0",
             "Pod::Weaver::PluginBundle::Default" : "0",
             "Pod::Weaver::Section::Contributors" : "0",
@@ -80,6 +80,7 @@
       "runtime" : {
          "recommends" : {
             "Config::Identity::GitHub" : "0",
+            "Dist::Zilla::Plugin::BlockRelease" : "0",
             "Dist::Zilla::Plugin::GitHub::Update" : "0",
             "Dist::Zilla::Plugin::GithubMeta" : "0",
             "Dist::Zilla::Plugin::MakeMaker" : "0",
@@ -112,6 +113,7 @@
             "Dist::Zilla::Plugin::ConfirmRelease" : "0",
             "Dist::Zilla::Plugin::CopyFilesFromRelease" : "0",
             "Dist::Zilla::Plugin::EOLTests" : "0",
+            "Dist::Zilla::Plugin::EnsurePrereqsInstalled" : "0",
             "Dist::Zilla::Plugin::ExecDir" : "0",
             "Dist::Zilla::Plugin::FileFinder::ByName" : "0",
             "Dist::Zilla::Plugin::GatherDir::Template" : "0",
@@ -177,7 +179,6 @@
             "Dist::Zilla::Plugin::TestRelease" : "0",
             "Dist::Zilla::Plugin::UploadToCPAN" : "0",
             "Dist::Zilla::Plugin::VerifyPhases" : "0",
-            "Dist::Zilla::Role::BeforeRelease" : "0",
             "Dist::Zilla::Role::MintingProfile" : "0",
             "Dist::Zilla::Role::PluginBundle::Config::Slicer" : "0",
             "Dist::Zilla::Role::PluginBundle::Easy" : "0",
@@ -192,7 +193,6 @@
             "Pod::Elemental::PerlMunger" : "0.200001",
             "Pod::Elemental::Transformer::List" : "0",
             "Pod::Markdown" : "1.500",
-            "Pod::Weaver::Plugin::StopWords" : "0",
             "Pod::Weaver::Plugin::Transformer" : "0",
             "Pod::Weaver::PluginBundle::Default" : "4.000",
             "Test::Portability::Files" : "0.06",
@@ -238,11 +238,11 @@
    "provides" : {
       "Dist::Zilla::MintingProfile::Author::ETHER" : {
          "file" : "lib/Dist/Zilla/MintingProfile/Author/ETHER.pm",
-         "version" : "0.059"
+         "version" : "0.060"
       },
       "Dist::Zilla::PluginBundle::Author::ETHER" : {
          "file" : "lib/Dist/Zilla/PluginBundle/Author/ETHER.pm",
-         "version" : "0.059"
+         "version" : "0.060"
       }
    },
    "release_status" : "stable",
@@ -260,7 +260,7 @@
       "x_IRC" : "irc://irc.perl.org/#distzilla",
       "x_MailingList" : "http://dzil.org/#mailing-list"
    },
-   "version" : "0.059",
+   "version" : "0.060",
    "x_Dist_Zilla" : {
       "perl" : {
          "version" : "5.019011"
@@ -402,6 +402,11 @@
             },
             "name" : "@Author::ETHER/Git::NextVersion",
             "version" : "2.022"
+         },
+         {
+            "class" : "Dist::Zilla::Plugin::EnsurePrereqsInstalled",
+            "name" : "@Author::ETHER/EnsurePrereqsInstalled",
+            "version" : "0.001"
          },
          {
             "class" : "Dist::Zilla::Plugin::PromptIfStale",
@@ -700,11 +705,6 @@
                         "class" : "Pod::Weaver::Plugin::Transformer",
                         "name" : "-Transformer",
                         "version" : "4.006"
-                     },
-                     {
-                        "class" : "Pod::Weaver::Plugin::StopWords",
-                        "name" : "-StopWords",
-                        "version" : "1.008"
                      }
                   ]
                }
@@ -841,7 +841,7 @@
          {
             "class" : "Dist::Zilla::Plugin::InstallGuide",
             "name" : "@Author::ETHER/InstallGuide",
-            "version" : "1.200002"
+            "version" : "1.200003"
          },
          {
             "class" : "Dist::Zilla::Plugin::CheckSelfDependency",
@@ -911,7 +911,7 @@
          {
             "class" : "Dist::Zilla::Plugin::CheckPrereqsIndexed",
             "name" : "@Author::ETHER/CheckPrereqsIndexed",
-            "version" : "0.011"
+            "version" : "0.012"
          },
          {
             "class" : "Dist::Zilla::Plugin::TestRelease",
@@ -979,7 +979,7 @@
                "Dist::Zilla::Plugin::Git::Tag" : {
                   "branch" : null,
                   "signed" : 0,
-                  "tag" : "v0.059",
+                  "tag" : "v0.060",
                   "tag_format" : "v%v%t",
                   "tag_message" : "v%v%t",
                   "time_zone" : "local"

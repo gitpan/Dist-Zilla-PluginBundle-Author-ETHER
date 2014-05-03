@@ -6,7 +6,7 @@ BEGIN {
 }
 # ABSTRACT: Mint distributions like ETHER does
 # vim: set ts=8 sw=4 tw=78 et :
-$Dist::Zilla::MintingProfile::Author::ETHER::VERSION = '0.059';
+$Dist::Zilla::MintingProfile::Author::ETHER::VERSION = '0.060';
 use Moose;
 with 'Dist::Zilla::Role::MintingProfile';
 use File::ShareDir;
@@ -37,15 +37,13 @@ __END__
 
 =encoding UTF-8
 
-=for :stopwords Karen Etheridge Randy Stauner Сергей Романов irc
-
 =head1 NAME
 
 Dist::Zilla::MintingProfile::Author::ETHER - Mint distributions like ETHER does
 
 =head1 VERSION
 
-version 0.059
+version 0.060
 
 =head1 SYNOPSIS
 
@@ -87,6 +85,8 @@ decline, you must create one manually before you do your first C<push>.
 =back
 
 =head1 SUPPORT
+
+=for stopwords irc
 
 Bugs may be submitted through L<the RT bug tracker|https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-PluginBundle-Author-ETHER>
 (or L<bug-Dist-Zilla-PluginBundle-Author-ETHER@rt.cpan.org|mailto:bug-Dist-Zilla-PluginBundle-Author-ETHER@rt.cpan.org>).

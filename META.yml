@@ -29,9 +29,9 @@ configure_requires:
   Devel::CheckBin: '0'
   ExtUtils::MakeMaker: '6.30'
   File::ShareDir::Install: '0.03'
-  Module::Build::Tiny: '0.035'
+  Module::Build::Tiny: '0.036'
 dynamic_config: 0
-generated_by: 'Dist::Zilla version 5.015, CPAN::Meta::Converter version 2.140640'
+generated_by: 'Dist::Zilla version 5.015, CPAN::Meta::Converter version 2.141170'
 keywords:
   - author
   - bundle
@@ -50,12 +50,13 @@ no_index:
 provides:
   Dist::Zilla::MintingProfile::Author::ETHER:
     file: lib/Dist/Zilla/MintingProfile/Author/ETHER.pm
-    version: '0.059'
+    version: '0.060'
   Dist::Zilla::PluginBundle::Author::ETHER:
     file: lib/Dist/Zilla/PluginBundle/Author/ETHER.pm
-    version: '0.059'
+    version: '0.060'
 recommends:
   Config::Identity::GitHub: '0'
+  Dist::Zilla::Plugin::BlockRelease: '0'
   Dist::Zilla::Plugin::GitHub::Update: '0'
   Dist::Zilla::Plugin::GithubMeta: '0'
   Dist::Zilla::Plugin::MakeMaker: '0'
@@ -87,6 +88,7 @@ requires:
   Dist::Zilla::Plugin::ConfirmRelease: '0'
   Dist::Zilla::Plugin::CopyFilesFromRelease: '0'
   Dist::Zilla::Plugin::EOLTests: '0'
+  Dist::Zilla::Plugin::EnsurePrereqsInstalled: '0'
   Dist::Zilla::Plugin::ExecDir: '0'
   Dist::Zilla::Plugin::FileFinder::ByName: '0'
   Dist::Zilla::Plugin::GatherDir::Template: '0'
@@ -152,7 +154,6 @@ requires:
   Dist::Zilla::Plugin::TestRelease: '0'
   Dist::Zilla::Plugin::UploadToCPAN: '0'
   Dist::Zilla::Plugin::VerifyPhases: '0'
-  Dist::Zilla::Role::BeforeRelease: '0'
   Dist::Zilla::Role::MintingProfile: '0'
   Dist::Zilla::Role::PluginBundle::Config::Slicer: '0'
   Dist::Zilla::Role::PluginBundle::Easy: '0'
@@ -167,7 +168,6 @@ requires:
   Pod::Elemental::PerlMunger: '0.200001'
   Pod::Elemental::Transformer::List: '0'
   Pod::Markdown: '1.500'
-  Pod::Weaver::Plugin::StopWords: '0'
   Pod::Weaver::Plugin::Transformer: '0'
   Pod::Weaver::PluginBundle::Default: '4.000'
   Test::Portability::Files: '0.06'
@@ -183,7 +183,7 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-PluginBundle-Author-ETHER
   homepage: https://github.com/karenetheridge/Dist-Zilla-PluginBundle-Author-ETHER
   repository: https://github.com/karenetheridge/Dist-Zilla-PluginBundle-Author-ETHER.git
-version: '0.059'
+version: '0.060'
 x_Dist_Zilla:
   perl:
     version: '5.019011'
@@ -289,6 +289,10 @@ x_Dist_Zilla:
           repo_root: .
       name: '@Author::ETHER/Git::NextVersion'
       version: '2.022'
+    -
+      class: Dist::Zilla::Plugin::EnsurePrereqsInstalled
+      name: '@Author::ETHER/EnsurePrereqsInstalled'
+      version: '0.001'
     -
       class: Dist::Zilla::Plugin::PromptIfStale
       config:
@@ -522,10 +526,6 @@ x_Dist_Zilla:
               class: Pod::Weaver::Plugin::Transformer
               name: -Transformer
               version: '4.006'
-            -
-              class: Pod::Weaver::Plugin::StopWords
-              name: -StopWords
-              version: '1.008'
       name: '@Author::ETHER/PodWeaver'
       version: '4.005'
     -
@@ -625,7 +625,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::InstallGuide
       name: '@Author::ETHER/InstallGuide'
-      version: '1.200002'
+      version: '1.200003'
     -
       class: Dist::Zilla::Plugin::CheckSelfDependency
       config:
@@ -676,7 +676,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::CheckPrereqsIndexed
       name: '@Author::ETHER/CheckPrereqsIndexed'
-      version: '0.011'
+      version: '0.012'
     -
       class: Dist::Zilla::Plugin::TestRelease
       name: '@Author::ETHER/TestRelease'
@@ -728,7 +728,7 @@ x_Dist_Zilla:
         Dist::Zilla::Plugin::Git::Tag:
           branch: ~
           signed: 0
-          tag: v0.059
+          tag: v0.060
           tag_format: v%v%t
           tag_message: v%v%t
           time_zone: local
