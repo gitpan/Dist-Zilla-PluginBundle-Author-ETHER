@@ -1,5 +1,9 @@
 Revision history for Dist-Zilla-PluginBundle-Author-ETHER
 
+0.061     2014-05-04 21:28:33Z
+          - fix ln flags for linux
+          - fix filefinders used in no-tabs tests
+
 0.060     2014-05-03 22:52:01Z
           - fix adjustment of existing .latest symlink at build time
           - added use of [EnsurePrereqsInstalled], to check ; authordeps are

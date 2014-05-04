@@ -53,7 +53,7 @@ my $static_prereqs = do { my $x = {
                       },
        'develop' => {
                       'recommends' => {
-                                        'Dist::Zilla::PluginBundle::Author::ETHER' => '0.060'
+                                        'Dist::Zilla::PluginBundle::Author::ETHER' => '0.061'
                                       },
                       'requires' => {
                                       'Dist::Zilla' => '5.015',
@@ -184,10 +184,10 @@ my $static_prereqs = do { my $x = {
                                       'Dist::Zilla::Plugin::TemplateModule' => '0',
                                       'Dist::Zilla::Plugin::Test::CPAN::Changes' => '0.008',
                                       'Dist::Zilla::Plugin::Test::ChangesHasContent' => '0',
-                                      'Dist::Zilla::Plugin::Test::Compile' => '2.036',
+                                      'Dist::Zilla::Plugin::Test::Compile' => '2.039',
                                       'Dist::Zilla::Plugin::Test::Kwalitee' => '2.06',
                                       'Dist::Zilla::Plugin::Test::MinimumVersion' => '2.000003',
-                                      'Dist::Zilla::Plugin::Test::NoTabs' => '0',
+                                      'Dist::Zilla::Plugin::Test::NoTabs' => '0.08',
                                       'Dist::Zilla::Plugin::Test::Pod::No404s' => '0',
                                       'Dist::Zilla::Plugin::Test::PodSpelling' => '2.006001',
                                       'Dist::Zilla::Plugin::Test::Portability' => '0',

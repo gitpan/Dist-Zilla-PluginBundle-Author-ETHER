@@ -4,8 +4,8 @@ package Dist::Zilla::PluginBundle::Author::ETHER;
 BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
 }
-# git description: v0.059-4-gbfb0698
-$Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.060';
+# git description: v0.060-6-gcdc3d83
+$Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.061';
 # ABSTRACT: A plugin bundle for distributions built by ETHER
 # KEYWORDS: author bundle distribution tool
 # vim: set ts=8 sw=4 tw=78 et :
@@ -137,15 +137,16 @@ sub configure
 
         # Finders
         [ 'FileFinder::ByName' => Examples => { dir => 'examples' } ],
+        [ 'FileFinder::ByName' => ExtraTestFiles => { dir => 'xt' } ],
 
         # Gather Files
         [ 'Git::GatherDir'      => { ':version' => '2.016', exclude_filename => [ $self->copy_files_from_release ] } ],
         qw(MetaYAML MetaJSON License Readme Manifest),
         [ 'GenerateFile::ShareDir' => 'generate CONTRIBUTING' => { -dist => 'Dist-Zilla-PluginBundle-Author-ETHER', -filename => 'CONTRIBUTING' } ],
 
-        [ 'Test::Compile'       => { ':version' => '2.036', bail_out_on_fail => 1, xt_mode => 1,
+        [ 'Test::Compile'       => { ':version' => '2.039', bail_out_on_fail => 1, xt_mode => 1,
             script_finder => [qw(:ExecFiles @Author::ETHER/Examples)] } ],
-        [ 'Test::NoTabs'        => { script_finder => [qw(:ExecFiles @Author::ETHER/Examples)] } ],
+        [ 'Test::NoTabs'        => { 'version' => '0.08', finder => [qw(:InstallModules :ExecFiles @Author::ETHER/Examples :TestFiles @Author::ETHER/ExtraTestFiles)] } ],
         'EOLTests',
         'MetaTests',
         [ 'Test::CPAN::Changes' => { ':version' => '0.008' } ],
@@ -233,7 +234,7 @@ sub configure
 
         # After Build
         'CheckSelfDependency',
-        [ 'Run::AfterBuild' => { run => q{if [ `dirname %d` != .build ]; then test -e .ackrc && grep -q -- '--ignore-dir=%d' .ackrc || echo '--ignore-dir=%d' >> .ackrc; ln -sFhn %d .latest; fi} } ],
+        [ 'Run::AfterBuild' => { run => q{if [ `basename %d` != .build ]; then test -e .ackrc && grep -q -- '--ignore-dir=%d' .ackrc || echo '--ignore-dir=%d' >> .ackrc; ln -sFn %d .latest; fi} } ],
 
 
         # Before Release
@@ -333,7 +334,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.060
+version 0.061
 
 =head1 SYNOPSIS
 
@@ -351,6 +352,7 @@ following F<dist.ini> (following the preamble):
     version_regexp = ^v([\d._]+)(-TRIAL)?$
 
     ;;; BeforeBuild
+    [EnsurePrereqsInstalled]
     [PromptIfStale / build]
     phase = build
     module = Dist::Zilla::Plugin::Author::ETHER
@@ -370,6 +372,8 @@ following F<dist.ini> (following the preamble):
     ;;; Finders
     [FileFinder::ByName / Examples]
     dir = examples
+    [FileFinder::ByName / ExtraTestFiles]
+    dir = xt
 
     ;;; Gather Files
     [Git::GatherDir]
@@ -388,15 +392,19 @@ following F<dist.ini> (following the preamble):
     -filename = CONTRIBUTING
 
     [Test::Compile]
-    :version = 2.036
+    :version = 2.039
     bail_out_on_fail = 1
     xt_mode = 1
     script_finder = :ExecFiles
     script_finder = Examples
 
     [Test::NoTabs]
-    script_finder = :ExecFiles
-    script_finder = Examples
+    :version = 0.08
+    finder = :InstallModules
+    finder = :ExecFiles
+    finder = Examples
+    finder = :TestFiles
+    finder = ExtraTestFiles
 
     [EOLTests]
     [MetaTests]
@@ -496,7 +504,7 @@ following F<dist.ini> (following the preamble):
     [CheckSelfDependency]
 
     [Run::AfterBuild]
-    run = if [ `dirname %d` != .build ]; then test -e .ackrc && grep -q -- '--ignore-dir=%d' .ackrc || echo '--ignore-dir=%d' >> .ackrc; ln -sFhn %d .latest ; fi
+    run = if [ `dirname %d` != .build ]; then test -e .ackrc && grep -q -- '--ignore-dir=%d' .ackrc || echo '--ignore-dir=%d' >> .ackrc; ln -sFn %d .latest ; fi
 
 
     ;;; Before Release
