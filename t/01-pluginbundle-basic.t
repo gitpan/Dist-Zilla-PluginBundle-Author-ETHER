@@ -5,6 +5,7 @@ use Test::More;
 use if $ENV{AUTHOR_TESTING}, 'Test::Warnings';
 use Test::Deep '!blessed';
 use Test::DZil;
+use Test::Fatal;
 use File::Find;
 use File::Spec;
 use Path::Tiny;
@@ -20,6 +21,7 @@ use Test::File::ShareDir -share => { -dist => { 'Dist-Zilla-PluginBundle-Author-
 
 use lib 't/lib';
 use Helper;
+use NoNetworkHits;
 
 my $tzil = Builder->from_config(
     { dist_root => 't/does_not_exist' },
@@ -33,7 +35,7 @@ my $tzil = Builder->from_config(
                     '-remove' => [ 'Git::GatherDir', 'Git::NextVersion', 'Git::Describe',
                         'Git::Check', 'Git::Commit', 'Git::Tag', 'Git::Push',
                         'Git::CheckFor::MergeConflicts', 'Git::CheckFor::CorrectBranch',
-                        'Git::Remote::Check', 'PromptIfStale' ],
+                        'Git::Remote::Check', 'PromptIfStale', 'EnsurePrereqsInstalled' ],
                     server => 'none',
                 } ],
                 'MetaConfig',
@@ -52,7 +54,11 @@ my @git_plugins =
 cmp_deeply(\@git_plugins, [], 'no git-based plugins are running here');
 
 $tzil->chrome->logger->set_debug(1);
-$tzil->build;
+is(
+    exception { $tzil->build },
+    undef,
+    'build proceeds normally',
+) or diag 'log messages:' . join("\n", @{ $tzil->log_messages });
 
 # check that everything we loaded is in the pluginbundle's run-requires
 all_plugins_in_prereqs($tzil,

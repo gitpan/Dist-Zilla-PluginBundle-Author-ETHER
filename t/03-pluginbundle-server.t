@@ -6,6 +6,7 @@ use if $ENV{AUTHOR_TESTING}, 'Test::Warnings';
 use Test::Deep;
 use Test::Deep::JSON;
 use Test::DZil;
+use Test::Fatal;
 use Path::Tiny;
 
 use Test::Requires qw(
@@ -17,6 +18,7 @@ use Test::File::ShareDir -share => { -dist => { 'Dist-Zilla-PluginBundle-Author-
 
 use lib 't/lib';
 use Helper;
+use NoNetworkHits;
 
 # this data should be constant across all server types
 my %bugtracker = (
@@ -75,7 +77,8 @@ foreach my $server (keys %server_to_resources)
                     [ '@Author::ETHER' => {
                         server => $server,
                         installer => 'MakeMaker',
-                        '-remove' => [ 'Git::GatherDir', 'Git::NextVersion', 'Git::Describe', 'PromptIfStale' ],
+                        '-remove' => [ 'Git::GatherDir', 'Git::NextVersion', 'Git::Describe',
+                            'PromptIfStale', 'EnsurePrereqsInstalled' ],
                       },
                     ],
                 ),
@@ -84,7 +87,12 @@ foreach my $server (keys %server_to_resources)
         },
     );
 
-    $tzil->build;
+    $tzil->chrome->logger->set_debug(1);
+    is(
+        exception { $tzil->build },
+        undef,
+        'build proceeds normally',
+    ) or diag 'log messages:' . join("\n", @{ $tzil->log_messages });
 
     # check that everything we loaded is properly declared as prereqs
     all_plugins_in_prereqs($tzil,

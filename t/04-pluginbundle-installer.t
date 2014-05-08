@@ -5,6 +5,7 @@ use Test::More;
 use if $ENV{AUTHOR_TESTING}, 'Test::Warnings';
 use Test::Deep;
 use Test::DZil;
+use Test::Fatal;
 use File::Find;
 use File::Spec;
 use Path::Tiny;
@@ -19,6 +20,7 @@ use Test::File::ShareDir -share => { -dist => { 'Dist-Zilla-PluginBundle-Author-
 
 use lib 't/lib';
 use Helper;
+use NoNetworkHits;
 
 {
     my $tzil = Builder->from_config(
@@ -30,7 +32,8 @@ use Helper;
                     # our files are copied into source, so Git::GatherDir doesn't see them
                     # and besides, we would like to run these tests at install time too!
                     [ '@Author::ETHER' => {
-                        '-remove' => [ 'Git::GatherDir', 'Git::NextVersion', 'Git::Describe', 'PromptIfStale' ],
+                        '-remove' => [ 'Git::GatherDir', 'Git::NextVersion', 'Git::Describe',
+                            'PromptIfStale', 'EnsurePrereqsInstalled' ],
                         server => 'none',
                         installer => 'MakeMaker',
                       },
@@ -41,7 +44,12 @@ use Helper;
         },
     );
 
-    $tzil->build;
+    $tzil->chrome->logger->set_debug(1);
+    is(
+        exception { $tzil->build },
+        undef,
+        'build proceeds normally',
+    ) or diag 'log messages:' . join("\n", @{ $tzil->log_messages });
 
     # check that everything we loaded is properly declared as prereqs
     all_plugins_in_prereqs($tzil,

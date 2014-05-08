@@ -19,6 +19,7 @@ my @files = (
     't/07-minter-dzil-plugin.t',
     't/corpus/global/config.ini',
     't/lib/Helper.pm',
+    't/lib/NoNetworkHits.pm',
     't/zzz-check-breaks.t',
     'xt/author/00-compile.t',
     'xt/author/pod-spell.t',

@@ -197,6 +197,7 @@ my %WriteMakefileArgs = (
     "File::Find" => 0,
     "File::Spec" => 0,
     "File::Spec::Functions" => 0,
+    "HTTP::Tiny" => 0,
     "JSON" => 0,
     "List::Util" => 0,
     "Moose::Util" => 0,
@@ -215,7 +216,7 @@ my %WriteMakefileArgs = (
     "parent" => 0,
     "version" => 0
   },
-  "VERSION" => "0.061",
+  "VERSION" => "0.062",
   "test" => {
     "TESTS" => "t/*.t"
   }
@@ -313,6 +314,7 @@ my %FallbackPrereqs = (
   "File::ShareDir" => 0,
   "File::Spec" => 0,
   "File::Spec::Functions" => 0,
+  "HTTP::Tiny" => 0,
   "JSON" => 0,
   "List::MoreUtils" => 0,
   "List::Util" => 0,
