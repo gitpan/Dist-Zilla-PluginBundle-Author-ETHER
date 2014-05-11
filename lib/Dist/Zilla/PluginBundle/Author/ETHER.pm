@@ -4,8 +4,8 @@ package Dist::Zilla::PluginBundle::Author::ETHER;
 BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
 }
-# git description: v0.061-5-ga09b684
-$Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.062';
+# git description: v0.062-3-g789aeb6
+$Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.063';
 # ABSTRACT: A plugin bundle for distributions built by ETHER
 # KEYWORDS: author bundle distribution tool
 # vim: set ts=8 sw=4 tw=78 et :
@@ -234,8 +234,7 @@ sub configure
 
         # After Build
         'CheckSelfDependency',
-        [ 'Run::AfterBuild' => { run => q{if [ `basename %d` != .build ]; then test -e .ackrc && grep -q -- '--ignore-dir=%d' .ackrc || echo '--ignore-dir=%d' >> .ackrc; ln -sFn %d .latest; fi} } ],
-
+        [ 'Run::AfterBuild' => { run => q{if [[ `dirname %d` != .build ]]; then test -e .ackrc && grep -q -- '--ignore-dir=%d' .ackrc || echo '--ignore-dir=%d' >> .ackrc; fi; if [[ %d =~ '^%n-\d' ]]; then ln -sFn %d .latest; fi} } ],
 
         # Before Release
         [ 'CheckStrictVersion' => { decimal_only => 1 } ],
@@ -334,7 +333,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.062
+version 0.063
 
 =head1 SYNOPSIS
 
@@ -504,7 +503,7 @@ following F<dist.ini> (following the preamble):
     [CheckSelfDependency]
 
     [Run::AfterBuild]
-    run = if [ `dirname %d` != .build ]; then test -e .ackrc && grep -q -- '--ignore-dir=%d' .ackrc || echo '--ignore-dir=%d' >> .ackrc; ln -sFn %d .latest ; fi
+    run = if [[ `dirname %d` != .build ]]; then test -e .ackrc && grep -q -- '--ignore-dir=%d' .ackrc || echo '--ignore-dir=%d' >> .ackrc; fi; if [[ %d =~ '^%n-\d' ]]; then ln -sFn %d .latest; fi
 
 
     ;;; Before Release

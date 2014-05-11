@@ -53,7 +53,7 @@ my $static_prereqs = do { my $x = {
                       },
        'develop' => {
                       'recommends' => {
-                                        'Dist::Zilla::PluginBundle::Author::ETHER' => '0.062'
+                                        'Dist::Zilla::PluginBundle::Author::ETHER' => '0.063'
                                       },
                       'requires' => {
                                       'Dist::Zilla' => '5.016',
@@ -226,6 +226,7 @@ my $static_prereqs = do { my $x = {
                                      'CPAN::Meta::Requirements' => '2.120900'
                                    },
                    'requires' => {
+                                   'Dist::Zilla::Plugin::EnsurePrereqsInstalled' => '0',
                                    'Exporter' => '0',
                                    'ExtUtils::MakeMaker' => '0',
                                    'File::Find' => '0',

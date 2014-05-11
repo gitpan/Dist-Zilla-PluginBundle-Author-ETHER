@@ -22,6 +22,7 @@ use Test::File::ShareDir -share => { -dist => { 'Dist-Zilla-PluginBundle-Author-
 use lib 't/lib';
 use Helper;
 use NoNetworkHits;
+use NoPrereqChecks;
 
 my $tzil = Builder->from_config(
     { dist_root => 't/does_not_exist' },
@@ -58,7 +59,7 @@ is(
     exception { $tzil->build },
     undef,
     'build proceeds normally',
-) or diag 'log messages:' . join("\n", @{ $tzil->log_messages });
+) or diag 'saw log messages: ', explain $tzil->log_messages;
 
 # check that everything we loaded is in the pluginbundle's run-requires
 all_plugins_in_prereqs($tzil,
@@ -120,7 +121,7 @@ is(
     (grep { /someone tried to munge .* after we read from it. Making modifications again.../ } @{ $tzil->log_messages }),
     0,
     'no files were re-munged needlessly',
-) or diag 'found messages:' . join("\n", @{ $tzil->log_messages });
+) or diag 'saw log messages: ', explain $tzil->log_messages;
 
 SKIP: {
     skip 'need recent Dist::Zilla to test default_jobs option', 1

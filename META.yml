@@ -3,6 +3,7 @@ abstract: 'A plugin bundle for distributions built by ETHER'
 author:
   - 'Karen Etheridge <ether@cpan.org>'
 build_requires:
+  Dist::Zilla::Plugin::EnsurePrereqsInstalled: '0'
   Exporter: '0'
   ExtUtils::MakeMaker: '0'
   File::Find: '0'
@@ -51,10 +52,10 @@ no_index:
 provides:
   Dist::Zilla::MintingProfile::Author::ETHER:
     file: lib/Dist/Zilla/MintingProfile/Author/ETHER.pm
-    version: '0.062'
+    version: '0.063'
   Dist::Zilla::PluginBundle::Author::ETHER:
     file: lib/Dist/Zilla/PluginBundle/Author/ETHER.pm
-    version: '0.062'
+    version: '0.063'
 recommends:
   Config::Identity::GitHub: '0'
   Dist::Zilla::Plugin::BlockRelease: '0'
@@ -184,7 +185,7 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-PluginBundle-Author-ETHER
   homepage: https://github.com/karenetheridge/Dist-Zilla-PluginBundle-Author-ETHER
   repository: https://github.com/karenetheridge/Dist-Zilla-PluginBundle-Author-ETHER.git
-version: '0.062'
+version: '0.063'
 x_Dist_Zilla:
   perl:
     version: '5.019011'
@@ -545,7 +546,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::GithubMeta
       name: '@Author::ETHER/GithubMeta'
-      version: '0.42'
+      version: '0.44'
     -
       class: Dist::Zilla::Plugin::AutoMetaResources
       name: '@Author::ETHER/AutoMetaResources'
@@ -734,7 +735,7 @@ x_Dist_Zilla:
         Dist::Zilla::Plugin::Git::Tag:
           branch: ~
           signed: 0
-          tag: v0.062
+          tag: v0.063
           tag_format: v%v%t
           tag_message: v%v%t
           time_zone: local

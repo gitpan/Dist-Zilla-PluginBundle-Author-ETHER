@@ -1,5 +1,10 @@
 Revision history for Dist-Zilla-PluginBundle-Author-ETHER
 
+0.063     2014-05-11 17:53:12Z
+          - really fix failing tests this time (from v0.060)
+          - fix updating of .ackrc file and .latest symlink in various build
+            scenarios (from v0.061)
+
 0.062     2014-05-08 17:02:13Z
           - remove using plugins in tests that will cause the test build to
             fail if users don't have develop prereqs installed

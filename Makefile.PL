@@ -192,6 +192,7 @@ my %WriteMakefileArgs = (
     "warnings" => 0
   },
   "TEST_REQUIRES" => {
+    "Dist::Zilla::Plugin::EnsurePrereqsInstalled" => 0,
     "Exporter" => 0,
     "ExtUtils::MakeMaker" => 0,
     "File::Find" => 0,
@@ -216,7 +217,7 @@ my %WriteMakefileArgs = (
     "parent" => 0,
     "version" => 0
   },
-  "VERSION" => "0.062",
+  "VERSION" => "0.063",
   "test" => {
     "TESTS" => "t/*.t"
   }

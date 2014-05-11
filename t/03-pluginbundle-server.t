@@ -19,6 +19,7 @@ use Test::File::ShareDir -share => { -dist => { 'Dist-Zilla-PluginBundle-Author-
 use lib 't/lib';
 use Helper;
 use NoNetworkHits;
+use NoPrereqChecks;
 
 # this data should be constant across all server types
 my %bugtracker = (
@@ -92,7 +93,7 @@ foreach my $server (keys %server_to_resources)
         exception { $tzil->build },
         undef,
         'build proceeds normally',
-    ) or diag 'log messages:' . join("\n", @{ $tzil->log_messages });
+    ) or diag 'saw log messages: ', explain $tzil->log_messages;
 
     # check that everything we loaded is properly declared as prereqs
     all_plugins_in_prereqs($tzil,

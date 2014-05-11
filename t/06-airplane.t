@@ -14,6 +14,7 @@ use PadWalker 'peek_sub';
 use lib 't/lib';
 use Helper;
 use NoNetworkHits;
+use NoPrereqChecks;
 
 # used by the 'airplane' config
 use Test::Requires 'Dist::Zilla::Plugin::BlockRelease';
@@ -32,6 +33,7 @@ my @warnings = warnings {
                         '-remove' => [ qw(Git::GatherDir Git::NextVersion Git::Describe Git::Tag
                             Git::Check Git::CheckFor::MergeConflicts
                             Git::CheckFor::CorrectBranch Git::Push),
+                            'EnsurePrereqsInstalled',
                             'UploadToCPAN', # removed just in case!
                             'RunExtraTests',  # some release tests might fail (e.g. spelling)
                         ],
@@ -63,11 +65,13 @@ cmp_deeply(
     'we warn when in airplane mode',
 ) or diag join("\n", @warnings);
 
+# FIXME: including this line breaks TAP?!
+# $tzil->chrome->logger->set_debug(1);
 is(
     exception { $tzil->build },
     undef,
     'build proceeds normally',
-);
+) or diag 'saw log messages: ', explain $tzil->log_messages;
 
 # check that everything we loaded is in the pluginbundle's run-requires, etc
 all_plugins_in_prereqs($tzil,
