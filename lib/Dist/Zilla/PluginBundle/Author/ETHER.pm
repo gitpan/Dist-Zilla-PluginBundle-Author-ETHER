@@ -4,8 +4,8 @@ package Dist::Zilla::PluginBundle::Author::ETHER;
 BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
 }
-# git description: v0.062-3-g789aeb6
-$Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.063';
+# git description: v0.063-8-g5701eb6
+$Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.064';
 # ABSTRACT: A plugin bundle for distributions built by ETHER
 # KEYWORDS: author bundle distribution tool
 # vim: set ts=8 sw=4 tw=78 et :
@@ -98,6 +98,7 @@ my @network_plugins = qw(
     Test::Pod::No404s
     Git::Remote::Check
     CheckPrereqsIndexed
+    CheckIssues
     UploadToCPAN
     Git::Push
 );
@@ -199,7 +200,6 @@ sub configure
         'MinimumPerl',
         [ 'Prereqs' => installer_requirements => {
                 '-phase' => 'develop', '-relationship' => 'requires',
-                'Dist::Zilla' => Dist::Zilla->VERSION,
                 $self->meta->name => $self->_requested_version,
 
                 # this is useless for "dzil authordeps", as by the time this
@@ -234,7 +234,7 @@ sub configure
 
         # After Build
         'CheckSelfDependency',
-        [ 'Run::AfterBuild' => { run => q{if [[ `dirname %d` != .build ]]; then test -e .ackrc && grep -q -- '--ignore-dir=%d' .ackrc || echo '--ignore-dir=%d' >> .ackrc; fi; if [[ %d =~ '^%n-\d' ]]; then ln -sFn %d .latest; fi} } ],
+        [ 'Run::AfterBuild' => { run => q{if [[ `dirname %d` != .build ]]; then test -e .ackrc && grep -q -- '--ignore-dir=%d' .ackrc || echo '--ignore-dir=%d' >> .ackrc; fi; if [[ %d =~ ^%n-[.[:xdigit:]]+$ ]]; then ln -sFn %d .latest; fi} } ],
 
         # Before Release
         [ 'CheckStrictVersion' => { decimal_only => 1 } ],
@@ -245,6 +245,7 @@ sub configure
         'CheckPrereqsIndexed',
         'TestRelease',
         [ 'Git::Check'          => 'after tests' => { allow_dirty => [''] } ],
+        [ 'CheckIssues' ],
         # (ConfirmRelease)
 
         # Releaser
@@ -333,7 +334,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.063
+version 0.064
 
 =head1 SYNOPSIS
 
@@ -503,7 +504,7 @@ following F<dist.ini> (following the preamble):
     [CheckSelfDependency]
 
     [Run::AfterBuild]
-    run = if [[ `dirname %d` != .build ]]; then test -e .ackrc && grep -q -- '--ignore-dir=%d' .ackrc || echo '--ignore-dir=%d' >> .ackrc; fi; if [[ %d =~ '^%n-\d' ]]; then ln -sFn %d .latest; fi
+    run = if [[ `dirname %d` != .build ]]; then test -e .ackrc && grep -q -- '--ignore-dir=%d' .ackrc || echo '--ignore-dir=%d' >> .ackrc; fi; if [[ %d =~ ^%n-[.[:xdigit:]]+$ ]]; then ln -sFn %d .latest; fi
 
 
     ;;; Before Release
@@ -527,6 +528,7 @@ following F<dist.ini> (following the preamble):
     [TestRelease]
     [Git::Check / after tests]
     allow_dirty =
+    [CheckIssues]
     ;(ConfirmRelease)
 
 

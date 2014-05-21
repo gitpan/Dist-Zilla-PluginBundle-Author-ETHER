@@ -53,10 +53,10 @@ my $static_prereqs = do { my $x = {
                       },
        'develop' => {
                       'recommends' => {
-                                        'Dist::Zilla::PluginBundle::Author::ETHER' => '0.063'
+                                        'Dist::Zilla::PluginBundle::Author::ETHER' => '0.064'
                                       },
                       'requires' => {
-                                      'Dist::Zilla' => '5.016',
+                                      'Dist::Zilla' => '5.019',
                                       'Dist::Zilla::Plugin::BlockRelease' => '0',
                                       'Dist::Zilla::Plugin::CheckBin' => '0',
                                       'Dist::Zilla::Plugin::ContributorsFromGit' => '0',
@@ -123,6 +123,7 @@ my $static_prereqs = do { my $x = {
                                       'Dist::Zilla::Plugin::AutoMetaResources' => '0',
                                       'Dist::Zilla::Plugin::AutoPrereqs' => '0',
                                       'Dist::Zilla::Plugin::AutoVersion' => '0',
+                                      'Dist::Zilla::Plugin::CheckIssues' => '0',
                                       'Dist::Zilla::Plugin::CheckPrereqsIndexed' => '0',
                                       'Dist::Zilla::Plugin::CheckSelfDependency' => '0',
                                       'Dist::Zilla::Plugin::CheckStrictVersion' => '0',
@@ -233,7 +234,7 @@ my $static_prereqs = do { my $x = {
                                    'File::Spec' => '0',
                                    'File::Spec::Functions' => '0',
                                    'HTTP::Tiny' => '0',
-                                   'JSON' => '0',
+                                   'JSON::MaybeXS' => '0',
                                    'List::Util' => '0',
                                    'Moose::Util' => '0',
                                    'PadWalker' => '0',
