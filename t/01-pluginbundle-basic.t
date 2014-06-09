@@ -6,8 +6,6 @@ use if $ENV{AUTHOR_TESTING}, 'Test::Warnings';
 use Test::Deep '!blessed';
 use Test::DZil;
 use Test::Fatal;
-use File::Find;
-use File::Spec;
 use Path::Tiny;
 use Test::Deep::JSON;
 
@@ -23,6 +21,14 @@ use lib 't/lib';
 use Helper;
 use NoNetworkHits;
 use NoPrereqChecks;
+
+SKIP: {
+    skip('we only insist that the author have bash installed', 1)
+        unless $ENV{AUTHOR_TESTING};
+
+    require Devel::CheckBin;
+    ok(Devel::CheckBin::can_run('bash'), 'the bash executable is available');
+}
 
 my $tzil = Builder->from_config(
     { dist_root => 't/does_not_exist' },
@@ -65,8 +71,8 @@ is(
 all_plugins_in_prereqs($tzil,
     exempt => [ 'Dist::Zilla::Plugin::GatherDir' ],     # used by us here
     additional => [
-        'Dist::Zilla::Plugin::MakeMaker::Fallback',     # via installer option
-        'Dist::Zilla::Plugin::ModuleBuildTiny',         # ""
+        'Dist::Zilla::Plugin::MakeMaker::Fallback',     # via default installer option
+        'Dist::Zilla::Plugin::ModuleBuildTiny::Fallback', # ""
     ],
 );
 
@@ -104,12 +110,11 @@ my @expected_files = qw(
 );
 
 my @found_files;
-find({
-        wanted => sub { push @found_files, File::Spec->abs2rel($_, $build_dir) if -f  },
-        no_chdir => 1,
-     },
-    $build_dir,
-);
+my $iter = $build_dir->iterator({ recurse => 1 });
+while (my $path = $iter->())
+{
+    push @found_files, $path->relative($build_dir)->stringify if -f $path;
+}
 
 cmp_deeply(
     \@found_files,
@@ -133,7 +138,10 @@ SKIP: {
         json(superhashof({
             prereqs => superhashof({
                 develop => superhashof({
-                    requires => superhashof({ 'Dist::Zilla::Plugin::ModuleBuildTiny' => '0.004' }),
+                    requires => superhashof({
+                        'Dist::Zilla::Plugin::ModuleBuildTiny::Fallback' => '0.005',
+                        'Dist::Zilla::Plugin::MakeMaker::Fallback' => '0.008',
+                    }),
                 })
             }),
             x_Dist_Zilla => superhashof({
@@ -147,7 +155,7 @@ SKIP: {
                             name => ignore,
                             version => ignore,
                         }
-                    } qw(MakeMaker::Fallback ModuleBuildTiny RunExtraTests)
+                    } qw(MakeMaker::Fallback ModuleBuildTiny::Fallback RunExtraTests)
                 ),
             })
         })),

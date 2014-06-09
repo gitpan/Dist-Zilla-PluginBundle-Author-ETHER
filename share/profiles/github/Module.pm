@@ -2,6 +2,7 @@ use strict;
 use warnings;
 package {{ $name }};
 # ABSTRACT: ...
+# KEYWORDS: ...
 # vim: set ts=8 sw=4 tw=78 et :
 
 {{
@@ -60,10 +61,7 @@ I am also usually active on irc, as 'ether' at C<irc.perl.org>.
 
 =head1 SEE ALSO
 
-=begin :list
-
+=for :list
 * L<foo>
-
-=end :list
 
 =cut

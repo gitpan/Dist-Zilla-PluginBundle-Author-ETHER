@@ -53,10 +53,10 @@ my $static_prereqs = do { my $x = {
                       },
        'develop' => {
                       'recommends' => {
-                                        'Dist::Zilla::PluginBundle::Author::ETHER' => '0.064'
+                                        'Dist::Zilla::PluginBundle::Author::ETHER' => '0.065'
                                       },
                       'requires' => {
-                                      'Dist::Zilla' => '5.019',
+                                      'Dist::Zilla' => '5',
                                       'Dist::Zilla::Plugin::BlockRelease' => '0',
                                       'Dist::Zilla::Plugin::CheckBin' => '0',
                                       'Dist::Zilla::Plugin::ContributorsFromGit' => '0',
@@ -64,7 +64,7 @@ my $static_prereqs = do { my $x = {
                                       'Dist::Zilla::Plugin::GithubMeta' => '0',
                                       'Dist::Zilla::Plugin::MakeMaker::Fallback' => '0.008',
                                       'Dist::Zilla::Plugin::MetaResources' => '0',
-                                      'Dist::Zilla::Plugin::ModuleBuildTiny' => '0.004',
+                                      'Dist::Zilla::Plugin::ModuleBuildTiny::Fallback' => '0.005',
                                       'Dist::Zilla::Plugin::MungeFile::WithDataSection' => '0',
                                       'Dist::Zilla::Plugin::Prereqs' => '0',
                                       'Dist::Zilla::Plugin::Test::CheckBreaks' => '0',
@@ -90,7 +90,8 @@ my $static_prereqs = do { my $x = {
                                       'Test::Pod' => '1.41',
                                       'Test::Pod::No404s' => '0',
                                       'Test::Spelling' => '0.19',
-                                      'Test::Warnings' => '0'
+                                      'Test::Warnings' => '0',
+                                      'perl' => '5.013002'
                                     }
                     },
        'runtime' => {
@@ -100,8 +101,10 @@ my $static_prereqs = do { my $x = {
                                         'Dist::Zilla::Plugin::GitHub::Update' => '0',
                                         'Dist::Zilla::Plugin::GithubMeta' => '0',
                                         'Dist::Zilla::Plugin::MakeMaker' => '0',
+                                        'Dist::Zilla::Plugin::MakeMaker::Awesome' => '0',
                                         'Dist::Zilla::Plugin::MakeMaker::Fallback' => '0.008',
                                         'Dist::Zilla::Plugin::ModuleBuildTiny' => '0.004',
+                                        'Dist::Zilla::Plugin::ModuleBuildTiny::Fallback' => '0.005',
                                         'Pod::Coverage::TrustPod' => '0',
                                         'Pod::Wordlist' => '1.09',
                                         'Test::CPAN::Changes' => '0',
@@ -118,6 +121,7 @@ my $static_prereqs = do { my $x = {
                       'requires' => {
                                       'CPAN::Changes' => '0.23',
                                       'Carp' => '0',
+                                      'Devel::CheckBin' => '0',
                                       'Dist::Zilla' => '4.300038',
                                       'Dist::Zilla::Plugin::Authority' => '0',
                                       'Dist::Zilla::Plugin::AutoMetaResources' => '0',
@@ -166,6 +170,7 @@ my $static_prereqs = do { my $x = {
                                       'Dist::Zilla::Plugin::MetaYAML' => '0',
                                       'Dist::Zilla::Plugin::MinimumPerl' => '0',
                                       'Dist::Zilla::Plugin::ModuleBuildTiny' => '0.004',
+                                      'Dist::Zilla::Plugin::ModuleBuildTiny::Fallback' => '0.005',
                                       'Dist::Zilla::Plugin::MojibakeTests' => '0',
                                       'Dist::Zilla::Plugin::NextRelease' => '4.300018',
                                       'Dist::Zilla::Plugin::PkgVersion' => '5.010',
@@ -230,8 +235,6 @@ my $static_prereqs = do { my $x = {
                                    'Dist::Zilla::Plugin::EnsurePrereqsInstalled' => '0',
                                    'Exporter' => '0',
                                    'ExtUtils::MakeMaker' => '0',
-                                   'File::Find' => '0',
-                                   'File::Spec' => '0',
                                    'File::Spec::Functions' => '0',
                                    'HTTP::Tiny' => '0',
                                    'JSON::MaybeXS' => '0',
@@ -246,7 +249,7 @@ my $static_prereqs = do { my $x = {
                                    'Test::File::ShareDir' => '0',
                                    'Test::More' => '0',
                                    'Test::Requires' => '0',
-                                   'Test::Warnings' => '0.005',
+                                   'Test::Warnings' => '0.009',
                                    'if' => '0',
                                    'lib' => '0',
                                    'parent' => '0',

@@ -4,8 +4,8 @@ package Dist::Zilla::PluginBundle::Author::ETHER;
 BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
 }
-# git description: v0.063-8-g5701eb6
-$Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.064';
+# git description: v0.064-13-gd16a897
+$Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.065';
 # ABSTRACT: A plugin bundle for distributions built by ETHER
 # KEYWORDS: author bundle distribution tool
 # vim: set ts=8 sw=4 tw=78 et :
@@ -20,6 +20,7 @@ use Dist::Zilla::Util;
 use Moose::Util::TypeConstraints;
 use List::MoreUtils qw(any first_index);
 use Module::Runtime 'use_module';
+use Devel::CheckBin;
 use namespace::autoclean;
 
 sub mvp_multivalue_args { qw(installer copy_file_from_release) }
@@ -32,7 +33,7 @@ has installer => (
     default => sub {
         exists $_[0]->payload->{installer}
             ? $_[0]->payload->{installer}
-            : [ 'MakeMaker::Fallback', 'ModuleBuildTiny' ];
+            : [ 'MakeMaker::Fallback', 'ModuleBuildTiny::Fallback' ];
     },
     traits => ['Array'],
     handles => { installer => 'elements' },
@@ -84,11 +85,14 @@ has _requested_version => (
 );
 
 # configs are applied when plugins match ->isa($key) or ->does($key)
+# (currently only used for processing 'installer' and TestRunner options)
 my %extra_args = (
     'Dist::Zilla::Plugin::ModuleBuildTiny' => { ':version' => '0.004' },
     'Dist::Zilla::Plugin::MakeMaker::Fallback' => { ':version' => '0.008' },
     # default_jobs is no-op until Dist::Zilla 5.014
     'Dist::Zilla::Role::TestRunner' => { default_jobs => 9 },
+    'Dist::Zilla::Plugin::ModuleBuild' => { mb_version => '0.28' },
+    'Dist::Zilla::Plugin::ModuleBuildTiny::Fallback' => { ':version' => '0.005' },
 );
 
 # plugins that use the network when they run
@@ -104,6 +108,8 @@ my @network_plugins = qw(
 );
 my %network_plugins;
 @network_plugins{ map { Dist::Zilla::Util->expand_config_package_name($_) } @network_plugins } = () x @network_plugins;
+
+my $has_bash = can_run('bash');
 
 around BUILDARGS => sub
 {
@@ -122,6 +128,9 @@ sub configure
     my $self = shift;
 
     my %extra_develop_requires;
+
+    warn 'no "bash" executable found; skipping Run::AfterBuild commands to update .ackrc and .latest symlink'
+        if not $has_bash;
 
     my @plugins = (
         # VersionProvider
@@ -218,11 +227,12 @@ sub configure
                 '-phase' => 'develop', '-relationship' => 'recommends',
                 $self->meta->name => $self->VERSION,
             } ],
+        ($self->surgical_podweaver ? [ 'Prereqs' => pod_weaving => {
+                '-phase' => 'develop', '-relationship' => 'requires',
+                'Dist::Zilla::Plugin::SurgicalPodWeaver' => 0
+            } ] : ()),
 
-        # Test Runner
-        [ 'RunExtraTests' => { ':version' => '0.019', %{ $extra_args{'Dist::Zilla::Role::TestRunner'} } } ],
-
-        # Install Tool
+        # Install Tool (some are also Test Runners)
         ( map {
             [ $_ => +{
                 map { %$_ }
@@ -232,9 +242,15 @@ sub configure
          } $self->installer ),
         'InstallGuide',
 
+        # Test Runners
+        [ 'RunExtraTests' => { ':version' => '0.019', %{ $extra_args{'Dist::Zilla::Role::TestRunner'} } } ],
+
         # After Build
         'CheckSelfDependency',
-        [ 'Run::AfterBuild' => { run => q{if [[ `dirname %d` != .build ]]; then test -e .ackrc && grep -q -- '--ignore-dir=%d' .ackrc || echo '--ignore-dir=%d' >> .ackrc; fi; if [[ %d =~ ^%n-[.[:xdigit:]]+$ ]]; then ln -sFn %d .latest; fi} } ],
+
+        ( $has_bash ?
+            [ 'Run::AfterBuild' => { run => q{bash -c "if [[ `dirname %d` != .build ]]; then test -e .ackrc && grep -q -- '--ignore-dir=%d' .ackrc || echo '--ignore-dir=%d' >> .ackrc; fi; if [[ %d =~ ^%n-[.[:xdigit:]]+$ ]]; then ln -sFn %d .latest; fi"} } ]
+            : ()),
 
         # Before Release
         [ 'CheckStrictVersion' => { decimal_only => 1 } ],
@@ -334,7 +350,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.064
+version 0.065
 
 =head1 SYNOPSIS
 
@@ -488,16 +504,17 @@ following F<dist.ini> (following the preamble):
     -relationship = recommends
     Dist::Zilla::PluginBundle::Author::ETHER = <current installed version>
 
-    ;;; Test Runner
-    [RunExtraTests]
-    :version = 0.019
-    default_jobs = 9
-    # <specified installer(s)>
-
 
     ;;; Install Tool
     <specified installer(s)>
     [InstallGuide]
+
+
+    ;;; Test Runner
+    # <specified installer(s)>
+    [RunExtraTests]
+    :version = 0.019
+    default_jobs = 9
 
 
     ;;; After Build
@@ -610,10 +627,10 @@ many as you'd like), as described in L<Pod::Spell/ADDING STOPWORDS>:
 =for stopwords ModuleBuildTiny
 
 The installer back-end(s) to use (can be specified more than once); defaults
-to L<C<ModuleBuildTiny>|Dist::Zilla::Plugin::ModuleBuildTiny>
+to L<C<ModuleBuildTiny>|Dist::Zilla::Plugin::ModuleBuildTiny::Fallback>
 and L<C<MakeMaker::Fallback>|Dist::Zilla::Plugin::MakeMaker::Fallback>
-(which generates a F<Build.PL> for normal use, and
-F<Makefile.PL> as a fallback, containing an upgrade warning).
+(which generates a F<Build.PL> for normal use with no-configure-requires
+protection, and F<Makefile.PL> as a fallback, containing an upgrade warning).
 
 You can select other backends (by plugin name, without the C<[]>), with the
 C<installer> option, or 'none' if you are supplying your own, as a separate
