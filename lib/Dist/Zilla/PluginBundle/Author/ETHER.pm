@@ -4,8 +4,8 @@ package Dist::Zilla::PluginBundle::Author::ETHER;
 BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
 }
-# git description: v0.064-13-gd16a897
-$Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.065';
+# git description: v0.065-15-g5aac8d2
+$Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.066';
 # ABSTRACT: A plugin bundle for distributions built by ETHER
 # KEYWORDS: author bundle distribution tool
 # vim: set ts=8 sw=4 tw=78 et :
@@ -18,8 +18,8 @@ with
 
 use Dist::Zilla::Util;
 use Moose::Util::TypeConstraints;
-use List::MoreUtils qw(any first_index);
-use Module::Runtime 'use_module';
+use List::Util qw(first any);
+use Module::Runtime 'require_module';
 use Devel::CheckBin;
 use namespace::autoclean;
 
@@ -31,9 +31,7 @@ has installer => (
     isa => 'ArrayRef[Str]',
     lazy => 1,
     default => sub {
-        exists $_[0]->payload->{installer}
-            ? $_[0]->payload->{installer}
-            : [ 'MakeMaker::Fallback', 'ModuleBuildTiny::Fallback' ];
+        $_[0]->payload->{installer} // [ 'MakeMaker::Fallback', 'ModuleBuildTiny::Fallback' ];
     },
     traits => ['Array'],
     handles => { installer => 'elements' },
@@ -42,50 +40,32 @@ has installer => (
 has server => (
     is => 'ro', isa => enum([qw(github gitmo p5sagit catagits none)]),
     lazy => 1,
-    default => sub {
-        exists $_[0]->payload->{server}
-            ? $_[0]->payload->{server}
-            : 'github';
-    },
+    default => sub { $_[0]->payload->{server} // 'github' },
 );
 
-foreach my $option (qw(airplane surgical_podweaver))
-{
-    has $option => (
-        is => 'ro', isa => 'Bool',
-        lazy => 1,
-        default => sub {
-            exists $_[0]->payload->{$option}
-                ? $_[0]->payload->{$option}
-                : 0;
-        },
-    );
-}
+has surgical_podweaver => (
+    is => 'ro', isa => 'Bool',
+    lazy => 1,
+    default => sub { $_[0]->payload->{surgical_podweaver} // 0 },
+);
+
+has airplane => (
+    is => 'ro', isa => 'Bool',
+    lazy => 1,
+    default => sub { $ENV{DZIL_AIRPLANE} // $_[0]->payload->{airplane} // 0 },
+);
 
 has copy_file_from_release => (
     isa => 'ArrayRef[Str]',
     lazy => 1,
     default => sub {
-        exists $_[0]->payload->{copy_file_from_release}
-            ? $_[0]->payload->{copy_file_from_release}
-            : [ qw(README.md LICENSE CONTRIBUTING) ];
+            $_[0]->payload->{copy_file_from_release} // [ qw(README.pod LICENSE CONTRIBUTING) ];
     },
     traits => ['Array'],
     handles => { copy_files_from_release => 'elements' },
 );
 
-has _requested_version => (
-    is => 'ro', isa => 'Str',
-    lazy => 1,
-    default => sub {
-        exists $_[0]->payload->{':version'}
-            ? $_[0]->payload->{':version'}
-            : '0';
-    },
-);
-
 # configs are applied when plugins match ->isa($key) or ->does($key)
-# (currently only used for processing 'installer' and TestRunner options)
 my %extra_args = (
     'Dist::Zilla::Plugin::ModuleBuildTiny' => { ':version' => '0.004' },
     'Dist::Zilla::Plugin::MakeMaker::Fallback' => { ':version' => '0.008' },
@@ -127,10 +107,15 @@ sub configure
 {
     my $self = shift;
 
-    my %extra_develop_requires;
-
     warn 'no "bash" executable found; skipping Run::AfterBuild commands to update .ackrc and .latest symlink'
         if not $has_bash;
+
+    my $has_xs =()= glob('*.xs');
+    warn 'XS-based distribution detected.' if $has_xs;
+    die 'no Makefile.PL found in the repository root: this is not very nice for contributors!'
+        if $has_xs and not -e 'Makefile.PL';
+
+    my %plugin_versions;
 
     my @plugins = (
         # VersionProvider
@@ -138,21 +123,21 @@ sub configure
 
         # BeforeBuild
         [ 'EnsurePrereqsInstalled' ],
-        [ 'PromptIfStale' => 'build' => { phase => 'build', module => [ $self->meta->name ] } ],
-        [ 'PromptIfStale' => 'release' => { phase => 'release', check_all_plugins => 1, check_all_prereqs => 1 } ],
+        [ 'PromptIfStale' => 'stale modules, build' => { phase => 'build', module => [ $self->meta->name ] } ],
+        [ 'PromptIfStale' => 'stale modules, release' => { phase => 'release', check_all_plugins => 1, check_all_prereqs => 1 } ],
 
         # ExecFiles, ShareDir
         [ 'ExecDir'             => { dir => 'script' } ],
         'ShareDir',
 
         # Finders
-        [ 'FileFinder::ByName' => Examples => { dir => 'examples' } ],
-        [ 'FileFinder::ByName' => ExtraTestFiles => { dir => 'xt' } ],
+        [ 'FileFinder::ByName'  => Examples => { dir => 'examples' } ],
+        [ 'FileFinder::ByName'  => ExtraTestFiles => { dir => 'xt' } ],
 
         # Gather Files
-        [ 'Git::GatherDir'      => { ':version' => '2.016', exclude_filename => [ $self->copy_files_from_release ] } ],
+        [ 'Git::GatherDir'      => { ':version' => '2.016', exclude_filename => [ 'README.md', $self->copy_files_from_release ] } ],
         qw(MetaYAML MetaJSON License Readme Manifest),
-        [ 'GenerateFile::ShareDir' => 'generate CONTRIBUTING' => { -dist => 'Dist-Zilla-PluginBundle-Author-ETHER', -filename => 'CONTRIBUTING' } ],
+        [ 'GenerateFile::ShareDir' => 'generate CONTRIBUTING' => { -dist => 'Dist-Zilla-PluginBundle-Author-ETHER', -filename => 'CONTRIBUTING', has_xs => $has_xs } ],
 
         [ 'Test::Compile'       => { ':version' => '2.039', bail_out_on_fail => 1, xt_mode => 1,
             script_finder => [qw(:ExecFiles @Author::ETHER/Examples)] } ],
@@ -184,11 +169,11 @@ sub configure
             }
         ],
         [ 'NextRelease'         => { ':version' => '4.300018', time_zone => 'UTC', format => '%-8v  %{yyyy-MM-dd HH:mm:ss\'Z\'}d%{ (TRIAL RELEASE)}T' } ],
-        [ 'ReadmeAnyFromPod'    => { type => 'markdown', filename => 'README.md', location => 'build' } ],
+        [ 'ReadmeAnyFromPod'    => { type => 'pod', filename => 'README.pod', location => 'build' } ],
 
         # MetaData
         $self->server eq 'github'
-            ? ( 'GithubMeta', do { $extra_develop_requires{'Dist::Zilla::Plugin::GithubMeta'} = 0; () }) : (),
+            ? ( 'GithubMeta', do { $plugin_versions{'Dist::Zilla::Plugin::GithubMeta'} = 0; () }) : (),
         [ 'AutoMetaResources'   => { 'bugtracker.rt' => 1,
               $self->server eq 'gitmo' ? ( 'repository.gitmo' => 1 )
             : $self->server eq 'p5sagit' ? ( 'repository.p5sagit' => 1 )
@@ -207,22 +192,6 @@ sub configure
         'AutoPrereqs',
         'Prereqs::AuthorDeps',
         'MinimumPerl',
-        [ 'Prereqs' => installer_requirements => {
-                '-phase' => 'develop', '-relationship' => 'requires',
-                $self->meta->name => $self->_requested_version,
-
-                # this is useless for "dzil authordeps", as by the time this
-                # runs, we're already trying to load the installer plugin --
-                # but it is useful for people doing "cpanm --with-develop"
-                ( map {
-                    my $plugin = Dist::Zilla::Util->expand_config_package_name($_);
-                    my $args = $self->_extra_plugin_args($plugin);
-                    $plugin => 0,    # plugin at version 0, if nothing more specific found
-                    map {
-                        defined $args->{$_}{':version'} ? ( $_ => $args->{$_}{':version'} ) : ()
-                    } keys %$args;
-                } $self->installer ),
-            } ],
         [ 'Prereqs' => pluginbundle_version => {
                 '-phase' => 'develop', '-relationship' => 'recommends',
                 $self->meta->name => $self->VERSION,
@@ -233,17 +202,12 @@ sub configure
             } ] : ()),
 
         # Install Tool (some are also Test Runners)
-        ( map {
-            [ $_ => +{
-                map { %$_ }
-                values %{ $self->_extra_plugin_args(Dist::Zilla::Util->expand_config_package_name($_)) }
-              }
-            ]
-         } $self->installer ),
+        (map { [ $_ => { ':version' => 0 } ] }
+            $self->installer), # ensure an entry in develop prereqs
         'InstallGuide',
 
         # Test Runners
-        [ 'RunExtraTests' => { ':version' => '0.019', %{ $extra_args{'Dist::Zilla::Role::TestRunner'} } } ],
+        [ 'RunExtraTests'       => { ':version' => '0.019' } ],
 
         # After Build
         'CheckSelfDependency',
@@ -253,7 +217,7 @@ sub configure
             : ()),
 
         # Before Release
-        [ 'CheckStrictVersion' => { decimal_only => 1 } ],
+        [ 'CheckStrictVersion'  => { decimal_only => 1 } ],
         [ 'Git::Check'          => 'initial check' => { allow_dirty => [''] } ],
         'Git::CheckFor::MergeConflicts',
         [ 'Git::CheckFor::CorrectBranch' => { ':version' => '0.004', release_branch => 'master' } ],
@@ -269,11 +233,12 @@ sub configure
 
         # After Release
         [ 'CopyFilesFromRelease' => { filename => [ $self->copy_files_from_release ] } ],
-        [ 'Git::Commit'         => { ':version' => '2.020', add_files_in => ['.'], allow_dirty => [ 'Changes', $self->copy_files_from_release ], commit_msg => '%N-%v%t%n%n%c' } ],
+        [ 'Run::AfterRelease'   => { run => 'rm -f README.md' } ],
+        [ 'Git::Commit'         => { ':version' => '2.020', add_files_in => ['.'], allow_dirty => [ 'Changes', 'README.md', $self->copy_files_from_release ], commit_msg => '%N-%v%t%n%n%c' } ],
         [ 'Git::Tag'            => { tag_format => 'v%v%t', tag_message => 'v%v%t' } ],
         $self->server eq 'github' ? (
-            [ 'GitHub::Update' => { metacpan => 1 } ],
-            do { $extra_develop_requires{'Dist::Zilla::Plugin::GitHub::Update'} = 0; () },
+            [ 'GitHub::Update'  => { metacpan => 1 } ],
+            do { $plugin_versions{'Dist::Zilla::Plugin::GitHub::Update'} = 0; () },
         ) : (),
         'Git::Push',
         [ 'InstallRelease'      => { install_command => 'cpanm .' } ],
@@ -292,20 +257,13 @@ sub configure
         } @plugins;
 
         # allow our uncommitted dist.ini edit which sets 'airplane = 1'
-        push @{ $plugins[ first_index { ref eq 'ARRAY' && $_->[0] eq 'Git::Check' } @plugins ][-1]{allow_dirty} }, 'dist.ini';
+        push @{( first { ref eq 'ARRAY' && $_->[0] eq 'Git::Check' } @plugins )->[-1]{allow_dirty}}, 'dist.ini';
 
-        $extra_develop_requires{'Dist::Zilla::Plugin::BlockRelease'} = 0;
+        $plugin_versions{'Dist::Zilla::Plugin::BlockRelease'} = 0;
 
         # halt release after pre-release checks, but before ConfirmRelease
         push @plugins, 'BlockRelease';
     }
-
-    push @plugins, (
-        [ 'Prereqs' => via_options => {
-            '-phase' => 'develop', '-relationship' => 'requires',
-            %extra_develop_requires
-          } ]
-    ) if keys %extra_develop_requires;
 
     push @plugins, (
         # listed late, to allow all other plugins which do BeforeRelease checks to run first.
@@ -317,23 +275,39 @@ sub configure
         [ 'VerifyPhases' => 'PHASE VERIFICATION' ],
     ) if ($ENV{USER} // '') eq 'ether';
 
+    foreach my $plugin_spec (@plugins)
+    {
+        next if not ref $plugin_spec or @$plugin_spec == 1;             # 'Foo' or [ 'Foo' ]
+        next if @$plugin_spec == 2 and not ref $plugin_spec->[1];       # [ 'Foo' => 'Bar' ]
+
+        my $plugin = Dist::Zilla::Util->expand_config_package_name($plugin_spec->[0]);
+        require_module($plugin);
+        my $payload = $plugin_spec->[-1];
+
+        if (my @keys = grep { $plugin->isa($_) or $plugin->does($_) } keys %extra_args)
+        {
+            # combine all the relevant configs together
+            my %configs = map { %{ $extra_args{$_} } } @keys;
+
+            # and add to the payload of this plugin
+            @{$payload}{keys %configs} = values %configs;
+        }
+
+        # also grab :version
+        $plugin_versions{$plugin} = $payload->{':version'} if exists $payload->{':version'};
+    }
+
+    # ensure that additional optional plugins are declared in prereqs
+    push @plugins,
+        [ 'Prereqs' => bundle_options =>
+            { '-phase' => 'develop', '-relationship' => 'requires', %plugin_versions } ]
+                if keys %plugin_versions;
+
     $self->add_plugins(@plugins);
 
     # check for a bin/ that should probably be renamed to script/
     warn 'bin/ detected - should this be moved to script/, so its contents can be installed into $PATH?'
         if -d 'bin' and any { $_ eq 'ModuleBuildTiny' } $self->installer;
-}
-
-# returns a subhash of %extra_args where keys match isa or does checks
-sub _extra_plugin_args
-{
-    my ($self, $plugin) = @_;
-    use_module($plugin);
-    my @keys = grep { $plugin->isa($_) or $plugin->does($_) } keys %extra_args;
-
-    my %slice;
-    @slice{@keys} = @extra_args{@keys};
-    \%slice;
 }
 
 __PACKAGE__->meta->make_immutable;
@@ -350,7 +324,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.065
+version 0.066
 
 =head1 SYNOPSIS
 
@@ -369,10 +343,10 @@ following F<dist.ini> (following the preamble):
 
     ;;; BeforeBuild
     [EnsurePrereqsInstalled]
-    [PromptIfStale / build]
+    [PromptIfStale / stale modules, build]
     phase = build
     module = Dist::Zilla::Plugin::Author::ETHER
-    [PromptIfStale / release]
+    [PromptIfStale / stale modules, release]
     phase = release
     check_all_plugins = 1
     check_all_prereqs = 1
@@ -394,7 +368,7 @@ following F<dist.ini> (following the preamble):
     ;;; Gather Files
     [Git::GatherDir]
     :version = 2.016
-    exclude_filename = README.md
+    exclude_filename = README.pod
     exclude_filename = LICENSE
     exclude_filename = CONTRIBUTING
 
@@ -462,7 +436,7 @@ following F<dist.ini> (following the preamble):
     format = %-8v  %{uyyy-MM-dd HH:mm:ss'Z'}d%{ (TRIAL RELEASE)}T
     [ReadmeAnyFromPod]
     type = markdown
-    filename = README.md
+    filename = README.pod
     location = build
 
 
@@ -555,15 +529,19 @@ following F<dist.ini> (following the preamble):
 
     ;;; AfterRelease
     [CopyFilesFromRelease]
-    filename = README.md
+    filename = README.pod
     filename = LICENSE
     filename = CONTRIBUTING
+
+    [Run::AfterRelease]
+    run = rm -f README.md
 
     [Git::Commit]
     :version = 2.020
     add_files_in = .
     allow_dirty = Changes
     allow_dirty = README.md
+    allow_dirty = README.pod
     allow_dirty = LICENSE
     allow_dirty = CONTRIBUTING
     commit_msg = %N-%v%t%n%n%c
@@ -691,13 +669,13 @@ you'll need to provide this yourself.
 A boolean option, that when set, removes the use of all plugins that use the
 network (generally for comparing metadata against PAUSE, and querying the
 remote git server), as well as blocking the use of the C<release> command.
-Defaults to false.
+Defaults to false; can also be set with the environment variable C<DZIL_AIRPLANE>.
 
 =head2 copy_file_from_release
 
 A file, to be present in the build, which is copied back to the source
 repository at release time and committed to git. Can be repeated more than
-once. Defaults to: F<README.md>, F<LICENSE>, F<CONTRIBUTING>.
+once. Defaults to: F<README.pod>, F<LICENSE>, F<CONTRIBUTING>.
 
 =head2 surgical_podweaver
 

@@ -27,7 +27,7 @@ my $tzil = Minter->_new_from_profile(
 );
 
 # we need to stop the git plugins from doing their thing
-foreach my $plugin (grep { /Git/ } map { ref } @{$tzil->plugins})
+foreach my $plugin (grep { ref =~ /Git/ } @{$tzil->plugins})
 {
     next unless $plugin->can('after_mint');
     my $meta = find_meta($plugin);
@@ -45,7 +45,7 @@ my @expected_files = qw(
     dist.ini
     CONTRIBUTING
     LICENSE
-    README.md
+    README.pod
     weaver.ini
     lib/My/New/Dist.pm
     t/01-basic.t

@@ -8,6 +8,7 @@ use Test::DZil;
 use Test::Fatal;
 use Path::Tiny;
 use Test::Deep::JSON;
+use List::Util 'first';
 
 # these are used by our default 'installer' setting
 use Test::Requires qw(
@@ -30,6 +31,9 @@ SKIP: {
     ok(Devel::CheckBin::can_run('bash'), 'the bash executable is available');
 }
 
+require Dist::Zilla::PluginBundle::Author::ETHER;
+$Dist::Zilla::PluginBundle::Author::ETHER::VERSION //= '1.000';
+
 my $tzil = Builder->from_config(
     { dist_root => 't/does_not_exist' },
     {
@@ -44,6 +48,7 @@ my $tzil = Builder->from_config(
                         'Git::CheckFor::MergeConflicts', 'Git::CheckFor::CorrectBranch',
                         'Git::Remote::Check', 'PromptIfStale', 'EnsurePrereqsInstalled' ],
                     server => 'none',
+                    ':version' => '0.002',
                 } ],
                 'MetaConfig',
             ),
@@ -53,10 +58,7 @@ my $tzil = Builder->from_config(
     },
 );
 
-my @git_plugins =
-    grep { /Git/ }
-    map { $_->meta->name }
-    @{$tzil->plugins};
+my @git_plugins = grep { $_->meta->name =~ /Git/ } @{$tzil->plugins};
 
 cmp_deeply(\@git_plugins, [], 'no git-based plugins are running here');
 
@@ -76,6 +78,17 @@ all_plugins_in_prereqs($tzil,
     ],
 );
 
+is(
+    $_->default_jobs,
+    9,
+    'default_jobs was set for ' . $_->meta->name . ' (via installer option and extra_args',
+) foreach
+    map {
+        my $plugin = $_;
+        first { $_->meta->name eq $plugin } @{$tzil->plugins};
+    } ( 'Dist::Zilla::Plugin::MakeMaker::Fallback', 'Dist::Zilla::Plugin::ModuleBuildTiny::Fallback' );
+
+
 my $build_dir = path($tzil->tempdir)->child('build');
 
 my @expected_files = qw(
@@ -91,7 +104,7 @@ my @expected_files = qw(
     META.json
     META.yml
     README
-    README.md
+    README.pod
     t/00-report-prereqs.t
     xt/author/00-compile.t
     xt/author/pod-spell.t
@@ -108,6 +121,8 @@ my @expected_files = qw(
     xt/release/pod-syntax.t
     xt/release/portability.t
 );
+push @expected_files, 't/00-report-prereqs.dd'
+    if Dist::Zilla::Plugin::Test::ReportPrereqs->VERSION >= 0.014;
 
 my @found_files;
 my $iter = $build_dir->iterator({ recurse => 1 });
@@ -141,6 +156,7 @@ SKIP: {
                     requires => superhashof({
                         'Dist::Zilla::Plugin::ModuleBuildTiny::Fallback' => '0.005',
                         'Dist::Zilla::Plugin::MakeMaker::Fallback' => '0.008',
+                        'Dist::Zilla::PluginBundle::Author::ETHER' => '0.002',
                     }),
                 })
             }),

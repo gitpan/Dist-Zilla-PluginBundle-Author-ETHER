@@ -69,7 +69,7 @@ EOW
         "Karen Etheridge <ether\@cpan.org>"
       ],
       "dist_name" => "Dist-Zilla-PluginBundle-Author-ETHER",
-      "dist_version" => "0.065",
+      "dist_version" => "0.066",
       "license" => "perl",
       "module_name" => "Dist::Zilla::PluginBundle::Author::ETHER",
       "recommends" => {
@@ -163,6 +163,7 @@ EOW
         "Dist::Zilla::Plugin::ReadmeAnyFromPod" => "0.133290",
         "Dist::Zilla::Plugin::Run::AfterBuild" => 0,
         "Dist::Zilla::Plugin::Run::AfterMint" => 0,
+        "Dist::Zilla::Plugin::Run::AfterRelease" => 0,
         "Dist::Zilla::Plugin::RunExtraTests" => "0.019",
         "Dist::Zilla::Plugin::ShareDir" => 0,
         "Dist::Zilla::Plugin::TemplateModule" => 0,
@@ -185,7 +186,7 @@ EOW
         "Dist::Zilla::Role::PluginBundle::PluginRemover" => "0.102",
         "Dist::Zilla::Util" => 0,
         "File::ShareDir" => 0,
-        "List::MoreUtils" => 0,
+        "List::Util" => "1.33",
         "Module::Runtime" => 0,
         "Moose" => 0,
         "Moose::Util::TypeConstraints" => 0,
@@ -211,13 +212,16 @@ EOW
         "Dist::Zilla::Plugin::EnsurePrereqsInstalled" => 0,
         "Exporter" => 0,
         "ExtUtils::MakeMaker" => 0,
+        "File::Spec" => 0,
         "File::Spec::Functions" => 0,
         "HTTP::Tiny" => 0,
         "JSON::MaybeXS" => 0,
-        "List::Util" => 0,
+        "List::MoreUtils" => 0,
+        "List::Util" => "1.33",
         "Moose::Util" => 0,
         "PadWalker" => 0,
         "Path::Tiny" => 0,
+        "Scalar::Util" => 0,
         "Test::DZil" => 0,
         "Test::Deep" => 0,
         "Test::Deep::JSON" => 0,
@@ -229,7 +233,7 @@ EOW
         "if" => 0,
         "lib" => 0,
         "parent" => 0,
-        "version" => 0
+        "version" => "0.77"
       }
     );
 
@@ -238,13 +242,16 @@ EOW
       "Dist::Zilla::Plugin::EnsurePrereqsInstalled" => 0,
       "Exporter" => 0,
       "ExtUtils::MakeMaker" => 0,
+      "File::Spec" => 0,
       "File::Spec::Functions" => 0,
       "HTTP::Tiny" => 0,
       "JSON::MaybeXS" => 0,
-      "List::Util" => 0,
+      "List::MoreUtils" => 0,
+      "List::Util" => "1.33",
       "Moose::Util" => 0,
       "PadWalker" => 0,
       "Path::Tiny" => 0,
+      "Scalar::Util" => 0,
       "Test::DZil" => 0,
       "Test::Deep" => 0,
       "Test::Deep::JSON" => 0,
@@ -256,7 +263,7 @@ EOW
       "if" => 0,
       "lib" => 0,
       "parent" => 0,
-      "version" => 0
+      "version" => "0.77"
     );
 
 

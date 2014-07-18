@@ -9,6 +9,7 @@ use Test::NoTabs;
 my @files = (
     'lib/Dist/Zilla/MintingProfile/Author/ETHER.pm',
     'lib/Dist/Zilla/PluginBundle/Author/ETHER.pm',
+    't/00-report-prereqs.dd',
     't/00-report-prereqs.t',
     't/01-pluginbundle-basic.t',
     't/02-minter-github.t',

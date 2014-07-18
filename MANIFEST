@@ -9,7 +9,7 @@ META.json
 META.yml
 Makefile.PL
 README
-README.md
+README.pod
 dist.ini
 lib/Dist/Zilla/MintingProfile/Author/ETHER.pm
 lib/Dist/Zilla/PluginBundle/Author/ETHER.pm
@@ -19,6 +19,7 @@ share/profiles/github/profile.ini
 share/profiles/github/skel/dist.ini
 share/profiles/github/skel/t/01-basic.t
 share/profiles/github/skel/weaver.ini
+t/00-report-prereqs.dd
 t/00-report-prereqs.t
 t/01-pluginbundle-basic.t
 t/02-minter-github.t

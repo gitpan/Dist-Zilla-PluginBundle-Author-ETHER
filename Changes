@@ -1,5 +1,20 @@
 Revision history for Dist-Zilla-PluginBundle-Author-ETHER
 
+0.066     2014-07-18 03:25:10Z
+          - internally-hardcoded extra arguments to be passed to optional
+            plugins are now handled in a more generic way, now encompassing
+            all plugins that might be used
+          - minted Dist::Zilla plugins now contain an extra bit of needed
+            prereq declaration, for valid metadata production
+          - airplane mode can now also be enabled via the DZIL_AIRPLANE
+            environment variable
+          - now converting the main module to README.pod (pod instead of
+            markdown) for committing to the repository
+          - fix test of expected files produced by bundle to handle the new
+            data file put out by [Test::ReportPrereqs] 0.014.
+          - XS-based distributions (*.xs files found in repository root) must
+            now have a basic Makefile.PL provided to assist development
+
 0.065     2014-06-09 20:36:31Z
           - fix dist.ini in minted dzil plugin dist (v0.064)
           - include tailored [MetaResources] for minted dzil plugin's dist.ini
