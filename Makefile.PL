@@ -104,7 +104,6 @@ my %WriteMakefileArgs = (
     "Dist::Zilla::Plugin::ConfirmRelease" => 0,
     "Dist::Zilla::Plugin::CopyFilesFromRelease" => 0,
     "Dist::Zilla::Plugin::EOLTests" => 0,
-    "Dist::Zilla::Plugin::EnsurePrereqsInstalled" => 0,
     "Dist::Zilla::Plugin::ExecDir" => 0,
     "Dist::Zilla::Plugin::FileFinder::ByName" => 0,
     "Dist::Zilla::Plugin::GatherDir::Template" => 0,
@@ -222,7 +221,7 @@ my %WriteMakefileArgs = (
     "parent" => 0,
     "version" => "0.77"
   },
-  "VERSION" => "0.066",
+  "VERSION" => "0.067",
   "test" => {
     "TESTS" => "t/*.t"
   }

@@ -69,7 +69,7 @@ EOW
         "Karen Etheridge <ether\@cpan.org>"
       ],
       "dist_name" => "Dist-Zilla-PluginBundle-Author-ETHER",
-      "dist_version" => "0.066",
+      "dist_version" => "0.067",
       "license" => "perl",
       "module_name" => "Dist::Zilla::PluginBundle::Author::ETHER",
       "recommends" => {
@@ -112,7 +112,6 @@ EOW
         "Dist::Zilla::Plugin::ConfirmRelease" => 0,
         "Dist::Zilla::Plugin::CopyFilesFromRelease" => 0,
         "Dist::Zilla::Plugin::EOLTests" => 0,
-        "Dist::Zilla::Plugin::EnsurePrereqsInstalled" => 0,
         "Dist::Zilla::Plugin::ExecDir" => 0,
         "Dist::Zilla::Plugin::FileFinder::ByName" => 0,
         "Dist::Zilla::Plugin::GatherDir::Template" => 0,

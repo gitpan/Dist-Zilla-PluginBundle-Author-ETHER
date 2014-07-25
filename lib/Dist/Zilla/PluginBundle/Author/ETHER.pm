@@ -4,8 +4,8 @@ package Dist::Zilla::PluginBundle::Author::ETHER;
 BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
 }
-# git description: v0.065-15-g5aac8d2
-$Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.066';
+# git description: v0.066-2-ge5947ca
+$Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.067';
 # ABSTRACT: A plugin bundle for distributions built by ETHER
 # KEYWORDS: author bundle distribution tool
 # vim: set ts=8 sw=4 tw=78 et :
@@ -122,7 +122,7 @@ sub configure
         [ 'Git::NextVersion'    => { version_regexp => '^v([\d._]+)(-TRIAL)?$' } ],
 
         # BeforeBuild
-        [ 'EnsurePrereqsInstalled' ],
+        # [ 'EnsurePrereqsInstalled' ], # FIXME: use options to make this less annoying!
         [ 'PromptIfStale' => 'stale modules, build' => { phase => 'build', module => [ $self->meta->name ] } ],
         [ 'PromptIfStale' => 'stale modules, release' => { phase => 'release', check_all_plugins => 1, check_all_prereqs => 1 } ],
 
@@ -324,7 +324,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.066
+version 0.067
 
 =head1 SYNOPSIS
 
@@ -342,7 +342,6 @@ following F<dist.ini> (following the preamble):
     version_regexp = ^v([\d._]+)(-TRIAL)?$
 
     ;;; BeforeBuild
-    [EnsurePrereqsInstalled]
     [PromptIfStale / stale modules, build]
     phase = build
     module = Dist::Zilla::Plugin::Author::ETHER
