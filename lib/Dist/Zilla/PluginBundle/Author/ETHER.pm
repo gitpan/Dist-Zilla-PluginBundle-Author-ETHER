@@ -4,8 +4,8 @@ package Dist::Zilla::PluginBundle::Author::ETHER;
 BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
 }
-# git description: v0.066-2-ge5947ca
-$Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.067';
+# git description: v0.067-14-g2797322
+$Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.068';
 # ABSTRACT: A plugin bundle for distributions built by ETHER
 # KEYWORDS: author bundle distribution tool
 # vim: set ts=8 sw=4 tw=78 et :
@@ -21,6 +21,8 @@ use Moose::Util::TypeConstraints;
 use List::Util qw(first any);
 use Module::Runtime 'require_module';
 use Devel::CheckBin;
+use Dist::Zilla::Plugin::ReadmeAnyFromPod;  # temporary
+use Path::Tiny;
 use namespace::autoclean;
 
 sub mvp_multivalue_args { qw(installer copy_file_from_release) }
@@ -59,7 +61,11 @@ has copy_file_from_release => (
     isa => 'ArrayRef[Str]',
     lazy => 1,
     default => sub {
-            $_[0]->payload->{copy_file_from_release} // [ qw(README.pod LICENSE CONTRIBUTING) ];
+        $_[0]->payload->{copy_file_from_release}
+            // [
+                qw(LICENSE CONTRIBUTING),
+                (Dist::Zilla::Plugin::ReadmeAnyFromPod->VERSION < 0.142180 ? 'README.pod' : ())
+               ];
     },
     traits => ['Array'],
     handles => { copy_files_from_release => 'elements' },
@@ -107,12 +113,12 @@ sub configure
 {
     my $self = shift;
 
-    warn 'no "bash" executable found; skipping Run::AfterBuild commands to update .ackrc and .latest symlink'
+    warn 'no "bash" executable found; skipping Run::AfterBuild commands to update .ackrc and .latest symlink', "\n"
         if not $has_bash;
 
     my $has_xs =()= glob('*.xs');
-    warn 'XS-based distribution detected.' if $has_xs;
-    die 'no Makefile.PL found in the repository root: this is not very nice for contributors!'
+    warn "XS-based distribution detected.\n" if $has_xs;
+    die "no Makefile.PL found in the repository root: this is not very nice for contributors!\n"
         if $has_xs and not -e 'Makefile.PL';
 
     my %plugin_versions;
@@ -135,7 +141,7 @@ sub configure
         [ 'FileFinder::ByName'  => ExtraTestFiles => { dir => 'xt' } ],
 
         # Gather Files
-        [ 'Git::GatherDir'      => { ':version' => '2.016', exclude_filename => [ 'README.md', $self->copy_files_from_release ] } ],
+        [ 'Git::GatherDir'      => { ':version' => '2.016', exclude_filename => [ ($has_xs ? 'Makefile.PL' : ()), 'README.md', 'README.pod', $self->copy_files_from_release ] } ],
         qw(MetaYAML MetaJSON License Readme Manifest),
         [ 'GenerateFile::ShareDir' => 'generate CONTRIBUTING' => { -dist => 'Dist-Zilla-PluginBundle-Author-ETHER', -filename => 'CONTRIBUTING', has_xs => $has_xs } ],
 
@@ -169,7 +175,11 @@ sub configure
             }
         ],
         [ 'NextRelease'         => { ':version' => '4.300018', time_zone => 'UTC', format => '%-8v  %{yyyy-MM-dd HH:mm:ss\'Z\'}d%{ (TRIAL RELEASE)}T' } ],
-        [ 'ReadmeAnyFromPod'    => { type => 'pod', filename => 'README.pod', location => 'build' } ],
+        [ 'ReadmeAnyFromPod'    => { type => 'pod',
+                                     (Dist::Zilla::Plugin::ReadmeAnyFromPod->VERSION < 0.142180
+                                        ? ( location => 'build' )
+                                        : ( location => 'root', phase => 'release' ))
+                                   } ],
 
         # MetaData
         $self->server eq 'github'
@@ -181,11 +191,11 @@ sub configure
             : ()
         } ],
         # (Authority)
-        [ 'MetaNoIndex'         => { directory => [ qw(t xt), grep { -d } qw(examples share corpus) ] } ],
+        [ 'MetaNoIndex'         => { directory => [ qw(t xt), grep { -d } qw(inc local perl5 fatlib examples share corpus) ] } ],
         [ 'MetaProvides::Package' => { meta_noindex => 1, ':version' => '1.15000002', finder => ':InstallModules' } ],
         'MetaConfig',
         [ 'Keywords'            => { ':version' => '0.004' } ],
-        #[ContributorsFromGit]
+        'Git::Contributors',
 
         # Register Prereqs
         # (MakeMaker or other installer)
@@ -213,7 +223,7 @@ sub configure
         'CheckSelfDependency',
 
         ( $has_bash ?
-            [ 'Run::AfterBuild' => { run => q{bash -c "if [[ `dirname %d` != .build ]]; then test -e .ackrc && grep -q -- '--ignore-dir=%d' .ackrc || echo '--ignore-dir=%d' >> .ackrc; fi; if [[ %d =~ ^%n-[.[:xdigit:]]+$ ]]; then ln -sFn %d .latest; fi"} } ]
+            [ 'Run::AfterBuild' => { run => q{bash -c "if [[ `dirname %d` != .build ]]; then test -e .ackrc && grep -q -- '--ignore-dir=%d' .ackrc || echo '--ignore-dir=%d' >> .ackrc; fi; if [[ %d =~ ^%n-[.[:xdigit:]]+$ ]]; then rm -f .latest; ln -s %d .latest; fi"} } ]
             : ()),
 
         # Before Release
@@ -233,16 +243,21 @@ sub configure
 
         # After Release
         [ 'CopyFilesFromRelease' => { filename => [ $self->copy_files_from_release ] } ],
-        [ 'Run::AfterRelease'   => { run => 'rm -f README.md' } ],
-        [ 'Git::Commit'         => { ':version' => '2.020', add_files_in => ['.'], allow_dirty => [ 'Changes', 'README.md', $self->copy_files_from_release ], commit_msg => '%N-%v%t%n%n%c' } ],
+        [ 'Run::AfterRelease'   => 'remove old READMEs' => { run => 'rm -f README.md' } ],
+        [ 'Git::Commit'         => { ':version' => '2.020', add_files_in => ['.'], allow_dirty => [ 'Changes', 'README.md', 'README.pod', $self->copy_files_from_release ], commit_msg => '%N-%v%t%n%n%c' } ],
         [ 'Git::Tag'            => { tag_format => 'v%v%t', tag_message => 'v%v%t' } ],
         $self->server eq 'github' ? (
             [ 'GitHub::Update'  => { metacpan => 1 } ],
             do { $plugin_versions{'Dist::Zilla::Plugin::GitHub::Update'} = 0; () },
         ) : (),
         'Git::Push',
-        [ 'InstallRelease'      => { install_command => 'cpanm .' } ],
     );
+
+    # install with an author-specific URL from PAUSE, so cpanm-reporter knows where to submit the report
+    # hopefully the file is available at this location soonish after release!
+    my ($username, $password) = $self->_pause_config;
+    push @plugins,
+        [ 'Run::AfterRelease' => 'install release' => { run => 'cpanm http://' . $username . ':' . $password . '@pause.perl.org/pub/PAUSE/authors/id/' . substr($username, 0, 1).'/'.substr($username,0,2).'/'.$username.'/%a' } ] if $username and $password;
 
     if ($self->airplane)
     {
@@ -306,8 +321,19 @@ sub configure
     $self->add_plugins(@plugins);
 
     # check for a bin/ that should probably be renamed to script/
-    warn 'bin/ detected - should this be moved to script/, so its contents can be installed into $PATH?'
+    warn "bin/ detected - should this be moved to script/, so its contents can be installed into \$PATH?\n"
         if -d 'bin' and any { $_ eq 'ModuleBuildTiny' } $self->installer;
+}
+
+# return username, password from ~/.pause
+sub _pause_config
+{
+    my $self = shift;
+
+    my $file = path($ENV{HOME} // 'oops', '.pause');
+    return if not -e $file;
+
+    my ($username, $password) = map { my (undef, $val) = split ' ', $_; $val } $file->lines;
 }
 
 __PACKAGE__->meta->make_immutable;
@@ -324,7 +350,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.067
+version 0.068
 
 =head1 SYNOPSIS
 
@@ -367,6 +393,7 @@ following F<dist.ini> (following the preamble):
     ;;; Gather Files
     [Git::GatherDir]
     :version = 2.016
+    exclude_filename = README.md
     exclude_filename = README.pod
     exclude_filename = LICENSE
     exclude_filename = CONTRIBUTING
@@ -376,9 +403,10 @@ following F<dist.ini> (following the preamble):
     [License]
     [Readme]
     [Manifest]
-    [GenerateFile::ShareDir]
+    [GenerateFile::ShareDir / generate CONTRIBUTING]
     -dist = Dist-Zilla-PluginBundle-Author-ETHER
     -filename = CONTRIBUTING
+    has_xs => <dynamically-determined flag>
 
     [Test::Compile]
     :version = 2.039
@@ -434,9 +462,9 @@ following F<dist.ini> (following the preamble):
     time_zone = UTC
     format = %-8v  %{uyyy-MM-dd HH:mm:ss'Z'}d%{ (TRIAL RELEASE)}T
     [ReadmeAnyFromPod]
-    type = markdown
-    filename = README.pod
-    location = build
+    type = pod
+    location = root
+    phase = release
 
 
     ;;; MetaData
@@ -450,7 +478,13 @@ following F<dist.ini> (following the preamble):
     [MetaNoIndex]
     directory = t
     directory = xt
+    directory = inc
+    directory = local
+    directory = perl5
+    directory = fatlib
     directory = examples
+    directory = share
+    directory = corpus
 
     [MetaProvides::Package]
     meta_noindex = 1
@@ -460,6 +494,7 @@ following F<dist.ini> (following the preamble):
     [MetaConfig]
     [Keywords]
     :version = 0.004
+    [Git::Contributors]
 
     ;;; Register Prereqs
     [AutoPrereqs]
@@ -469,7 +504,6 @@ following F<dist.ini> (following the preamble):
     [Prereqs / installer_requirements]
     -phase = develop
     -relationship = requires
-    Dist::Zilla = <version used to built the pluginbundle>
     Dist::Zilla::PluginBundle::Author::ETHER = <version specified in dist.ini>
 
     [Prereqs / pluginbundle_version]
@@ -494,10 +528,13 @@ following F<dist.ini> (following the preamble):
     [CheckSelfDependency]
 
     [Run::AfterBuild]
-    run = if [[ `dirname %d` != .build ]]; then test -e .ackrc && grep -q -- '--ignore-dir=%d' .ackrc || echo '--ignore-dir=%d' >> .ackrc; fi; if [[ %d =~ ^%n-[.[:xdigit:]]+$ ]]; then ln -sFn %d .latest; fi
+    run = if [[ `dirname %d` != .build ]]; then test -e .ackrc && grep -q -- '--ignore-dir=%d' .ackrc || echo '--ignore-dir=%d' >> .ackrc; fi; if [[ %d =~ ^%n-[.[:xdigit:]]+$ ]]; then rm -f .latest; ln -s %d .latest; fi
 
 
     ;;; Before Release
+    [CheckStrictVersion]
+    decimal_only = 1
+
     [Git::Check / initial check]
     allow_dirty =
 
@@ -510,9 +547,6 @@ following F<dist.ini> (following the preamble):
     [Git::Remote::Check]
     branch = master
     remote_branch = master
-
-    [CheckStrictVersion]
-    decimal_only = 1
 
     [CheckPrereqsIndexed]
     [TestRelease]
@@ -528,11 +562,10 @@ following F<dist.ini> (following the preamble):
 
     ;;; AfterRelease
     [CopyFilesFromRelease]
-    filename = README.pod
     filename = LICENSE
     filename = CONTRIBUTING
 
-    [Run::AfterRelease]
+    [Run::AfterRelease / remove old READMEs]
     run = rm -f README.md
 
     [Git::Commit]
@@ -554,14 +587,15 @@ following F<dist.ini> (following the preamble):
 
     [Git::Push]
 
-    [InstallRelease]
-    install_command = cpanm .
+    [Run::AfterRelease / install release]
+    run = cpanm http://URMOM:mysekritpassword@pause.perl.org/pub/PAUSE/authors/id/U/UR/URMOM/%a
 
 
     ; listed late, to allow all other plugins which do BeforeRelease checks to run first.
     [ConfirmRelease]
 
     ; listed last, to be sure we run at the very end of each phase
+    ; only performed if $ENV{USER} eq 'ether'
     [VerifyPhases / PHASE VERIFICATION]
 
 =for Pod::Coverage configure mvp_multivalue_args
@@ -722,6 +756,8 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =head1 CONTRIBUTORS
+
+=for stopwords Randy Stauner Сергей Романов
 
 =over 4
 

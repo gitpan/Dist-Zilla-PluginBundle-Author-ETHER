@@ -7,7 +7,6 @@ use Test::Deep '!blessed';
 use Test::DZil;
 use Test::Fatal;
 use Path::Tiny;
-use Test::Deep::JSON;
 use List::Util 'first';
 
 # these are used by our default 'installer' setting
@@ -44,7 +43,7 @@ my $tzil = Builder->from_config(
                 # and besides, we would like to run these tests at install time too!
                 [ '@Author::ETHER' => {
                     '-remove' => [ 'Git::GatherDir', 'Git::NextVersion', 'Git::Describe',
-                        'Git::Check', 'Git::Commit', 'Git::Tag', 'Git::Push',
+                        'Git::Contributors', 'Git::Check', 'Git::Commit', 'Git::Tag', 'Git::Push',
                         'Git::CheckFor::MergeConflicts', 'Git::CheckFor::CorrectBranch',
                         'Git::Remote::Check', 'PromptIfStale', 'EnsurePrereqsInstalled' ],
                     server => 'none',
@@ -104,7 +103,6 @@ my @expected_files = qw(
     META.json
     META.yml
     README
-    README.pod
     t/00-report-prereqs.t
     xt/author/00-compile.t
     xt/author/pod-spell.t
@@ -123,6 +121,8 @@ my @expected_files = qw(
 );
 push @expected_files, 't/00-report-prereqs.dd'
     if Dist::Zilla::Plugin::Test::ReportPrereqs->VERSION >= 0.014;
+push @expected_files, 'README.pod'
+    if Dist::Zilla::Plugin::ReadmeAnyFromPod->VERSION < 0.142170;
 
 my @found_files;
 my $iter = $build_dir->iterator({ recurse => 1 });
@@ -147,10 +147,9 @@ SKIP: {
     skip 'need recent Dist::Zilla to test default_jobs option', 1
         if not eval { Dist::Zilla->VERSION('5.014'); 1 };
 
-    my $json = path($tzil->tempdir, qw(build META.json))->slurp_raw;
     cmp_deeply(
-        $json,
-        json(superhashof({
+        $tzil->distmeta,
+        superhashof({
             prereqs => superhashof({
                 develop => superhashof({
                     requires => superhashof({
@@ -162,7 +161,7 @@ SKIP: {
             }),
             x_Dist_Zilla => superhashof({
                 plugins => supersetof(
-                    map {
+                    ( map {
                         +{
                             class => 'Dist::Zilla::Plugin::' . $_,
                             config => superhashof({
@@ -171,13 +170,27 @@ SKIP: {
                             name => ignore,
                             version => ignore,
                         }
-                    } qw(MakeMaker::Fallback ModuleBuildTiny::Fallback RunExtraTests)
+                    } qw(MakeMaker::Fallback ModuleBuildTiny::Fallback RunExtraTests) ),
+                    subhashof({
+                        class => 'Dist::Zilla::Plugin::Run::AfterRelease',
+                        config => { # this may or may not be included, depending on the plugin version
+                            'Dist::Zilla::Plugin::Run::Role::Runner' => {
+                                run => 'REDACTED',  # password detected!
+                            },
+                        },
+                        'name' => '@Author::ETHER/install release',
+                        version => ignore,
+                    }),
                 ),
             })
-        })),
+        }),
         'config is properly included in metadata',
     );
 }
+
+# I'd like to test the release installation command here, but there's no nice
+# way of doing that without risking leaking my (or someone else's!) PAUSE
+# password in the failure output of like(). Can you imagine my embarrassment!
 
 my $contributing = $tzil->slurp_file('build/CONTRIBUTING');
 unlike($contributing, qr/[^\S\n]\n/m, 'no trailing whitespace in generated CONTRIBUTING');
