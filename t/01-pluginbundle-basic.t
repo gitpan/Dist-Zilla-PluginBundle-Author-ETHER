@@ -121,8 +121,6 @@ my @expected_files = qw(
 );
 push @expected_files, 't/00-report-prereqs.dd'
     if Dist::Zilla::Plugin::Test::ReportPrereqs->VERSION >= 0.014;
-push @expected_files, 'README.pod'
-    if Dist::Zilla::Plugin::ReadmeAnyFromPod->VERSION < 0.142170;
 
 my @found_files;
 my $iter = $build_dir->iterator({ recurse => 1 });
@@ -164,28 +162,34 @@ SKIP: {
                     ( map {
                         +{
                             class => 'Dist::Zilla::Plugin::' . $_,
-                            config => superhashof({
-                                'Dist::Zilla::Role::TestRunner' => superhashof({default_jobs => 9 }),
-                            }),
-                            name => ignore,
+                            # TestRunner added default_jobs and started adding to dump_config in 5.014
+                            ("Dist::Zilla::Plugin::$_"->can('default_jobs')
+                                ? (config => superhashof({
+                                    'Dist::Zilla::Role::TestRunner' => superhashof({ default_jobs => 9 }),
+                                  }))
+                                : ()),
+                            name => '@Author::ETHER/' . $_,
                             version => ignore,
                         }
                     } qw(MakeMaker::Fallback ModuleBuildTiny::Fallback RunExtraTests) ),
-                    subhashof({
-                        class => 'Dist::Zilla::Plugin::Run::AfterRelease',
-                        config => { # this may or may not be included, depending on the plugin version
-                            'Dist::Zilla::Plugin::Run::Role::Runner' => {
-                                run => 'REDACTED',  # password detected!
+                    ( $tzil->plugin_named('@Author::ETHER/install release')
+                        ? subhashof({
+                            class => 'Dist::Zilla::Plugin::Run::AfterRelease',
+                            config => { # this may or may not be included, depending on the plugin version
+                                'Dist::Zilla::Plugin::Run::Role::Runner' => {
+                                    run => 'REDACTED',  # password detected!
+                                },
                             },
-                        },
-                        'name' => '@Author::ETHER/install release',
-                        version => ignore,
-                    }),
+                            name => '@Author::ETHER/install release',
+                            version => ignore,
+                        }) : ()
+                    ),
                 ),
             })
         }),
         'config is properly included in metadata',
-    );
+    )
+    or diag 'got distmeta: ', explain $tzil->distmeta;
 }
 
 # I'd like to test the release installation command here, but there's no nice

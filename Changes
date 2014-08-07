@@ -1,5 +1,16 @@
 Revision history for Dist-Zilla-PluginBundle-Author-ETHER
 
+0.069     2014-08-07 02:44:38Z
+          - bump prereq on [Git::Contributors] to allow tests to pass when
+            running outside of a git repository
+          - remove hacks for [ReadmeAnyFromPod], now that the stable release
+            is out supporting phase=release
+          - fix test failure when installer's ~/.pause cannot be parsed
+          - fix test failure on older Dist::Zilla where TestRunners did not
+            dump their configuration into metadata
+          - now including authors in contributor lists, except for the
+            releaser herself
+
 0.068     2014-08-06 04:15:24Z
           - README.pod is now generated only in the repository, after
             release, so it never shows up in the shipped dist

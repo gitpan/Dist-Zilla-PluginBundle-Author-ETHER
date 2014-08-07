@@ -69,7 +69,7 @@ EOW
         "Karen Etheridge <ether\@cpan.org>"
       ],
       "dist_name" => "Dist-Zilla-PluginBundle-Author-ETHER",
-      "dist_version" => "0.068",
+      "dist_version" => "0.069",
       "license" => "perl",
       "module_name" => "Dist::Zilla::PluginBundle::Author::ETHER",
       "recommends" => {
@@ -120,7 +120,7 @@ EOW
         "Dist::Zilla::Plugin::Git::CheckFor::CorrectBranch" => "0.004",
         "Dist::Zilla::Plugin::Git::CheckFor::MergeConflicts" => "0.008",
         "Dist::Zilla::Plugin::Git::Commit" => "2.020",
-        "Dist::Zilla::Plugin::Git::Contributors" => 0,
+        "Dist::Zilla::Plugin::Git::Contributors" => "0.003",
         "Dist::Zilla::Plugin::Git::Describe" => 0,
         "Dist::Zilla::Plugin::Git::GatherDir" => "2.016",
         "Dist::Zilla::Plugin::Git::Init" => 0,
@@ -159,7 +159,7 @@ EOW
         "Dist::Zilla::Plugin::PromptIfStale" => "0.004",
         "Dist::Zilla::Plugin::PruneCruft" => 0,
         "Dist::Zilla::Plugin::Readme" => 0,
-        "Dist::Zilla::Plugin::ReadmeAnyFromPod" => "0.133290",
+        "Dist::Zilla::Plugin::ReadmeAnyFromPod" => "0.142180",
         "Dist::Zilla::Plugin::Run::AfterBuild" => 0,
         "Dist::Zilla::Plugin::Run::AfterMint" => 0,
         "Dist::Zilla::Plugin::Run::AfterRelease" => 0,

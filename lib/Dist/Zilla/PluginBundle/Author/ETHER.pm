@@ -4,8 +4,8 @@ package Dist::Zilla::PluginBundle::Author::ETHER;
 BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
 }
-# git description: v0.067-14-g2797322
-$Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.068';
+# git description: v0.068-6-g9627d19
+$Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.069';
 # ABSTRACT: A plugin bundle for distributions built by ETHER
 # KEYWORDS: author bundle distribution tool
 # vim: set ts=8 sw=4 tw=78 et :
@@ -21,7 +21,6 @@ use Moose::Util::TypeConstraints;
 use List::Util qw(first any);
 use Module::Runtime 'require_module';
 use Devel::CheckBin;
-use Dist::Zilla::Plugin::ReadmeAnyFromPod;  # temporary
 use Path::Tiny;
 use namespace::autoclean;
 
@@ -61,11 +60,7 @@ has copy_file_from_release => (
     isa => 'ArrayRef[Str]',
     lazy => 1,
     default => sub {
-        $_[0]->payload->{copy_file_from_release}
-            // [
-                qw(LICENSE CONTRIBUTING),
-                (Dist::Zilla::Plugin::ReadmeAnyFromPod->VERSION < 0.142180 ? 'README.pod' : ())
-               ];
+        $_[0]->payload->{copy_file_from_release} // [ qw(LICENSE CONTRIBUTING) ];
     },
     traits => ['Array'],
     handles => { copy_files_from_release => 'elements' },
@@ -175,11 +170,7 @@ sub configure
             }
         ],
         [ 'NextRelease'         => { ':version' => '4.300018', time_zone => 'UTC', format => '%-8v  %{yyyy-MM-dd HH:mm:ss\'Z\'}d%{ (TRIAL RELEASE)}T' } ],
-        [ 'ReadmeAnyFromPod'    => { type => 'pod',
-                                     (Dist::Zilla::Plugin::ReadmeAnyFromPod->VERSION < 0.142180
-                                        ? ( location => 'build' )
-                                        : ( location => 'root', phase => 'release' ))
-                                   } ],
+        [ 'ReadmeAnyFromPod'    => { ':version' => '0.142180', type => 'pod', location => 'root', phase => 'release' } ],
 
         # MetaData
         $self->server eq 'github'
@@ -195,7 +186,7 @@ sub configure
         [ 'MetaProvides::Package' => { meta_noindex => 1, ':version' => '1.15000002', finder => ':InstallModules' } ],
         'MetaConfig',
         [ 'Keywords'            => { ':version' => '0.004' } ],
-        'Git::Contributors',
+        [ 'Git::Contributors'   => { ':version' => '0.003', include_authors => 1, include_releaser => 0 } ],
 
         # Register Prereqs
         # (MakeMaker or other installer)
@@ -350,7 +341,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.068
+version 0.069
 
 =head1 SYNOPSIS
 
@@ -462,6 +453,7 @@ following F<dist.ini> (following the preamble):
     time_zone = UTC
     format = %-8v  %{uyyy-MM-dd HH:mm:ss'Z'}d%{ (TRIAL RELEASE)}T
     [ReadmeAnyFromPod]
+    :version = 0.142180
     type = pod
     location = root
     phase = release
@@ -495,6 +487,9 @@ following F<dist.ini> (following the preamble):
     [Keywords]
     :version = 0.004
     [Git::Contributors]
+    :version = 0.003
+    include_authors = 1
+    include_releaser = 0
 
     ;;; Register Prereqs
     [AutoPrereqs]
