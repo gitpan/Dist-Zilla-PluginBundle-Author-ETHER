@@ -4,8 +4,8 @@ package Dist::Zilla::PluginBundle::Author::ETHER;
 BEGIN {
   $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
 }
-# git description: v0.068-6-g9627d19
-$Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.069';
+# git description: v0.069-8-g81860ce
+$Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.070';
 # ABSTRACT: A plugin bundle for distributions built by ETHER
 # KEYWORDS: author bundle distribution tool
 # vim: set ts=8 sw=4 tw=78 et :
@@ -108,13 +108,17 @@ sub configure
 {
     my $self = shift;
 
-    warn 'no "bash" executable found; skipping Run::AfterBuild commands to update .ackrc and .latest symlink', "\n"
+    warn '[@Author::ETHER] no "bash" executable found; skipping Run::AfterBuild commands to update .ackrc and .latest symlink', "\n"
         if not $has_bash;
 
     my $has_xs =()= glob('*.xs');
-    warn "XS-based distribution detected.\n" if $has_xs;
-    die "no Makefile.PL found in the repository root: this is not very nice for contributors!\n"
+    warn '[@Author::ETHER] XS-based distribution detected.', "\n" if $has_xs;
+    die '[@Author::ETHER] no Makefile.PL found in the repository root: this is not very nice for contributors!', "\n"
         if $has_xs and not -e 'Makefile.PL';
+
+    # check for a bin/ that should probably be renamed to script/
+    warn '[@Author::ETHER] bin/ detected - should this be moved to script/, so its contents can be installed into $PATH?', "\n"
+        if -d 'bin' and any { $_ eq 'ModuleBuildTiny' } $self->installer;
 
     my %plugin_versions;
 
@@ -162,7 +166,7 @@ sub configure
         # Munge Files
         'Git::Describe',
         [ PkgVersion            => { ':version' => '5.010', die_on_existing_version => 1, die_on_line_insertion => 1 } ],
-        [ 'Authority'           => { authority => 'cpan:ETHER' } ],
+        [ 'Authority'           => { authority => 'cpan:ETHER', do_munging => 0 } ],
         [
             ($self->surgical_podweaver ? 'SurgicalPodWeaver' : 'PodWeaver') => {
                 replacer => 'replace_with_comment',
@@ -186,7 +190,7 @@ sub configure
         [ 'MetaProvides::Package' => { meta_noindex => 1, ':version' => '1.15000002', finder => ':InstallModules' } ],
         'MetaConfig',
         [ 'Keywords'            => { ':version' => '0.004' } ],
-        [ 'Git::Contributors'   => { ':version' => '0.003', include_authors => 1, include_releaser => 0 } ],
+        [ 'Git::Contributors'   => { ':version' => '0.004', order_by => 'commits' } ],
 
         # Register Prereqs
         # (MakeMaker or other installer)
@@ -252,7 +256,7 @@ sub configure
 
     if ($self->airplane)
     {
-        warn "building in airplane mode - plugins requiring the network are skipped, and releases are not permitted\n";
+        warn '[@Author::ETHER] building in airplane mode - plugins requiring the network are skipped, and releases are not permitted', "\n";
         @plugins = grep {
             my $plugin = Dist::Zilla::Util->expand_config_package_name(
                 !ref($_) ? $_ : ref eq 'ARRAY' ? $_->[0] : die 'wtf'
@@ -275,11 +279,6 @@ sub configure
         # listed late, to allow all other plugins which do BeforeRelease checks to run first.
         'ConfirmRelease',
     );
-
-    push @plugins, (
-        # listed last, to be sure we run at the very end of each phase
-        [ 'VerifyPhases' => 'PHASE VERIFICATION' ],
-    ) if ($ENV{USER} // '') eq 'ether';
 
     foreach my $plugin_spec (@plugins)
     {
@@ -304,16 +303,17 @@ sub configure
     }
 
     # ensure that additional optional plugins are declared in prereqs
-    push @plugins,
+    unshift @plugins,
         [ 'Prereqs' => bundle_options =>
             { '-phase' => 'develop', '-relationship' => 'requires', %plugin_versions } ]
                 if keys %plugin_versions;
 
-    $self->add_plugins(@plugins);
+    push @plugins, (
+        # listed last, to be sure we run at the very end of each phase
+        [ 'VerifyPhases' => 'PHASE VERIFICATION' ],
+    ) if ($ENV{USER} // '') eq 'ether';
 
-    # check for a bin/ that should probably be renamed to script/
-    warn "bin/ detected - should this be moved to script/, so its contents can be installed into \$PATH?\n"
-        if -d 'bin' and any { $_ eq 'ModuleBuildTiny' } $self->installer;
+    $self->add_plugins(@plugins);
 }
 
 # return username, password from ~/.pause
@@ -341,7 +341,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.069
+version 0.070
 
 =head1 SYNOPSIS
 
@@ -442,6 +442,7 @@ following F<dist.ini> (following the preamble):
     die_on_line_insertion = 1
     [Authority]
     authority = cpan:ETHER
+    do_munging = 0
 
     [PodWeaver] (or [SurgicalPodWeaver])
     :version = 4.005
@@ -487,9 +488,8 @@ following F<dist.ini> (following the preamble):
     [Keywords]
     :version = 0.004
     [Git::Contributors]
-    :version = 0.003
-    include_authors = 1
-    include_releaser = 0
+    :version = 0.004
+    order_by = commits
 
     ;;; Register Prereqs
     [AutoPrereqs]
