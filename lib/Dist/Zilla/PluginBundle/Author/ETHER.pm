@@ -1,11 +1,8 @@
 use strict;
 use warnings;
 package Dist::Zilla::PluginBundle::Author::ETHER;
-BEGIN {
-  $Dist::Zilla::PluginBundle::Author::ETHER::AUTHORITY = 'cpan:ETHER';
-}
-# git description: v0.069-8-g81860ce
-$Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.070';
+# git description: v0.070-7-g5dafa01
+$Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.071';
 # ABSTRACT: A plugin bundle for distributions built by ETHER
 # KEYWORDS: author bundle distribution tool
 # vim: set ts=8 sw=4 tw=78 et :
@@ -22,6 +19,7 @@ use List::Util qw(first any);
 use Module::Runtime 'require_module';
 use Devel::CheckBin;
 use Path::Tiny;
+use CPAN::Meta::Requirements;
 use namespace::autoclean;
 
 sub mvp_multivalue_args { qw(installer copy_file_from_release) }
@@ -96,7 +94,7 @@ around BUILDARGS => sub
 {
     my $orig = shift;
     my $self = shift;
-    my $args = $self->$orig(@_);
+    my ($args) = $self->$orig(@_);
 
     # remove 'none' from installer list
     return $args if not exists $args->{payload}{installer};
@@ -119,8 +117,6 @@ sub configure
     # check for a bin/ that should probably be renamed to script/
     warn '[@Author::ETHER] bin/ detected - should this be moved to script/, so its contents can be installed into $PATH?', "\n"
         if -d 'bin' and any { $_ eq 'ModuleBuildTiny' } $self->installer;
-
-    my %plugin_versions;
 
     my @plugins = (
         # VersionProvider
@@ -177,8 +173,7 @@ sub configure
         [ 'ReadmeAnyFromPod'    => { ':version' => '0.142180', type => 'pod', location => 'root', phase => 'release' } ],
 
         # MetaData
-        $self->server eq 'github'
-            ? ( 'GithubMeta', do { $plugin_versions{'Dist::Zilla::Plugin::GithubMeta'} = 0; () }) : (),
+        $self->server eq 'github' ? 'GithubMeta' : (),
         [ 'AutoMetaResources'   => { 'bugtracker.rt' => 1,
               $self->server eq 'gitmo' ? ( 'repository.gitmo' => 1 )
             : $self->server eq 'p5sagit' ? ( 'repository.p5sagit' => 1 )
@@ -207,8 +202,7 @@ sub configure
             } ] : ()),
 
         # Install Tool (some are also Test Runners)
-        (map { [ $_ => { ':version' => 0 } ] }
-            $self->installer), # ensure an entry in develop prereqs
+        $self->installer,
         'InstallGuide',
 
         # Test Runners
@@ -230,7 +224,7 @@ sub configure
         'CheckPrereqsIndexed',
         'TestRelease',
         [ 'Git::Check'          => 'after tests' => { allow_dirty => [''] } ],
-        [ 'CheckIssues' ],
+        'CheckIssues',
         # (ConfirmRelease)
 
         # Releaser
@@ -241,10 +235,7 @@ sub configure
         [ 'Run::AfterRelease'   => 'remove old READMEs' => { run => 'rm -f README.md' } ],
         [ 'Git::Commit'         => { ':version' => '2.020', add_files_in => ['.'], allow_dirty => [ 'Changes', 'README.md', 'README.pod', $self->copy_files_from_release ], commit_msg => '%N-%v%t%n%n%c' } ],
         [ 'Git::Tag'            => { tag_format => 'v%v%t', tag_message => 'v%v%t' } ],
-        $self->server eq 'github' ? (
-            [ 'GitHub::Update'  => { metacpan => 1 } ],
-            do { $plugin_versions{'Dist::Zilla::Plugin::GitHub::Update'} = 0; () },
-        ) : (),
+        $self->server eq 'github' ? [ 'GitHub::Update' => { metacpan => 1 } ] : (),
         'Git::Push',
     );
 
@@ -269,8 +260,6 @@ sub configure
         # allow our uncommitted dist.ini edit which sets 'airplane = 1'
         push @{( first { ref eq 'ARRAY' && $_->[0] eq 'Git::Check' } @plugins )->[-1]{allow_dirty}}, 'dist.ini';
 
-        $plugin_versions{'Dist::Zilla::Plugin::BlockRelease'} = 0;
-
         # halt release after pre-release checks, but before ConfirmRelease
         push @plugins, 'BlockRelease';
     }
@@ -280,13 +269,13 @@ sub configure
         'ConfirmRelease',
     );
 
-    foreach my $plugin_spec (@plugins)
+    my $plugin_requirements = CPAN::Meta::Requirements->new;
+    foreach my $plugin_spec (@plugins = map { ref ? $_ : [ $_ ] } @plugins)
     {
-        next if not ref $plugin_spec or @$plugin_spec == 1;             # 'Foo' or [ 'Foo' ]
-        next if @$plugin_spec == 2 and not ref $plugin_spec->[1];       # [ 'Foo' => 'Bar' ]
-
         my $plugin = Dist::Zilla::Util->expand_config_package_name($plugin_spec->[0]);
         require_module($plugin);
+
+        push @$plugin_spec, {} if not ref $plugin_spec->[-1];
         my $payload = $plugin_spec->[-1];
 
         if (my @keys = grep { $plugin->isa($_) or $plugin->does($_) } keys %extra_args)
@@ -298,15 +287,15 @@ sub configure
             @{$payload}{keys %configs} = values %configs;
         }
 
-        # also grab :version
-        $plugin_versions{$plugin} = $payload->{':version'} if exists $payload->{':version'};
+        # record develop prereq
+        $plugin_requirements->add_minimum($plugin => $payload->{':version'} // 0);
     }
 
     # ensure that additional optional plugins are declared in prereqs
     unshift @plugins,
-        [ 'Prereqs' => bundle_options =>
-            { '-phase' => 'develop', '-relationship' => 'requires', %plugin_versions } ]
-                if keys %plugin_versions;
+        [ 'Prereqs' => bundle_plugins =>
+            { '-phase' => 'develop', '-relationship' => 'requires',
+              %{ $plugin_requirements->as_string_hash } } ];
 
     push @plugins, (
         # listed last, to be sure we run at the very end of each phase
@@ -341,7 +330,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.070
+version 0.071
 
 =head1 SYNOPSIS
 

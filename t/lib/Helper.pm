@@ -9,6 +9,8 @@ use List::MoreUtils 'uniq';
 use Path::Tiny;
 use JSON::MaybeXS;
 
+$ENV{USER} = 'notether';
+
 # checks that all plugins in use are in the plugin bundle dist's runtime
 # requires list
 # - some plugins can be marked 'additional' - must be in recommended prereqs
@@ -39,22 +41,22 @@ sub all_plugins_in_prereqs
                 ok(
                     exists $dist_meta->{prereqs}{develop}{requires}{$plugin},
                     $plugin . ' is a develop prereq of the distribution',
-                );
+                ) or diag 'got dist metadata: ', explain $dist_meta;
+
                 ok(
                     exists $pluginbundle_meta->{prereqs}{runtime}{recommends}{$plugin},
                     $plugin . ' is a runtime recommendation of the plugin bundle',
-                );
+                ) or diag 'got plugin bundle metadata: ', explain $pluginbundle_meta;
             }
             else
             {
                 ok(
                     exists $pluginbundle_meta->{prereqs}{runtime}{requires}{$plugin},
                     $plugin . ' is a runtime prereq of the plugin bundle',
-                );
+                ) or diag 'got plugin bundle metadata: ', explain $pluginbundle_meta;
             }
         }
     }
-    or diag 'got metadata: ', explain $pluginbundle_meta;
 } }
 
 1;

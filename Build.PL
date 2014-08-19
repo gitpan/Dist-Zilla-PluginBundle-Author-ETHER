@@ -69,7 +69,7 @@ EOW
         "Karen Etheridge <ether\@cpan.org>"
       ],
       "dist_name" => "Dist-Zilla-PluginBundle-Author-ETHER",
-      "dist_version" => "0.070",
+      "dist_version" => "0.071",
       "license" => "perl",
       "module_name" => "Dist::Zilla::PluginBundle::Author::ETHER",
       "recommends" => {
@@ -82,6 +82,7 @@ EOW
         "Dist::Zilla::Plugin::MakeMaker::Fallback" => "0.008",
         "Dist::Zilla::Plugin::ModuleBuildTiny" => "0.004",
         "Dist::Zilla::Plugin::ModuleBuildTiny::Fallback" => "0.005",
+        "Dist::Zilla::Plugin::VerifyPhases" => 0,
         "Pod::Coverage::TrustPod" => 0,
         "Pod::Wordlist" => "1.09",
         "Test::CPAN::Changes" => 0,
@@ -98,6 +99,7 @@ EOW
       "recursive_test_files" => 1,
       "requires" => {
         "CPAN::Changes" => "0.23",
+        "CPAN::Meta::Requirements" => 0,
         "Carp" => 0,
         "Devel::CheckBin" => 0,
         "Dist::Zilla" => "4.300038",
@@ -178,7 +180,6 @@ EOW
         "Dist::Zilla::Plugin::Test::ReportPrereqs" => 0,
         "Dist::Zilla::Plugin::TestRelease" => 0,
         "Dist::Zilla::Plugin::UploadToCPAN" => 0,
-        "Dist::Zilla::Plugin::VerifyPhases" => 0,
         "Dist::Zilla::Role::MintingProfile" => 0,
         "Dist::Zilla::Role::PluginBundle::Config::Slicer" => 0,
         "Dist::Zilla::Role::PluginBundle::Easy" => 0,
