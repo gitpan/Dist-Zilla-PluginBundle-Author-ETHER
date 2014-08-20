@@ -69,7 +69,7 @@ EOW
         "Karen Etheridge <ether\@cpan.org>"
       ],
       "dist_name" => "Dist-Zilla-PluginBundle-Author-ETHER",
-      "dist_version" => "0.071",
+      "dist_version" => "0.072",
       "license" => "perl",
       "module_name" => "Dist::Zilla::PluginBundle::Author::ETHER",
       "recommends" => {
@@ -79,7 +79,7 @@ EOW
         "Dist::Zilla::Plugin::GithubMeta" => 0,
         "Dist::Zilla::Plugin::MakeMaker" => 0,
         "Dist::Zilla::Plugin::MakeMaker::Awesome" => 0,
-        "Dist::Zilla::Plugin::MakeMaker::Fallback" => "0.008",
+        "Dist::Zilla::Plugin::MakeMaker::Fallback" => "0.012",
         "Dist::Zilla::Plugin::ModuleBuildTiny" => "0.004",
         "Dist::Zilla::Plugin::ModuleBuildTiny::Fallback" => "0.005",
         "Dist::Zilla::Plugin::VerifyPhases" => 0,
@@ -138,7 +138,7 @@ EOW
         "Dist::Zilla::Plugin::Keywords" => "0.004",
         "Dist::Zilla::Plugin::License" => 0,
         "Dist::Zilla::Plugin::MakeMaker" => 0,
-        "Dist::Zilla::Plugin::MakeMaker::Fallback" => "0.008",
+        "Dist::Zilla::Plugin::MakeMaker::Fallback" => "0.012",
         "Dist::Zilla::Plugin::Manifest" => 0,
         "Dist::Zilla::Plugin::ManifestSkip" => 0,
         "Dist::Zilla::Plugin::MetaConfig" => 0,

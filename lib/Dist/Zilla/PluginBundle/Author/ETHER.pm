@@ -1,8 +1,8 @@
 use strict;
 use warnings;
 package Dist::Zilla::PluginBundle::Author::ETHER;
-# git description: v0.070-7-g5dafa01
-$Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.071';
+# git description: v0.071-3-g8267cf7
+$Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.072';
 # ABSTRACT: A plugin bundle for distributions built by ETHER
 # KEYWORDS: author bundle distribution tool
 # vim: set ts=8 sw=4 tw=78 et :
@@ -51,7 +51,7 @@ has surgical_podweaver => (
 has airplane => (
     is => 'ro', isa => 'Bool',
     lazy => 1,
-    default => sub { $ENV{DZIL_AIRPLANE} // $_[0]->payload->{airplane} // 0 },
+    default => sub { $ENV{DZIL_AIRPLANE} || $_[0]->payload->{airplane} // 0 },
 );
 
 has copy_file_from_release => (
@@ -67,7 +67,7 @@ has copy_file_from_release => (
 # configs are applied when plugins match ->isa($key) or ->does($key)
 my %extra_args = (
     'Dist::Zilla::Plugin::ModuleBuildTiny' => { ':version' => '0.004' },
-    'Dist::Zilla::Plugin::MakeMaker::Fallback' => { ':version' => '0.008' },
+    'Dist::Zilla::Plugin::MakeMaker::Fallback' => { ':version' => '0.012' },
     # default_jobs is no-op until Dist::Zilla 5.014
     'Dist::Zilla::Role::TestRunner' => { default_jobs => 9 },
     'Dist::Zilla::Plugin::ModuleBuild' => { mb_version => '0.28' },
@@ -270,7 +270,7 @@ sub configure
     );
 
     my $plugin_requirements = CPAN::Meta::Requirements->new;
-    foreach my $plugin_spec (@plugins = map { ref ? $_ : [ $_ ] } @plugins)
+    foreach my $plugin_spec (@plugins = map { ref $_ ? $_ : [ $_ ] } @plugins)
     {
         my $plugin = Dist::Zilla::Util->expand_config_package_name($plugin_spec->[0]);
         require_module($plugin);
@@ -330,7 +330,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.071
+version 0.072
 
 =head1 SYNOPSIS
 

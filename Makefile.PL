@@ -128,7 +128,7 @@ my %WriteMakefileArgs = (
     "Dist::Zilla::Plugin::Keywords" => "0.004",
     "Dist::Zilla::Plugin::License" => 0,
     "Dist::Zilla::Plugin::MakeMaker" => 0,
-    "Dist::Zilla::Plugin::MakeMaker::Fallback" => "0.008",
+    "Dist::Zilla::Plugin::MakeMaker::Fallback" => "0.012",
     "Dist::Zilla::Plugin::Manifest" => 0,
     "Dist::Zilla::Plugin::ManifestSkip" => 0,
     "Dist::Zilla::Plugin::MetaConfig" => 0,
@@ -216,7 +216,7 @@ my %WriteMakefileArgs = (
     "lib" => 0,
     "parent" => 0
   },
-  "VERSION" => "0.071",
+  "VERSION" => "0.072",
   "test" => {
     "TESTS" => "t/*.t"
   }
@@ -265,7 +265,7 @@ my %FallbackPrereqs = (
   "Dist::Zilla::Plugin::Keywords" => "0.004",
   "Dist::Zilla::Plugin::License" => 0,
   "Dist::Zilla::Plugin::MakeMaker" => 0,
-  "Dist::Zilla::Plugin::MakeMaker::Fallback" => "0.008",
+  "Dist::Zilla::Plugin::MakeMaker::Fallback" => "0.012",
   "Dist::Zilla::Plugin::Manifest" => 0,
   "Dist::Zilla::Plugin::ManifestSkip" => 0,
   "Dist::Zilla::Plugin::MetaConfig" => 0,
