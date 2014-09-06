@@ -8,6 +8,7 @@ use Test::DZil;
 use Test::Fatal;
 use Path::Tiny;
 use List::Util 'first';
+use Module::Runtime 'module_notional_filename';
 
 # these are used by our default 'installer' setting
 use Test::Requires qw(
@@ -77,16 +78,17 @@ all_plugins_in_prereqs($tzil,
     ],
 );
 
-is(
-    $_->default_jobs,
-    9,
-    'default_jobs was set for ' . $_->meta->name . ' (via installer option and extra_args',
-) foreach
-    map {
-        my $plugin = $_;
-        first { $_->meta->name eq $plugin } @{$tzil->plugins};
-    } ( 'Dist::Zilla::Plugin::MakeMaker::Fallback', 'Dist::Zilla::Plugin::ModuleBuildTiny::Fallback' );
-
+SKIP:
+foreach my $plugin ('Dist::Zilla::Plugin::MakeMaker::Fallback', 'Dist::Zilla::Plugin::ModuleBuildTiny::Fallback')
+{
+    skip "need recent $plugin to test default_jobs option", 1 if not $plugin->can('default_jobs');
+    my $obj = first { $_->meta->name eq $plugin } @{$tzil->plugins};
+    is(
+        $obj->default_jobs,
+        9,
+        'default_jobs was set for ' . $obj->meta->name . ' (via installer option and extra_args',
+    )
+}
 
 my $build_dir = path($tzil->tempdir)->child('build');
 
@@ -145,21 +147,18 @@ is(
     'no files were re-munged needlessly',
 );
 
-SKIP: {
-    skip 'need recent Dist::Zilla to test default_jobs option', 1
-        if not eval { Dist::Zilla->VERSION('5.014'); 1 };
-
+{
     cmp_deeply(
         $tzil->distmeta,
         superhashof({
             prereqs => superhashof({
                 develop => superhashof({
                     requires => superhashof({
-                        'Dist::Zilla::Plugin::ModuleBuildTiny::Fallback' => '0.005',
+                        'Dist::Zilla::Plugin::ModuleBuildTiny::Fallback' => '0.006',
                         'Dist::Zilla::Plugin::MakeMaker::Fallback' => '0.012',
                         'Dist::Zilla::PluginBundle::Author::ETHER' => '0.002',
                     }),
-                })
+                }),
             }),
             x_Dist_Zilla => superhashof({
                 plugins => supersetof(
@@ -189,12 +188,34 @@ SKIP: {
                         }) : ()
                     ),
                 ),
-            })
+            }),
         }),
         'config is properly included in metadata',
     )
     or diag 'got distmeta: ', explain $tzil->distmeta;
 }
+
+cmp_deeply(
+    $tzil->distmeta,
+    superhashof({
+        prereqs => superhashof({
+            develop => superhashof({
+                requires =>
+                    # TODO: replace with Test::Deep::notexists($key)
+                    code(sub {
+                        !exists $_[0]->{'Dist::Zilla::Plugin::Git::Commit'} ? 1 : (0, 'Dist::Zilla::Plugin::Git::Commit exists');
+                    }),
+            }),
+        }),
+    }),
+    "a -remove'd plugin does not have a prereq injected into the dist",
+);
+
+is(
+    $INC{ module_notional_filename('Dist::Zilla::Plugin::Git::Commit') },
+    undef,
+    "a -remove'd plugin has not been loaded",
+);
 
 # I'd like to test the release installation command here, but there's no nice
 # way of doing that without risking leaking my (or someone else's!) PAUSE

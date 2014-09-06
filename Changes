@@ -1,5 +1,15 @@
 Revision history for Dist-Zilla-PluginBundle-Author-ETHER
 
+0.073     2014-09-06 02:07:00Z
+          - fixed a few small omissions in the minting profile for new
+            Dist::Zilla plugin distributions
+          - no longer performing side effects for plugins that are -remove'd
+            in the final configuration
+          - added [AuthorityFromModule] (twinned for now with [Authority],
+            until supported is added in PAUSE)
+          - bump prereq on [ModuleBuildTiny::Fallback], to get fixes for
+            interaction with [CheckBin], [CheckLib]
+
 0.072     2014-08-20 04:33:59Z
           - fix syntax that parses badly on all perls before 5.21.1 - hey
             that's new enough for everyone, right?

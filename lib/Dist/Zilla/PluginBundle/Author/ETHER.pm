@@ -1,8 +1,8 @@
 use strict;
 use warnings;
 package Dist::Zilla::PluginBundle::Author::ETHER;
-# git description: v0.071-3-g8267cf7
-$Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.072';
+# git description: v0.072-11-g860b47b
+$Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.073';
 # ABSTRACT: A plugin bundle for distributions built by ETHER
 # KEYWORDS: author bundle distribution tool
 # vim: set ts=8 sw=4 tw=78 et :
@@ -71,7 +71,7 @@ my %extra_args = (
     # default_jobs is no-op until Dist::Zilla 5.014
     'Dist::Zilla::Role::TestRunner' => { default_jobs => 9 },
     'Dist::Zilla::Plugin::ModuleBuild' => { mb_version => '0.28' },
-    'Dist::Zilla::Plugin::ModuleBuildTiny::Fallback' => { ':version' => '0.005' },
+    'Dist::Zilla::Plugin::ModuleBuildTiny::Fallback' => { ':version' => '0.006' },
 );
 
 # plugins that use the network when they run
@@ -155,13 +155,14 @@ sub configure
         'Test::Pod::No404s',
         'Test::Kwalitee',
         'MojibakeTests',
-        [ 'Test::ReportPrereqs' => { verify_prereqs => 1 } ],
+        [ 'Test::ReportPrereqs' => { ':version' => '0.019', verify_prereqs => 1 } ],
         'Test::Portability',
 
 
         # Munge Files
         'Git::Describe',
         [ PkgVersion            => { ':version' => '5.010', die_on_existing_version => 1, die_on_line_insertion => 1 } ],
+        [ 'AuthorityFromModule' => { ':version' => '0.002' } ],
         [ 'Authority'           => { authority => 'cpan:ETHER', do_munging => 0 } ],
         [
             ($self->surgical_podweaver ? 'SurgicalPodWeaver' : 'PodWeaver') => {
@@ -269,9 +270,14 @@ sub configure
         'ConfirmRelease',
     );
 
+    my $remove = $self->payload->{ $self->plugin_remover_attribute } // [];
+    my %remove; @remove{@$remove} = (!!1) x @$remove;
+
     my $plugin_requirements = CPAN::Meta::Requirements->new;
     foreach my $plugin_spec (@plugins = map { ref $_ ? $_ : [ $_ ] } @plugins)
     {
+        next if $remove{$plugin_spec->[0]};
+
         my $plugin = Dist::Zilla::Util->expand_config_package_name($plugin_spec->[0]);
         require_module($plugin);
 
@@ -330,7 +336,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.072
+version 0.073
 
 =head1 SYNOPSIS
 
@@ -419,6 +425,7 @@ following F<dist.ini> (following the preamble):
     [Test::Kwalitee]
     [MojibakeTests]
     [Test::ReportPrereqs]
+    :version = 0.019
     verify_prereqs = 1
     [Test::Portability]
 
@@ -429,6 +436,8 @@ following F<dist.ini> (following the preamble):
     :version = 5.010
     die_on_existing_version = 1
     die_on_line_insertion = 1
+    [AuthorityFromModule]
+    :version = 0.002
     [Authority]
     authority = cpan:ETHER
     do_munging = 0
