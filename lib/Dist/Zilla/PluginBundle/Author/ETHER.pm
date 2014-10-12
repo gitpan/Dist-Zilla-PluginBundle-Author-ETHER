@@ -1,8 +1,8 @@
 use strict;
 use warnings;
 package Dist::Zilla::PluginBundle::Author::ETHER;
-# git description: v0.073-6-gb3e83c0
-$Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.074';
+# git description: v0.074-1-ge81beb4
+$Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.075';
 # ABSTRACT: A plugin bundle for distributions built by ETHER
 # KEYWORDS: author bundle distribution tool
 # vim: set ts=8 sw=4 tw=78 et :
@@ -338,7 +338,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.074
+version 0.075
 
 =head1 SYNOPSIS
 
