@@ -1,8 +1,8 @@
 use strict;
 use warnings;
 package Dist::Zilla::PluginBundle::Author::ETHER;
-# git description: v0.072-11-g860b47b
-$Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.073';
+# git description: v0.073-6-gb3e83c0
+$Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.074';
 # ABSTRACT: A plugin bundle for distributions built by ETHER
 # KEYWORDS: author bundle distribution tool
 # vim: set ts=8 sw=4 tw=78 et :
@@ -213,12 +213,14 @@ sub configure
         'CheckSelfDependency',
 
         ( $has_bash ?
-            [ 'Run::AfterBuild' => { run => q{bash -c "if [[ `dirname %d` != .build ]]; then test -e .ackrc && grep -q -- '--ignore-dir=%d' .ackrc || echo '--ignore-dir=%d' >> .ackrc; fi; if [[ %d =~ ^%n-[.[:xdigit:]]+$ ]]; then rm -f .latest; ln -s %d .latest; fi"} } ]
+            [ 'Run::AfterBuild' => '.ackrc' => { run => q{bash -c "if [[ `dirname %d` != .build ]]; then test -e .ackrc && grep -q -- '--ignore-dir=%d' .ackrc || echo '--ignore-dir=%d' >> .ackrc; fi"} } ]
             : ()),
+        [ 'Run::AfterBuild'     => '.latest' => { ':version' => '0.024', eval => q!if ('%d' =~ /^%n-[.[:xdigit:]]+$/) { unlink '.latest'; symlink '%d', '.latest'; }! } ],
+
 
         # Before Release
         [ 'CheckStrictVersion'  => { decimal_only => 1 } ],
-        [ 'Git::Check'          => 'initial check' => { allow_dirty => [''] } ],
+        [ 'Git::Check'          => 'initial check' => { ':version' => 2.025, build_warnings => 1, allow_dirty => [''] } ],
         'Git::CheckFor::MergeConflicts',
         [ 'Git::CheckFor::CorrectBranch' => { ':version' => '0.004', release_branch => 'master' } ],
         [ 'Git::Remote::Check'  => { branch => 'master', remote_branch => 'master' } ],
@@ -233,7 +235,7 @@ sub configure
 
         # After Release
         [ 'CopyFilesFromRelease' => { filename => [ $self->copy_files_from_release ] } ],
-        [ 'Run::AfterRelease'   => 'remove old READMEs' => { run => 'rm -f README.md' } ],
+        [ 'Run::AfterRelease'   => 'remove old READMEs' => { ':version' => 0.024, eval => q!unlink 'README.md'! } ],
         [ 'Git::Commit'         => { ':version' => '2.020', add_files_in => ['.'], allow_dirty => [ 'Changes', 'README.md', 'README.pod', $self->copy_files_from_release ], commit_msg => '%N-%v%t%n%n%c' } ],
         [ 'Git::Tag'            => { tag_format => 'v%v%t', tag_message => 'v%v%t' } ],
         $self->server eq 'github' ? [ 'GitHub::Update' => { metacpan => 1 } ] : (),
@@ -336,7 +338,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.073
+version 0.074
 
 =head1 SYNOPSIS
 
@@ -520,8 +522,11 @@ following F<dist.ini> (following the preamble):
     ;;; After Build
     [CheckSelfDependency]
 
-    [Run::AfterBuild]
+    [Run::AfterBuild / .ackrc]
     run = if [[ `dirname %d` != .build ]]; then test -e .ackrc && grep -q -- '--ignore-dir=%d' .ackrc || echo '--ignore-dir=%d' >> .ackrc; fi; if [[ %d =~ ^%n-[.[:xdigit:]]+$ ]]; then rm -f .latest; ln -s %d .latest; fi
+    [Run::AfterBuild / .latest]
+    :version = 0.024
+    eval = if ('%d' =~ /^%n-[.[:xdigit:]]+$/) { unlink '.latest'; symlink '%d', '.latest'; }
 
 
     ;;; Before Release
@@ -529,6 +534,8 @@ following F<dist.ini> (following the preamble):
     decimal_only = 1
 
     [Git::Check / initial check]
+    :version = 2.025
+    build_warnings = 1
     allow_dirty =
 
     [Git::CheckFor::MergeConflicts]
@@ -559,7 +566,8 @@ following F<dist.ini> (following the preamble):
     filename = CONTRIBUTING
 
     [Run::AfterRelease / remove old READMEs]
-    run = rm -f README.md
+    :version = 0.024
+    eval = unlink 'README.md'
 
     [Git::Commit]
     :version = 2.020
