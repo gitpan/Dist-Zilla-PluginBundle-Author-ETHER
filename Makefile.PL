@@ -6,7 +6,7 @@
 use strict;
 use warnings;
 
-# inserted by Dist::Zilla::Plugin::CheckBin 0.004
+# inserted by Dist::Zilla::Plugin::CheckBin 0.005
 use Devel::CheckBin;
 check_bin('git');
 
@@ -15,7 +15,7 @@ my %configure_requires = (
     'Devel::CheckBin' => '0',
     'ExtUtils::MakeMaker' => '0',
     'File::ShareDir::Install' => '0.03',
-    'Module::Build::Tiny' => '0.038',
+    'Module::Build::Tiny' => '0.039',
 );
 
 my @missing = grep {
@@ -80,7 +80,7 @@ my %WriteMakefileArgs = (
     "Devel::CheckBin" => 0,
     "ExtUtils::MakeMaker" => 0,
     "File::ShareDir::Install" => "0.03",
-    "Module::Build::Tiny" => "0.038"
+    "Module::Build::Tiny" => "0.039"
   },
   "DISTNAME" => "Dist-Zilla-PluginBundle-Author-ETHER",
   "EXE_FILES" => [],
@@ -177,6 +177,7 @@ my %WriteMakefileArgs = (
     "Dist::Zilla::Role::PluginBundle::PluginRemover" => "0.102",
     "Dist::Zilla::Util" => 0,
     "File::ShareDir" => 0,
+    "List::MoreUtils" => 0,
     "List::Util" => "1.33",
     "Module::Runtime" => 0,
     "Moose" => 0,
@@ -197,12 +198,12 @@ my %WriteMakefileArgs = (
   },
   "TEST_REQUIRES" => {
     "Dist::Zilla::Plugin::EnsurePrereqsInstalled" => 0,
+    "Dist::Zilla::Plugin::MakeMaker" => 0,
     "Exporter" => 0,
     "ExtUtils::MakeMaker" => 0,
     "File::Spec" => 0,
     "HTTP::Tiny" => 0,
     "JSON::MaybeXS" => 0,
-    "List::MoreUtils" => 0,
     "List::Util" => "1.33",
     "Moose::Util" => 0,
     "PadWalker" => 0,
@@ -217,7 +218,7 @@ my %WriteMakefileArgs = (
     "lib" => 0,
     "parent" => 0
   },
-  "VERSION" => "0.075",
+  "VERSION" => "0.076",
   "test" => {
     "TESTS" => "t/*.t"
   }

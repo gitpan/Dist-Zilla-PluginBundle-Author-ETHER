@@ -1,8 +1,8 @@
 use strict;
 use warnings;
 package Dist::Zilla::PluginBundle::Author::ETHER;
-# git description: v0.074-1-ge81beb4
-$Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.075';
+# git description: v0.075-7-g0e6f874
+$Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.076';
 # ABSTRACT: A plugin bundle for distributions built by ETHER
 # KEYWORDS: author bundle distribution tool
 # vim: set ts=8 sw=4 tw=78 et :
@@ -16,6 +16,7 @@ with
 use Dist::Zilla::Util;
 use Moose::Util::TypeConstraints;
 use List::Util qw(first any);
+use List::MoreUtils 'uniq';
 use Module::Runtime 'require_module';
 use Devel::CheckBin;
 use Path::Tiny;
@@ -57,21 +58,31 @@ has airplane => (
 has copy_file_from_release => (
     isa => 'ArrayRef[Str]',
     lazy => 1,
-    default => sub {
-        $_[0]->payload->{copy_file_from_release} // [ qw(LICENSE CONTRIBUTING) ];
-    },
+    default => sub { $_[0]->payload->{copy_file_from_release} // [] },
     traits => ['Array'],
     handles => { copy_files_from_release => 'elements' },
 );
 
+around copy_files_from_release => sub {
+    my $orig = shift; my $self = shift;
+    uniq $self->$orig(@_), qw(LICENSE CONTRIBUTING);
+};
+
+has changes_version_columns => (
+    is => 'ro', isa => subtype('Int', where { $_ > 0 && $_ < 20 }),
+    lazy => 1,
+    default => sub { $_[0]->payload->{changes_version_columns} // 10 },
+);
+
 # configs are applied when plugins match ->isa($key) or ->does($key)
 my %extra_args = (
+    'Dist::Zilla::Plugin::MakeMaker' => { 'eumm_version' => '0' },
     'Dist::Zilla::Plugin::ModuleBuildTiny' => { ':version' => '0.004' },
     'Dist::Zilla::Plugin::MakeMaker::Fallback' => { ':version' => '0.012' },
     # default_jobs is no-op until Dist::Zilla 5.014
     'Dist::Zilla::Role::TestRunner' => { default_jobs => 9 },
     'Dist::Zilla::Plugin::ModuleBuild' => { mb_version => '0.28' },
-    'Dist::Zilla::Plugin::ModuleBuildTiny::Fallback' => { ':version' => '0.006' },
+    'Dist::Zilla::Plugin::ModuleBuildTiny::Fallback' => { ':version' => '0.006', mb_version => '0.28' },
 );
 
 # plugins that use the network when they run
@@ -136,7 +147,7 @@ sub configure
         [ 'FileFinder::ByName'  => ExtraTestFiles => { dir => 'xt' } ],
 
         # Gather Files
-        [ 'Git::GatherDir'      => { ':version' => '2.016', exclude_filename => [ ($has_xs ? 'Makefile.PL' : ()), 'README.md', 'README.pod', $self->copy_files_from_release ] } ],
+        [ 'Git::GatherDir'      => { ':version' => '2.016', exclude_filename => [ uniq ($has_xs ? 'Makefile.PL' : ()), 'README.md', 'README.pod', $self->copy_files_from_release ] } ],
         qw(MetaYAML MetaJSON License Readme Manifest),
         [ 'GenerateFile::ShareDir' => 'generate CONTRIBUTING' => { -dist => 'Dist-Zilla-PluginBundle-Author-ETHER', -filename => 'CONTRIBUTING', has_xs => $has_xs } ],
 
@@ -170,7 +181,7 @@ sub configure
                 post_code_replacer => 'replace_with_nothing',
             }
         ],
-        [ 'NextRelease'         => { ':version' => '4.300018', time_zone => 'UTC', format => '%-8v  %{yyyy-MM-dd HH:mm:ss\'Z\'}d%{ (TRIAL RELEASE)}T' } ],
+        [ 'NextRelease'         => { ':version' => '4.300018', time_zone => 'UTC', format => '%-' . ($self->changes_version_columns - 2) . 'v  %{yyyy-MM-dd HH:mm:ss\'Z\'}d%{ (TRIAL RELEASE)}T' } ],
         [ 'ReadmeAnyFromPod'    => { ':version' => '0.142180', type => 'pod', location => 'root', phase => 'release' } ],
 
         # MetaData
@@ -236,7 +247,7 @@ sub configure
         # After Release
         [ 'CopyFilesFromRelease' => { filename => [ $self->copy_files_from_release ] } ],
         [ 'Run::AfterRelease'   => 'remove old READMEs' => { ':version' => 0.024, eval => q!unlink 'README.md'! } ],
-        [ 'Git::Commit'         => { ':version' => '2.020', add_files_in => ['.'], allow_dirty => [ 'Changes', 'README.md', 'README.pod', $self->copy_files_from_release ], commit_msg => '%N-%v%t%n%n%c' } ],
+        [ 'Git::Commit'         => { ':version' => '2.020', add_files_in => ['.'], allow_dirty => [ uniq 'Changes', 'README.md', 'README.pod', $self->copy_files_from_release ], commit_msg => '%N-%v%t%n%n%c' } ],
         [ 'Git::Tag'            => { tag_format => 'v%v%t', tag_message => 'v%v%t' } ],
         $self->server eq 'github' ? [ 'GitHub::Update' => { metacpan => 1 } ] : (),
         'Git::Push',
@@ -338,7 +349,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.075
+version 0.076
 
 =head1 SYNOPSIS
 
@@ -709,7 +720,8 @@ Defaults to false; can also be set with the environment variable C<DZIL_AIRPLANE
 
 A file, to be present in the build, which is copied back to the source
 repository at release time and committed to git. Can be repeated more than
-once. Defaults to: F<README.pod>, F<LICENSE>, F<CONTRIBUTING>.
+once. Defaults to: F<LICENSE>, F<CONTRIBUTING>; defaults are appended to,
+rather than overwritten.
 
 =head2 surgical_podweaver
 
@@ -719,6 +731,11 @@ A boolean option, that when set, uses
 L<[SurgicalPodWeaver]|Dist::Zilla::Plugin::SurgicalPodWeaver> instead of
 L<[PodWeaver]|Dist::Zilla::Plugin::SurgicalPodWeaver>, but with all the same
 options. Defaults to false.
+
+=head2 changes_version_columns
+
+An integer that specifies how many columns (right-padded with whitespace) are
+allocated in Changes entries to the version string. Defaults to 10.
 
 =for stopwords customizations
 

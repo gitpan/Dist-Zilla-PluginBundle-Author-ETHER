@@ -3,11 +3,11 @@
 use strict;
 use warnings;
 
-# inserted by Dist::Zilla::Plugin::CheckBin 0.004
+# inserted by Dist::Zilla::Plugin::CheckBin 0.005
 use Devel::CheckBin;
 check_bin('git');
 
-if (eval 'use Module::Build::Tiny 0.038; 1')
+if (eval 'use Module::Build::Tiny 0.039; 1')
 {
     print "Congratulations, your toolchain understands 'configure_requires'!\n\n";
 
@@ -16,7 +16,7 @@ if (eval 'use Module::Build::Tiny 0.038; 1')
     use warnings;
 
     use 5.010;
-    # use Module::Build::Tiny 0.038;
+    # use Module::Build::Tiny 0.039;
     Build_PL();
 }
 else
@@ -69,14 +69,14 @@ EOW
         "Devel::CheckBin" => 0,
         "ExtUtils::MakeMaker" => 0,
         "File::ShareDir::Install" => "0.03",
-        "Module::Build::Tiny" => "0.038"
+        "Module::Build::Tiny" => "0.039"
       },
       "dist_abstract" => "A plugin bundle for distributions built by ETHER",
       "dist_author" => [
         "Karen Etheridge <ether\@cpan.org>"
       ],
       "dist_name" => "Dist-Zilla-PluginBundle-Author-ETHER",
-      "dist_version" => "0.075",
+      "dist_version" => "0.076",
       "license" => "perl",
       "module_name" => "Dist::Zilla::PluginBundle::Author::ETHER",
       "recommends" => {
@@ -85,7 +85,7 @@ EOW
         "Dist::Zilla::Plugin::GitHub::Update" => 0,
         "Dist::Zilla::Plugin::GithubMeta" => 0,
         "Dist::Zilla::Plugin::MakeMaker" => 0,
-        "Dist::Zilla::Plugin::MakeMaker::Awesome" => 0,
+        "Dist::Zilla::Plugin::MakeMaker::Awesome" => "0.13",
         "Dist::Zilla::Plugin::MakeMaker::Fallback" => "0.012",
         "Dist::Zilla::Plugin::ModuleBuildTiny" => "0.004",
         "Dist::Zilla::Plugin::ModuleBuildTiny::Fallback" => "0.006",
@@ -194,6 +194,7 @@ EOW
         "Dist::Zilla::Role::PluginBundle::PluginRemover" => "0.102",
         "Dist::Zilla::Util" => 0,
         "File::ShareDir" => 0,
+        "List::MoreUtils" => 0,
         "List::Util" => "1.33",
         "Module::Runtime" => 0,
         "Moose" => 0,
@@ -219,12 +220,12 @@ EOW
       },
       "test_requires" => {
         "Dist::Zilla::Plugin::EnsurePrereqsInstalled" => 0,
+        "Dist::Zilla::Plugin::MakeMaker" => 0,
         "Exporter" => 0,
         "ExtUtils::MakeMaker" => 0,
         "File::Spec" => 0,
         "HTTP::Tiny" => 0,
         "JSON::MaybeXS" => 0,
-        "List::MoreUtils" => 0,
         "List::Util" => "1.33",
         "Moose::Util" => 0,
         "PadWalker" => 0,
@@ -244,12 +245,12 @@ EOW
 
     my %fallback_build_requires = (
       "Dist::Zilla::Plugin::EnsurePrereqsInstalled" => 0,
+      "Dist::Zilla::Plugin::MakeMaker" => 0,
       "Exporter" => 0,
       "ExtUtils::MakeMaker" => 0,
       "File::Spec" => 0,
       "HTTP::Tiny" => 0,
       "JSON::MaybeXS" => 0,
-      "List::MoreUtils" => 0,
       "List::Util" => "1.33",
       "Moose::Util" => 0,
       "PadWalker" => 0,

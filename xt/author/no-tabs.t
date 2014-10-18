@@ -19,6 +19,8 @@ my @files = (
     't/06-airplane.t',
     't/07-minter-dzil-plugin.t',
     't/08-minter-dzil-plugin-shorter.t',
+    't/09-copy-files-from-release.t',
+    't/10-extra_args.t',
     't/corpus/global/config.ini',
     't/lib/Helper.pm',
     't/lib/NoNetworkHits.pm',
