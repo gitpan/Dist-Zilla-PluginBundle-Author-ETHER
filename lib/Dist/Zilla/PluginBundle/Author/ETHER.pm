@@ -1,8 +1,8 @@
 use strict;
 use warnings;
 package Dist::Zilla::PluginBundle::Author::ETHER;
-# git description: v0.075-7-g0e6f874
-$Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.076';
+# git description: v0.076-5-g9a831ad
+$Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.077';
 # ABSTRACT: A plugin bundle for distributions built by ETHER
 # KEYWORDS: author bundle distribution tool
 # vim: set ts=8 sw=4 tw=78 et :
@@ -82,7 +82,7 @@ my %extra_args = (
     # default_jobs is no-op until Dist::Zilla 5.014
     'Dist::Zilla::Role::TestRunner' => { default_jobs => 9 },
     'Dist::Zilla::Plugin::ModuleBuild' => { mb_version => '0.28' },
-    'Dist::Zilla::Plugin::ModuleBuildTiny::Fallback' => { ':version' => '0.006', mb_version => '0.28' },
+    'Dist::Zilla::Plugin::ModuleBuildTiny::Fallback' => { ':version' => '0.006' },
 );
 
 # plugins that use the network when they run
@@ -154,7 +154,7 @@ sub configure
         [ 'Test::Compile'       => { ':version' => '2.039', bail_out_on_fail => 1, xt_mode => 1,
             script_finder => [qw(:ExecFiles @Author::ETHER/Examples)] } ],
         [ 'Test::NoTabs'        => { 'version' => '0.08', finder => [qw(:InstallModules :ExecFiles @Author::ETHER/Examples :TestFiles @Author::ETHER/ExtraTestFiles)] } ],
-        'EOLTests',
+        [ 'Test::EOL'           => { ':version' => '0.14' } ],
         'MetaTests',
         [ 'Test::CPAN::Changes' => { ':version' => '0.008' } ],
         'Test::ChangesHasContent',
@@ -185,7 +185,7 @@ sub configure
         [ 'ReadmeAnyFromPod'    => { ':version' => '0.142180', type => 'pod', location => 'root', phase => 'release' } ],
 
         # MetaData
-        $self->server eq 'github' ? 'GithubMeta' : (),
+        $self->server eq 'github' ? [ 'GithubMeta' => { homepage => 0, issues => 0 } ] : (),
         [ 'AutoMetaResources'   => { 'bugtracker.rt' => 1,
               $self->server eq 'gitmo' ? ( 'repository.gitmo' => 1 )
             : $self->server eq 'p5sagit' ? ( 'repository.p5sagit' => 1 )
@@ -193,7 +193,7 @@ sub configure
             : ()
         } ],
         # (Authority)
-        [ 'MetaNoIndex'         => { directory => [ qw(t xt), grep { -d } qw(inc local perl5 fatlib examples share corpus) ] } ],
+        [ 'MetaNoIndex'         => { directory => [ qw(t xt), grep { -d } qw(inc local perl5 fatlib examples share corpus demo) ] } ],
         [ 'MetaProvides::Package' => { meta_noindex => 1, ':version' => '1.15000002', finder => ':InstallModules' } ],
         'MetaConfig',
         [ 'Keywords'            => { ':version' => '0.004' } ],
@@ -349,7 +349,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.076
+version 0.077
 
 =head1 SYNOPSIS
 
@@ -422,7 +422,8 @@ following F<dist.ini> (following the preamble):
     finder = :TestFiles
     finder = ExtraTestFiles
 
-    [EOLTests]
+    [Test::EOL]
+    :version = 0.14
     [MetaTests]
     [Test::CPAN::Changes]
     :version = 0.008
@@ -473,6 +474,9 @@ following F<dist.ini> (following the preamble):
 
     ;;; MetaData
     [GithubMeta]    ; (if server = 'github' or omitted)
+    homepage = 0
+    issues = 0
+
     [AutoMetaResources]
     bugtracker.rt = 1
     ; (plus repository.* = 1 if server = 'gitmo' or 'p5sagit')
@@ -489,6 +493,7 @@ following F<dist.ini> (following the preamble):
     directory = examples
     directory = share
     directory = corpus
+    directory = demo
 
     [MetaProvides::Package]
     meta_noindex = 1

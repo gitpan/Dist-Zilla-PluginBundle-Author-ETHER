@@ -1,5 +1,8 @@
 Revision history for Dist-Zilla-PluginBundle-Author-ETHER
 
+0.077     2014-10-26 21:16:11Z
+          - switch from [EOLTests] to [Test::EOL]
+
 0.076     2014-10-18 22:07:58Z
           - bump optional dependency on [MakeMaker::Awesome] to avoid old bug
             with loaded modules
@@ -8,8 +11,6 @@ Revision history for Dist-Zilla-PluginBundle-Author-ETHER
             defaults (which may change over time)
           - reset default eumm_version in MakeMaker plugins to 0, as done in
             [MakeMaker] version 5.020
-          - fix ModuleBuildTiny::Fallback.mb_version to 0.28, as done in
-            [ModuleBuild] version 5.020
           - new 'changes_version_columns' configuration option, for
             tweaking [NextRelease] format strings
 
