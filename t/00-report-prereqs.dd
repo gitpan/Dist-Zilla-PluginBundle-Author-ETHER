@@ -4,12 +4,13 @@ do { my $x = {
                                         'Devel::CheckBin' => '0',
                                         'ExtUtils::MakeMaker' => '0',
                                         'File::ShareDir::Install' => '0.03',
-                                        'Module::Build::Tiny' => '0.039'
+                                        'Module::Build::Tiny' => '0.039',
+                                        'perl' => '5.010'
                                       }
                       },
        'develop' => {
                       'recommends' => {
-                                        'Dist::Zilla::PluginBundle::Author::ETHER' => '0.077'
+                                        'Dist::Zilla::PluginBundle::Author::ETHER' => '0.078'
                                       },
                       'requires' => {
                                       'Dist::Zilla' => '5',
@@ -120,6 +121,7 @@ do { my $x = {
                                         'Dist::Zilla::Plugin::MakeMaker::Fallback' => '0.012',
                                         'Dist::Zilla::Plugin::ModuleBuildTiny' => '0.004',
                                         'Dist::Zilla::Plugin::ModuleBuildTiny::Fallback' => '0.006',
+                                        'Dist::Zilla::Plugin::SurgicalPodWeaver' => '0',
                                         'Dist::Zilla::Plugin::VerifyPhases' => '0',
                                         'Pod::Coverage::TrustPod' => '0',
                                         'Pod::Wordlist' => '1.09',
@@ -269,7 +271,8 @@ do { my $x = {
                                    'Test::Warnings' => '0.009',
                                    'if' => '0',
                                    'lib' => '0',
-                                   'parent' => '0'
+                                   'parent' => '0',
+                                   'perl' => '5.010'
                                  }
                  }
      };

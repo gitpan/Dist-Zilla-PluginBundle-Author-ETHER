@@ -16,6 +16,7 @@ my %configure_requires = (
     'ExtUtils::MakeMaker' => '0',
     'File::ShareDir::Install' => '0.03',
     'Module::Build::Tiny' => '0.039',
+    'perl' => '5.010',
 );
 
 my @missing = grep {
@@ -218,7 +219,7 @@ my %WriteMakefileArgs = (
     "lib" => 0,
     "parent" => 0
   },
-  "VERSION" => "0.077",
+  "VERSION" => "0.078",
   "test" => {
     "TESTS" => "t/*.t"
   }
