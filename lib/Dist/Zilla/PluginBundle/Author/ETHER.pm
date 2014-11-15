@@ -1,8 +1,8 @@
 use strict;
 use warnings;
 package Dist::Zilla::PluginBundle::Author::ETHER;
-# git description: v0.077-4-g44ad610
-$Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.078';
+# git description: v0.078-12-g48682d4
+$Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.079';
 # ABSTRACT: A plugin bundle for distributions built by ETHER
 # KEYWORDS: author bundle distribution tool
 # vim: set ts=8 sw=4 tw=78 et :
@@ -21,6 +21,7 @@ use Module::Runtime 'require_module';
 use Devel::CheckBin;
 use Path::Tiny;
 use CPAN::Meta::Requirements;
+use Term::ANSIColor;
 use namespace::autoclean;
 
 sub mvp_multivalue_args { qw(installer copy_file_from_release) }
@@ -126,7 +127,7 @@ sub configure
         if $has_xs and not -e 'Makefile.PL';
 
     # check for a bin/ that should probably be renamed to script/
-    warn '[@Author::ETHER] bin/ detected - should this be moved to script/, so its contents can be installed into $PATH?', "\n"
+    warn '[@Author::ETHER] ' . colored('bin/ detected - should this be moved to script/, so its contents can be installed into $PATH?', 'bright_red') . "\n"
         if -d 'bin' and any { $_ eq 'ModuleBuildTiny' } $self->installer;
 
     my @plugins = (
@@ -150,10 +151,11 @@ sub configure
         [ 'Git::GatherDir'      => { ':version' => '2.016', exclude_filename => [ uniq ($has_xs ? 'Makefile.PL' : ()), 'README.md', 'README.pod', $self->copy_files_from_release ] } ],
         qw(MetaYAML MetaJSON License Readme Manifest),
         [ 'GenerateFile::ShareDir' => 'generate CONTRIBUTING' => { -dist => 'Dist-Zilla-PluginBundle-Author-ETHER', -filename => 'CONTRIBUTING', has_xs => $has_xs } ],
+        'InstallGuide',
 
         [ 'Test::Compile'       => { ':version' => '2.039', bail_out_on_fail => 1, xt_mode => 1,
             script_finder => [qw(:ExecFiles @Author::ETHER/Examples)] } ],
-        [ 'Test::NoTabs'        => { 'version' => '0.08', finder => [qw(:InstallModules :ExecFiles @Author::ETHER/Examples :TestFiles @Author::ETHER/ExtraTestFiles)] } ],
+        [ 'Test::NoTabs'        => { ':version' => '0.08', finder => [qw(:InstallModules :ExecFiles @Author::ETHER/Examples :TestFiles @Author::ETHER/ExtraTestFiles)] } ],
         [ 'Test::EOL'           => { ':version' => '0.14' } ],
         'MetaTests',
         [ 'Test::CPAN::Changes' => { ':version' => '0.008' } ],
@@ -161,10 +163,10 @@ sub configure
         [ 'Test::MinimumVersion' => { ':version' => '2.000003', max_target_perl => '5.008001' } ],
         'PodSyntaxTests',
         'PodCoverageTests',
-        'Test::PodSpelling',
+        [ 'Test::PodSpelling'   => { ':version' => '2.006001' } ],
         #[Test::Pod::LinkCheck]     many outstanding bugs
         'Test::Pod::No404s',
-        'Test::Kwalitee',
+        [ 'Test::Kwalitee'      => { ':version' => '2.06' } ],
         'MojibakeTests',
         [ 'Test::ReportPrereqs' => { ':version' => '0.019', verify_prereqs => 1 } ],
         'Test::Portability',
@@ -173,10 +175,9 @@ sub configure
         # Munge Files
         'Git::Describe',
         [ PkgVersion            => { ':version' => '5.010', die_on_existing_version => 1, die_on_line_insertion => 1 } ],
-        [ 'AuthorityFromModule' => { ':version' => '0.002' } ],
-        [ 'Authority'           => { authority => 'cpan:ETHER', do_munging => 0 } ],
         [
             ($self->surgical_podweaver ? 'SurgicalPodWeaver' : 'PodWeaver') => {
+                $self->surgical_podweaver ? () : ( ':version' => '4.005' ),
                 replacer => 'replace_with_comment',
                 post_code_replacer => 'replace_with_nothing',
             }
@@ -192,7 +193,8 @@ sub configure
             : $self->server eq 'catagits' ? ( 'repository.catagits' => 1 )
             : ()
         } ],
-        # (Authority)
+        [ 'AuthorityFromModule' => { ':version' => '0.002' } ],
+        [ 'Authority'           => { authority => 'cpan:ETHER', do_munging => 0 } ],
         [ 'MetaNoIndex'         => { directory => [ qw(t xt), grep { -d } qw(inc local perl5 fatlib examples share corpus demo) ] } ],
         [ 'MetaProvides::Package' => { meta_noindex => 1, ':version' => '1.15000002', finder => ':InstallModules' } ],
         'MetaConfig',
@@ -203,7 +205,7 @@ sub configure
         # (MakeMaker or other installer)
         'AutoPrereqs',
         'Prereqs::AuthorDeps',
-        'MinimumPerl',
+        [ 'MinimumPerl'         => { ':version' => '1.006' } ],
         [ 'Prereqs' => pluginbundle_version => {
                 '-phase' => 'develop', '-relationship' => 'recommends',
                 $self->meta->name => $self->VERSION,
@@ -215,10 +217,9 @@ sub configure
 
         # Install Tool (some are also Test Runners)
         $self->installer,
-        'InstallGuide',
 
-        # Test Runners
-        [ 'RunExtraTests'       => { ':version' => '0.019' } ],
+        # Test Runners (load after installers to avoid a rebuild)
+        [ 'RunExtraTests'       => { ':version' => '0.024' } ],
 
         # After Build
         'CheckSelfDependency',
@@ -261,7 +262,7 @@ sub configure
 
     if ($self->airplane)
     {
-        warn '[@Author::ETHER] building in airplane mode - plugins requiring the network are skipped, and releases are not permitted', "\n";
+        warn '[@Author::ETHER] ' . colored('building in airplane mode - plugins requiring the network are skipped, and releases are not permitted', 'yellow') . "\n";
         @plugins = grep {
             my $plugin = Dist::Zilla::Util->expand_config_package_name(
                 !ref($_) ? $_ : ref eq 'ARRAY' ? $_->[0] : die 'wtf'
@@ -349,7 +350,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.078
+version 0.079
 
 =head1 SYNOPSIS
 
@@ -405,7 +406,8 @@ following F<dist.ini> (following the preamble):
     [GenerateFile::ShareDir / generate CONTRIBUTING]
     -dist = Dist-Zilla-PluginBundle-Author-ETHER
     -filename = CONTRIBUTING
-    has_xs => <dynamically-determined flag>
+    has_xs = <dynamically-determined flag>
+    [InstallGuide]
 
     [Test::Compile]
     :version = 2.039
@@ -450,11 +452,6 @@ following F<dist.ini> (following the preamble):
     :version = 5.010
     die_on_existing_version = 1
     die_on_line_insertion = 1
-    [AuthorityFromModule]
-    :version = 0.002
-    [Authority]
-    authority = cpan:ETHER
-    do_munging = 0
 
     [PodWeaver] (or [SurgicalPodWeaver])
     :version = 4.005
@@ -481,7 +478,11 @@ following F<dist.ini> (following the preamble):
     bugtracker.rt = 1
     ; (plus repository.* = 1 if server = 'gitmo' or 'p5sagit')
 
-    ; (Authority)
+    [AuthorityFromModule]
+    :version = 0.002
+    [Authority]
+    authority = cpan:ETHER
+    do_munging = 0
 
     [MetaNoIndex]
     directory = t
@@ -511,6 +512,7 @@ following F<dist.ini> (following the preamble):
     [AutoPrereqs]
     [Prereqs::AuthorDeps]
     [MinimumPerl]
+    :version = 1.006
 
     [Prereqs / installer_requirements]
     -phase = develop
@@ -525,13 +527,12 @@ following F<dist.ini> (following the preamble):
 
     ;;; Install Tool
     <specified installer(s)>
-    [InstallGuide]
 
 
     ;;; Test Runner
     # <specified installer(s)>
     [RunExtraTests]
-    :version = 0.019
+    :version = 0.024
     default_jobs = 9
 
 
