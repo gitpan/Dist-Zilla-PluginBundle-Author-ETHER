@@ -30,7 +30,7 @@ configure_requires:
   Module::Build::Tiny: '0.039'
   perl: '5.010'
 dynamic_config: 0
-generated_by: 'Dist::Zilla version 5.025, CPAN::Meta::Converter version 2.142690'
+generated_by: 'Dist::Zilla version 5.025, CPAN::Meta::Converter version 2.143240'
 keywords:
   - author
   - bundle
@@ -49,10 +49,10 @@ no_index:
 provides:
   Dist::Zilla::MintingProfile::Author::ETHER:
     file: lib/Dist/Zilla/MintingProfile/Author/ETHER.pm
-    version: '0.079'
+    version: '0.080'
   Dist::Zilla::PluginBundle::Author::ETHER:
     file: lib/Dist/Zilla/PluginBundle/Author/ETHER.pm
-    version: '0.079'
+    version: '0.080'
 recommends:
   Config::Identity::GitHub: '0'
   Dist::Zilla::Plugin::BlockRelease: '0'
@@ -193,7 +193,7 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-PluginBundle-Author-ETHER
   homepage: https://github.com/karenetheridge/Dist-Zilla-PluginBundle-Author-ETHER
   repository: https://github.com/karenetheridge/Dist-Zilla-PluginBundle-Author-ETHER.git
-version: '0.079'
+version: '0.080'
 x_Dist_Zilla:
   perl:
     version: '5.021005'
@@ -321,7 +321,7 @@ x_Dist_Zilla:
           phase: build
           skip: []
       name: '@Author::ETHER/stale modules, build'
-      version: '0.030'
+      version: '0.032'
     -
       class: Dist::Zilla::Plugin::PromptIfStale
       config:
@@ -332,7 +332,7 @@ x_Dist_Zilla:
           phase: release
           skip: []
       name: '@Author::ETHER/stale modules, release'
-      version: '0.030'
+      version: '0.032'
     -
       class: Dist::Zilla::Plugin::ExecDir
       name: '@Author::ETHER/ExecDir'
@@ -442,7 +442,7 @@ x_Dist_Zilla:
         Dist::Zilla::Plugin::Test::EOL:
           filename: xt/author/eol.t
       name: '@Author::ETHER/Test::EOL'
-      version: '0.15'
+      version: '0.16'
     -
       class: Dist::Zilla::Plugin::MetaTests
       name: '@Author::ETHER/MetaTests'
@@ -690,7 +690,7 @@ x_Dist_Zilla:
         Dist::Zilla::Role::TestRunner:
           default_jobs: 9
       name: '@Author::ETHER/RunExtraTests'
-      version: '0.024'
+      version: '0.025'
     -
       class: Dist::Zilla::Plugin::CheckSelfDependency
       config:
@@ -698,7 +698,7 @@ x_Dist_Zilla:
           finder:
             - ':InstallModules'
       name: '@Author::ETHER/CheckSelfDependency'
-      version: '0.007'
+      version: '0.008'
     -
       class: Dist::Zilla::Plugin::Run::AfterBuild
       config:
@@ -753,7 +753,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::CheckPrereqsIndexed
       name: '@Author::ETHER/CheckPrereqsIndexed'
-      version: '0.012'
+      version: '0.013'
     -
       class: Dist::Zilla::Plugin::TestRelease
       name: '@Author::ETHER/TestRelease'
@@ -774,7 +774,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::CheckIssues
       name: '@Author::ETHER/CheckIssues'
-      version: '0.004'
+      version: '0.006'
     -
       class: Dist::Zilla::Plugin::UploadToCPAN
       name: '@Author::ETHER/UploadToCPAN'
@@ -824,7 +824,7 @@ x_Dist_Zilla:
         Dist::Zilla::Plugin::Git::Tag:
           branch: ~
           signed: 0
-          tag: v0.079
+          tag: v0.080
           tag_format: v%v%t
           tag_message: v%v%t
           time_zone: local
@@ -901,7 +901,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::VerifyPhases
       name: '@Author::ETHER/PHASE VERIFICATION'
-      version: '0.008'
+      version: '0.009'
   zilla:
     class: Dist::Zilla::Dist::Builder
     config:
