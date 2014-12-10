@@ -1,8 +1,8 @@
 use strict;
 use warnings;
 package Dist::Zilla::PluginBundle::Author::ETHER;
-# git description: v0.079-2-g2d4cfad
-$Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.080';
+# git description: v0.080-7-gae7c5f6
+{ our $VERSION = '0.081'; }
 # ABSTRACT: A plugin bundle for distributions built by ETHER
 # KEYWORDS: author bundle distribution tool
 # vim: set ts=8 sw=4 tw=78 et :
@@ -15,13 +15,13 @@ with
 
 use Dist::Zilla::Util;
 use Moose::Util::TypeConstraints;
-use List::Util qw(first any);
+use List::Util 1.33 qw(first any);
 use List::MoreUtils 'uniq';
 use Module::Runtime 'require_module';
-use Devel::CheckBin;
+use Devel::CheckBin 'can_run';
 use Path::Tiny;
 use CPAN::Meta::Requirements;
-use Term::ANSIColor;
+use Term::ANSIColor 'colored';
 use namespace::autoclean;
 
 sub mvp_multivalue_args { qw(installer copy_file_from_release) }
@@ -148,7 +148,7 @@ sub configure
         [ 'FileFinder::ByName'  => ExtraTestFiles => { dir => 'xt' } ],
 
         # Gather Files
-        [ 'Git::GatherDir'      => { ':version' => '2.016', exclude_filename => [ uniq ($has_xs ? 'Makefile.PL' : ()), 'README.md', 'README.pod', $self->copy_files_from_release ] } ],
+        [ 'Git::GatherDir'      => { ':version' => '2.016', exclude_filename => [ grep { -e } uniq 'Makefile.PL', 'README.md', 'README.pod', 'META.json', 'cpanfile', $self->copy_files_from_release ] } ],
         qw(MetaYAML MetaJSON License Readme Manifest),
         [ 'GenerateFile::ShareDir' => 'generate CONTRIBUTING' => { -dist => 'Dist-Zilla-PluginBundle-Author-ETHER', -filename => 'CONTRIBUTING', has_xs => $has_xs } ],
         'InstallGuide',
@@ -174,7 +174,7 @@ sub configure
 
         # Munge Files
         'Git::Describe',
-        [ PkgVersion            => { ':version' => '5.010', die_on_existing_version => 1, die_on_line_insertion => 1 } ],
+        [ PkgVersion            => { ':version' => '5.026', die_on_existing_version => 1, die_on_line_insertion => 1, use_our => 1 } ],
         [
             ($self->surgical_podweaver ? 'SurgicalPodWeaver' : 'PodWeaver') => {
                 $self->surgical_podweaver ? () : ( ':version' => '4.005' ),
@@ -227,7 +227,7 @@ sub configure
         ( $has_bash ?
             [ 'Run::AfterBuild' => '.ackrc' => { run => q{bash -c "if [[ `dirname %d` != .build ]]; then test -e .ackrc && grep -q -- '--ignore-dir=%d' .ackrc || echo '--ignore-dir=%d' >> .ackrc; fi"} } ]
             : ()),
-        [ 'Run::AfterBuild'     => '.latest' => { ':version' => '0.024', eval => q!if ('%d' =~ /^%n-[.[:xdigit:]]+$/) { unlink '.latest'; symlink '%d', '.latest'; }! } ],
+        [ 'Run::AfterBuild'     => '.latest' => { ':version' => '0.028', eval => q!if ('%d' =~ /^%n-[.[:xdigit:]]+$/) { unlink '.latest'; symlink '%d', '.latest'; }! } ],
 
 
         # Before Release
@@ -350,7 +350,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.080
+version 0.081
 
 =head1 SYNOPSIS
 
@@ -449,9 +449,10 @@ following F<dist.ini> (following the preamble):
     ;;; Munge Files
     [Git::Describe]
     [PkgVersion]
-    :version = 5.010
+    :version = 5.026
     die_on_existing_version = 1
     die_on_line_insertion = 1
+    use_our = 1
 
     [PodWeaver] (or [SurgicalPodWeaver])
     :version = 4.005
@@ -542,7 +543,7 @@ following F<dist.ini> (following the preamble):
     [Run::AfterBuild / .ackrc]
     run = if [[ `dirname %d` != .build ]]; then test -e .ackrc && grep -q -- '--ignore-dir=%d' .ackrc || echo '--ignore-dir=%d' >> .ackrc; fi; if [[ %d =~ ^%n-[.[:xdigit:]]+$ ]]; then rm -f .latest; ln -s %d .latest; fi
     [Run::AfterBuild / .latest]
-    :version = 0.024
+    :version = 0.028
     eval = if ('%d' =~ /^%n-[.[:xdigit:]]+$/) { unlink '.latest'; symlink '%d', '.latest'; }
 
 
