@@ -1,5 +1,10 @@
 Revision history for Dist-Zilla-PluginBundle-Author-ETHER
 
+0.082     2015-01-03 20:15:37Z
+          - use [Git::Describe]'s new on_package_line feature
+          - (temporarily?) revert use of 'our' syntax for $VERSION
+            declarations (see RT#101095)
+
 0.081     2014-12-10 02:09:34Z
           - $VERSION statements inserted into modules now use 'our' syntax
             rather than fully-qualfied variable names

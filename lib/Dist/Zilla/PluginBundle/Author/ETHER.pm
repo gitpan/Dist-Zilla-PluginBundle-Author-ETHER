@@ -1,12 +1,10 @@
 use strict;
 use warnings;
-package Dist::Zilla::PluginBundle::Author::ETHER;
-# git description: v0.080-7-gae7c5f6
-{ our $VERSION = '0.081'; }
+package Dist::Zilla::PluginBundle::Author::ETHER; # git description: v0.081-5-g72791a5
 # ABSTRACT: A plugin bundle for distributions built by ETHER
 # KEYWORDS: author bundle distribution tool
 # vim: set ts=8 sw=4 tw=78 et :
-
+$Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.082';
 use Moose;
 with
     'Dist::Zilla::Role::PluginBundle::Easy',
@@ -148,7 +146,12 @@ sub configure
         [ 'FileFinder::ByName'  => ExtraTestFiles => { dir => 'xt' } ],
 
         # Gather Files
-        [ 'Git::GatherDir'      => { ':version' => '2.016', exclude_filename => [ grep { -e } uniq 'Makefile.PL', 'README.md', 'README.pod', 'META.json', 'cpanfile', $self->copy_files_from_release ] } ],
+        [ 'Git::GatherDir'      => { ':version' => '2.016', do {
+                my @filenames = grep { -e } uniq 'Makefile.PL', 'README.md', 'README.pod', 'META.json', 'cpanfile', $self->copy_files_from_release;
+                @filenames ? ( exclude_filename => \@filenames ) : ()
+            },
+        } ],
+
         qw(MetaYAML MetaJSON License Readme Manifest),
         [ 'GenerateFile::ShareDir' => 'generate CONTRIBUTING' => { -dist => 'Dist-Zilla-PluginBundle-Author-ETHER', -filename => 'CONTRIBUTING', has_xs => $has_xs } ],
         'InstallGuide',
@@ -173,8 +176,8 @@ sub configure
 
 
         # Munge Files
-        'Git::Describe',
-        [ PkgVersion            => { ':version' => '5.026', die_on_existing_version => 1, die_on_line_insertion => 1, use_our => 1 } ],
+        [ 'Git::Describe'       => { ':version' => '0.004', on_package_line => 1 } ],
+        [ PkgVersion            => { ':version' => '5.010', die_on_existing_version => 1, die_on_line_insertion => 1 } ],
         [
             ($self->surgical_podweaver ? 'SurgicalPodWeaver' : 'PodWeaver') => {
                 $self->surgical_podweaver ? () : ( ':version' => '4.005' ),
@@ -232,7 +235,7 @@ sub configure
 
         # Before Release
         [ 'CheckStrictVersion'  => { decimal_only => 1 } ],
-        [ 'Git::Check'          => 'initial check' => { ':version' => 2.025, build_warnings => 1, allow_dirty => [''] } ],
+        [ 'Git::Check'          => 'initial check' => { ':version' => '2.025', build_warnings => 1, allow_dirty => [''] } ],
         'Git::CheckFor::MergeConflicts',
         [ 'Git::CheckFor::CorrectBranch' => { ':version' => '0.004', release_branch => 'master' } ],
         [ 'Git::Remote::Check'  => { branch => 'master', remote_branch => 'master' } ],
@@ -247,8 +250,8 @@ sub configure
 
         # After Release
         [ 'CopyFilesFromRelease' => { filename => [ $self->copy_files_from_release ] } ],
-        [ 'Run::AfterRelease'   => 'remove old READMEs' => { ':version' => 0.024, eval => q!unlink 'README.md'! } ],
-        [ 'Git::Commit'         => { ':version' => '2.020', add_files_in => ['.'], allow_dirty => [ uniq 'Changes', 'README.md', 'README.pod', $self->copy_files_from_release ], commit_msg => '%N-%v%t%n%n%c' } ],
+        [ 'Run::AfterRelease'   => 'remove old READMEs' => { ':version' => '0.024', eval => q!unlink 'README.md'! } ],
+        [ 'Git::Commit'         => { allow_dirty => [ uniq 'Changes', 'README.md', 'README.pod', $self->copy_files_from_release ], commit_msg => '%N-%v%t%n%n%c' } ],
         [ 'Git::Tag'            => { tag_format => 'v%v%t', tag_message => 'v%v%t' } ],
         $self->server eq 'github' ? [ 'GitHub::Update' => { metacpan => 1 } ] : (),
         'Git::Push',
@@ -350,7 +353,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.081
+version 0.082
 
 =head1 SYNOPSIS
 
@@ -448,11 +451,13 @@ following F<dist.ini> (following the preamble):
 
     ;;; Munge Files
     [Git::Describe]
+    :version = 0.004
+    on_package_line = 1
+
     [PkgVersion]
-    :version = 5.026
+    :version = 5.010
     die_on_existing_version = 1
     die_on_line_insertion = 1
-    use_our = 1
 
     [PodWeaver] (or [SurgicalPodWeaver])
     :version = 4.005
@@ -588,8 +593,6 @@ following F<dist.ini> (following the preamble):
     eval = unlink 'README.md'
 
     [Git::Commit]
-    :version = 2.020
-    add_files_in = .
     allow_dirty = Changes
     allow_dirty = README.md
     allow_dirty = README.pod
