@@ -1,14 +1,14 @@
 use strict;
 use warnings;
-package Dist::Zilla::PluginBundle::Author::ETHER; # git description: v0.081-5-g72791a5
+package Dist::Zilla::PluginBundle::Author::ETHER; # git description: v0.082-6-g0ed10a4
 # ABSTRACT: A plugin bundle for distributions built by ETHER
 # KEYWORDS: author bundle distribution tool
 # vim: set ts=8 sw=4 tw=78 et :
-$Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.082';
+$Dist::Zilla::PluginBundle::Author::ETHER::VERSION = '0.083';
 use Moose;
 with
     'Dist::Zilla::Role::PluginBundle::Easy',
-    'Dist::Zilla::Role::PluginBundle::PluginRemover' => { -version => '0.102' },
+    'Dist::Zilla::Role::PluginBundle::PluginRemover' => { -version => '0.103' },
     'Dist::Zilla::Role::PluginBundle::Config::Slicer';
 
 use Dist::Zilla::Util;
@@ -251,7 +251,7 @@ sub configure
         # After Release
         [ 'CopyFilesFromRelease' => { filename => [ $self->copy_files_from_release ] } ],
         [ 'Run::AfterRelease'   => 'remove old READMEs' => { ':version' => '0.024', eval => q!unlink 'README.md'! } ],
-        [ 'Git::Commit'         => { allow_dirty => [ uniq 'Changes', 'README.md', 'README.pod', $self->copy_files_from_release ], commit_msg => '%N-%v%t%n%n%c' } ],
+        [ 'Git::Commit'         => 'release snapshot' => { ':version' => '2.020', add_files_in => ['.'], allow_dirty => [ uniq 'Changes', 'README.md', 'README.pod', $self->copy_files_from_release ], commit_msg => '%N-%v%t%n%n%c' } ],
         [ 'Git::Tag'            => { tag_format => 'v%v%t', tag_message => 'v%v%t' } ],
         $self->server eq 'github' ? [ 'GitHub::Update' => { metacpan => 1 } ] : (),
         'Git::Push',
@@ -261,7 +261,7 @@ sub configure
     # hopefully the file is available at this location soonish after release!
     my ($username, $password) = $self->_pause_config;
     push @plugins,
-        [ 'Run::AfterRelease' => 'install release' => { run => 'cpanm http://' . $username . ':' . $password . '@pause.perl.org/pub/PAUSE/authors/id/' . substr($username, 0, 1).'/'.substr($username,0,2).'/'.$username.'/%a' } ] if $username and $password;
+        [ 'Run::AfterRelease' => 'install release' => { ':version' => '0.029', fatal_errors => 0, run => 'cpanm http://' . $username . ':' . $password . '@pause.perl.org/pub/PAUSE/authors/id/' . substr($username, 0, 1).'/'.substr($username,0,2).'/'.$username.'/%a' } ] if $username and $password;
 
     if ($self->airplane)
     {
@@ -353,7 +353,7 @@ Dist::Zilla::PluginBundle::Author::ETHER - A plugin bundle for distributions bui
 
 =head1 VERSION
 
-version 0.082
+version 0.083
 
 =head1 SYNOPSIS
 
@@ -592,7 +592,9 @@ following F<dist.ini> (following the preamble):
     :version = 0.024
     eval = unlink 'README.md'
 
-    [Git::Commit]
+    [Git::Commit / release snapshot]
+    :version = 2.020
+    add_files_in = .
     allow_dirty = Changes
     allow_dirty = README.md
     allow_dirty = README.pod
@@ -610,6 +612,8 @@ following F<dist.ini> (following the preamble):
     [Git::Push]
 
     [Run::AfterRelease / install release]
+    :version = 0.029
+    fatal_errors = 0
     run = cpanm http://URMOM:mysekritpassword@pause.perl.org/pub/PAUSE/authors/id/U/UR/URMOM/%a
 
 
